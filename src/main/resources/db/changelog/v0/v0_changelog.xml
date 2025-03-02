@@ -1,0 +1,7 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+     <include file="migrations/v0_0_create_project.xml" relativeToChangelogFile="true"/>
+     <include file="migrations/v0_1_create_task.xml" relativeToChangelogFile="true"/>
+     <include file="imports/v0_0_import_projects.xml" relativeToChangelogFile="true"/>
+     <include file="imports/v0_1_import_tasks.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

@@ -1,0 +1,16 @@
+﻿id;name;key;description;status;type;project_id
+1;Write contract;TASK-001;some description;REVIEW;TASK;1
+2;Create API;TASK-002;some description;TO_DO;TASK;2
+3;Write doc;TASK-003;some description;IN_PROGRESS;TASK;3
+4;Create design;TASK-004;some description;IN_REVIEW;TASK;1
+5;Update DB;TASK-005;some description;CLOSED;TASK;2
+6;Create integration;TASK-006;some description;DONE;TASK;3
+7;Increase test coverage;TASK-007;some description;REVIEW;TASK;1
+8;Create adapter;TASK-008;some description;TO_DO;TASK;2
+9;Refactor controller;TASK-009;some description;IN_PROGRESS;TASK;3
+10;Write mapper;TASK-010;some description;IN_REVIEW;TASK;1
+11;500 on create task API;TASK-011;some description;CLOSED;BUG;2
+12;Design migration;TASK-012;some description;DONE;TASK;3
+13;Create api ;TASK-013;some description;REVIEW;TASK;1
+14;500 on delete task API;TASK-014;some description;TO_DO;BUG;2
+15;Write contract use case;TASK-015;some description;IN_PROGRESS;TASK;3
