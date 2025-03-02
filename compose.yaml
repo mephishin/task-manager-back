@@ -1,9 +1,23 @@
+name: keycloak
 services:
   postgres:
-    image: postgres:14-alpine
+    image: postgres:15
     ports:
-    - 5432:5432
-    container_name: task-manager-back-bd
+      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/postgres
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+    ports:
+      - 9090:8080
+    command:
+      - start-dev
 

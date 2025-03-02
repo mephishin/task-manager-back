@@ -3,7 +3,7 @@ spring:
     name: task-manager-back
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: postgres
+    username: admin
+    password: admin
   liquibase:
     change-log: classpath:/db/changelog/changelog.xml
