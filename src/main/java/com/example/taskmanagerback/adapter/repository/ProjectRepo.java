@@ -1,13 +1,12 @@
 package com.example.taskmanagerback.adapter.repository;
 
 import com.example.taskmanagerback.model.project.Project;
-import com.example.taskmanagerback.model.task.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface TaskRepository extends JpaRepository<Task, String> {
-    List<Task> findAllByProject(Project project);
+public interface ProjectRepo extends JpaRepository<Project, String> {
+    Optional<Project> findByName(String projectName);
 }

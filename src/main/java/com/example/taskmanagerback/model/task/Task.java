@@ -11,22 +11,21 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
+    String key;
 
     String name;
 
-    String key;
-
     String description;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "status_id")
     TaskStatus status;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "type_id")
     TaskType type;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_key")
     Project project;
 }

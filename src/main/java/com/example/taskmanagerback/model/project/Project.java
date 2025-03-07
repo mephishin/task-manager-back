@@ -13,8 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String id;
+    String key;
 
     String name;
 }

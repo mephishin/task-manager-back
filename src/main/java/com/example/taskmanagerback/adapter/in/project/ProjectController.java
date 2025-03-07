@@ -1,4 +1,4 @@
-package com.example.taskmanagerback.adapter.controller;
+package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.app.api.GetAllProjects;
 import com.example.taskmanagerback.model.project.Project;

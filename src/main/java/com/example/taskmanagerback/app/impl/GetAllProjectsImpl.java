@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.app.impl;
 
-import com.example.taskmanagerback.adapter.repository.ProjectRepository;
+import com.example.taskmanagerback.adapter.repository.ProjectRepo;
 import com.example.taskmanagerback.app.api.GetAllProjects;
 import com.example.taskmanagerback.model.project.Project;
 import lombok.AccessLevel;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GetAllProjectsImpl implements GetAllProjects {
-    ProjectRepository projectRepository;
+    ProjectRepo projectRepo;
 
     @Override
     public List<Project> execute() {
-        return projectRepository.findAll();
+        return projectRepo.findAll();
     }
 }

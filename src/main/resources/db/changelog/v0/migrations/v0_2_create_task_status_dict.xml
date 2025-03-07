@@ -1,9 +1,9 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet id="v0_0_create_project.xml" author=''>
-        <createTable tableName="project">
-            <column name="key" type="varchar"/>
-            <column name="name" type="varchar"/>
+    <changeSet id="v0_3_create_task_status_dict.xml" author=''>
+        <createTable tableName="task_status_dict">
+            <column name="id" type="varchar"/>
+            <column name="value" type="varchar"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

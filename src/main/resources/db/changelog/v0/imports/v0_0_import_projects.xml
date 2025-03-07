@@ -2,7 +2,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="v0_0_import_projects.xml" author=''>
         <loadData tableName="project" file="csv/projects.csv" relativeToChangelogFile="true" separator=";">
-            <column header="id" name="id"/>
+            <column header="key" name="key"/>
             <column header="name" name="name"/>
         </loadData>
     </changeSet>
