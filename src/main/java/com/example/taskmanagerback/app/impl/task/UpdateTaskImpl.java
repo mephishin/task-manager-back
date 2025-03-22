@@ -1,11 +1,11 @@
-package com.example.taskmanagerback.app.impl;
+package com.example.taskmanagerback.app.impl.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
-import com.example.taskmanagerback.adapter.repository.ProjectRepo;
-import com.example.taskmanagerback.adapter.repository.TaskRepo;
-import com.example.taskmanagerback.adapter.repository.TaskStatusRepo;
-import com.example.taskmanagerback.adapter.repository.TaskTypeRepo;
-import com.example.taskmanagerback.app.api.UpdateTask;
+import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
+import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
+import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
+import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
+import com.example.taskmanagerback.app.api.task.UpdateTask;
 import com.example.taskmanagerback.model.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;

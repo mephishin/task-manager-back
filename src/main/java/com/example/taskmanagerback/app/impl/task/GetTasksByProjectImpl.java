@@ -1,8 +1,8 @@
-package com.example.taskmanagerback.app.impl;
+package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.ProjectRepo;
-import com.example.taskmanagerback.adapter.repository.TaskRepo;
-import com.example.taskmanagerback.app.api.GetTasksByProject;
+import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
+import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
+import com.example.taskmanagerback.app.api.task.GetTasksByProject;
 import com.example.taskmanagerback.model.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;

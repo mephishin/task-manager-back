@@ -2,6 +2,8 @@ name: keycloak
 services:
   postgres:
     image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
@@ -20,4 +22,6 @@ services:
       - 9090:8080
     command:
       - start-dev
-
+volumes:
+  postgres_data:
+    driver: local

@@ -1,4 +1,4 @@
-package com.example.taskmanagerback.adapter.repository;
+package com.example.taskmanagerback.adapter.repository.task;
 
 import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;

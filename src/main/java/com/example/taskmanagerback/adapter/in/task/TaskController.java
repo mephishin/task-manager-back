@@ -2,12 +2,11 @@ package com.example.taskmanagerback.adapter.in.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.ListOfTasksDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
-import com.example.taskmanagerback.adapter.repository.TaskStatusRepo;
-import com.example.taskmanagerback.adapter.repository.TaskTypeRepo;
-import com.example.taskmanagerback.app.api.GetTaskByKey;
-import com.example.taskmanagerback.app.api.GetTasksByProject;
-import com.example.taskmanagerback.app.api.UpdateTask;
-import com.example.taskmanagerback.model.task.Task;
+import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
+import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
+import com.example.taskmanagerback.app.api.task.GetTaskByKey;
+import com.example.taskmanagerback.app.api.task.GetTasksByProject;
+import com.example.taskmanagerback.app.api.task.UpdateTask;
 import com.example.taskmanagerback.model.task.TaskStatus;
 import com.example.taskmanagerback.model.task.TaskType;
 import lombok.AccessLevel;

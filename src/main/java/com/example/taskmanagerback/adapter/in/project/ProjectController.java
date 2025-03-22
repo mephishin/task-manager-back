@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.adapter.in.project;
 
-import com.example.taskmanagerback.app.api.GetAllProjects;
+import com.example.taskmanagerback.app.api.project.GetAllProjects;
 import com.example.taskmanagerback.model.project.Project;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

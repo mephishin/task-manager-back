@@ -1,7 +1,7 @@
-package com.example.taskmanagerback.app.impl;
+package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.TaskRepo;
-import com.example.taskmanagerback.app.api.GetTaskByKey;
+import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
+import com.example.taskmanagerback.app.api.task.GetTaskByKey;
 import com.example.taskmanagerback.model.task.Task;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

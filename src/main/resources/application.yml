@@ -7,3 +7,8 @@ spring:
     password: admin
   liquibase:
     change-log: classpath:/db/changelog/changelog.xml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9090/realms/task-manager

@@ -1,4 +1,4 @@
-package com.example.taskmanagerback.adapter.repository;
+package com.example.taskmanagerback.adapter.repository.project;
 
 import com.example.taskmanagerback.model.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
