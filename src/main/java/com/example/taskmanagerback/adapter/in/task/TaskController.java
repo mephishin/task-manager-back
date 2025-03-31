@@ -4,6 +4,7 @@ import com.example.taskmanagerback.adapter.in.task.dto.ListOfTasksDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
+import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetTaskByKey;
 import com.example.taskmanagerback.app.api.task.GetTasksByProject;
 import com.example.taskmanagerback.app.api.task.UpdateTask;
@@ -17,19 +18,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000", methods = {POST, GET})
+@CrossOrigin(origins = "http://localhost:3000", methods = {POST, GET, PUT})
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
     TaskMapper taskMapper;
     GetTasksByProject getTasksByProject;
     UpdateTask updateTask;
+    CreateTask createTask;
     GetTaskByKey getTaskByKey;
     TaskTypeRepo taskTypeRepo;
     TaskStatusRepo taskStatusRepo;
@@ -46,10 +47,14 @@ public class TaskController {
         return taskStatusRepo.findAll();
     }
 
-    @PostMapping("/update")
+    @PutMapping
     public TaskDto updateTask(@RequestBody TaskDto taskDto) {
         log.info("Request to update task with body: {}", taskDto);
-        return taskMapper.taskToTaskDto(updateTask.execute(taskDto));
+        return taskMapper.taskToTaskDto(
+                updateTask.execute(
+                        taskMapper.taskDtoToTask(taskDto)
+                )
+        );
     }
 
     @GetMapping("/{key}")
@@ -61,5 +66,15 @@ public class TaskController {
     public List<TaskType> getAllTaskTypes() {
         log.info("Requested all task statuses");
         return taskTypeRepo.findAll();
+    }
+
+    @PostMapping
+    public TaskDto createTask(@RequestBody TaskDto taskDto) {
+        log.info("Request to create task");
+        return taskMapper.taskToTaskDto(
+                createTask.execute(
+                        taskMapper.taskDtoToTask(taskDto)
+                )
+        );
     }
 }

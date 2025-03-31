@@ -1,16 +1,16 @@
 ﻿name;key;description;status_id;type_id;project_key
-Write contract;SPHR-001;some description;REVIEW;TASK;SPHR
-Create API;CRSPCT-002;some description;TO_DO;TASK;CRSPCT
-Write doc;DSC-003;some description;IN_PROGRESS;TASK;DSC
-Create design;SPHR-004;some description;IN_REVIEW;TASK;SPHR
-Update DB;CRSPCT-005;some description;CLOSED;TASK;CRSPCT
-Create integration;DSC-006;some description;DONE;TASK;DSC
-Increase test coverage;SPHR-007;some description;REVIEW;TASK;SPHR
-Create adapter;CRSPCT-008;some description;TO_DO;TASK;CRSPCT
-Refactor controller;DSC-009;some description;IN_PROGRESS;TASK;DSC
-Write mapper;SPHR-010;some description;IN_REVIEW;TASK;SPHR
-500 on create task API;CRSPCT-011;some description;CLOSED;BUG;CRSPCT
-Design migration;DSC-012;some description;DONE;TASK;DSC
-Create api ;SPHR-013;some description;REVIEW;TASK;SPHR
-500 on delete task API;CRSPCT-014;some description;TO_DO;BUG;CRSPCT
-Write contract use case;DSC-015;some description;IN_PROGRESS;TASK;DSC
+Write contract;SPHR-1;some description;REVIEW;TASK;SPHR
+Create API;CRSPCT-2;some description;TO_DO;TASK;CRSPCT
+Write doc;DSC-3;some description;IN_PROGRESS;TASK;DSC
+Create design;SPHR-4;some description;IN_REVIEW;TASK;SPHR
+Update DB;CRSPCT-5;some description;CLOSED;TASK;CRSPCT
+Create integration;DSC-6;some description;DONE;TASK;DSC
+Increase test coverage;SPHR-7;some description;REVIEW;TASK;SPHR
+Create adapter;CRSPCT-8;some description;TO_DO;TASK;CRSPCT
+Refactor controller;DSC-9;some description;IN_PROGRESS;TASK;DSC
+Write mapper;SPHR-10;some description;IN_REVIEW;TASK;SPHR
+500 on create task API;CRSPCT-11;some description;CLOSED;BUG;CRSPCT
+Design migration;DSC-12;some description;DONE;TASK;DSC
+Create api ;SPHR-13;some description;REVIEW;TASK;SPHR
+500 on delete task API;CRSPCT-14;some description;TO_DO;BUG;CRSPCT
+Write contract use case;DSC-15;some description;IN_PROGRESS;TASK;DSC
