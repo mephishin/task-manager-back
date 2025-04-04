@@ -1,27 +1,9 @@
-name: keycloak
+name: task-manager
 services:
   postgres:
     image: postgres:15
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
-  keycloak:
-    image: quay.io/keycloak/keycloak:20.0
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres/postgres
-      KC_DB_USERNAME: admin
-      KC_DB_PASSWORD: admin
-    ports:
-      - 9090:8080
-    command:
-      - start-dev
-volumes:
-  postgres_data:
-    driver: local
