@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class TaskController {
     TaskStatusRepo taskStatusRepo;
 
     @GetMapping("/all/{projectName}")
-    public ListOfTasksDto getAllTasks(@PathVariable String projectName) {
+    public ListOfTasksDto getAllTasks(@PathVariable String projectName, JwtAuthenticationToken jwtAuthenticationToken) {
         log.info("Requested tasks by projectName: {}", projectName);
         return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectName));
     }
@@ -59,18 +60,19 @@ public class TaskController {
 
     @GetMapping("/{key}")
     public TaskDto getTaskByKey(@PathVariable String key) {
+        log.info("Requested task by key: {}", key);
         return taskMapper.taskToTaskDto(getTaskByKey.execute(key));
     }
 
     @GetMapping("/types")
     public List<TaskType> getAllTaskTypes() {
-        log.info("Requested all task statuses");
+        log.info("Requested all task types");
         return taskTypeRepo.findAll();
     }
 
     @PostMapping
     public TaskDto createTask(@RequestBody TaskDto taskDto) {
-        log.info("Request to create task");
+        log.info("Request to create task: {}", taskDto);
         return taskMapper.taskToTaskDto(
                 createTask.execute(
                         taskMapper.taskDtoToTask(taskDto)

@@ -1,5 +1,6 @@
 package com.example.taskmanagerback.model.task;
 
+import com.example.taskmanagerback.model.participant.Participant;
 import com.example.taskmanagerback.model.project.Project;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -30,4 +31,12 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "project_key")
     Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "assignee_id")
+    Participant assignee;
+
+    @ManyToOne
+    @JoinColumn(name = "reporter_id")
+    Participant reporter;
 }

@@ -1,6 +1,9 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet id="v0_2_import_taskStatuses" author=''>
-        <loadData tableName="task_status_dict" file="csv/taskStatuses.csv" relativeToChangelogFile="true" separator=";"/>
+    <changeSet id="v0_3_create_participant" author=''>
+        <createTable tableName="participant">
+            <column name="id" type="varchar"/>
+            <column name="fullname" type="varchar"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

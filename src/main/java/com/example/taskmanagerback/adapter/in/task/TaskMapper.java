@@ -3,6 +3,7 @@ package com.example.taskmanagerback.adapter.in.task;
 import com.example.taskmanagerback.adapter.in.task.dto.ListOfTasksDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
+import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
 import com.example.taskmanagerback.model.task.Task;
@@ -22,6 +23,7 @@ public class TaskMapper {
     ProjectRepo projectRepo;
     TaskStatusRepo taskStatusRepo;
     TaskTypeRepo taskTypeRepo;
+    ParticipantRepo participantRepo;
 
     public ListOfTasksDto listOfTasksToListOfTasksDto(List<Task> tasks) {
         var getAllTasks = new ListOfTasksDto();
@@ -48,6 +50,8 @@ public class TaskMapper {
                 .project(task.getProject().getName())
                 .status(task.getStatus().getValue())
                 .type(task.getType().getValue())
+                .assignee(task.getAssignee().getFullname())
+                .reporter(task.getReporter().getFullname())
                 .build();
     }
 
@@ -70,6 +74,16 @@ public class TaskMapper {
                 .setProject(
                         projectRepo.findByName(
                                 taskDto.getProject()
+                        ).orElseThrow()
+                )
+                .setAssignee(
+                        participantRepo.findByFullname(
+                                taskDto.getAssignee()
+                        ).orElseThrow()
+                )
+                .setReporter(
+                        participantRepo.findByFullname(
+                                taskDto.getReporter()
                         ).orElseThrow()
                 );
     }

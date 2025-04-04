@@ -15,4 +15,6 @@ public class TaskDto {
     String status;
     String type;
     String project;
+    String assignee;
+    String reporter;
 }

@@ -1,9 +1,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet id="v0_0_import_projects.xml" author=''>
-        <loadData tableName="project" file="csv/projects.csv" relativeToChangelogFile="true" separator=";">
-            <column header="key" name="key"/>
-            <column header="name" name="name"/>
-        </loadData>
+    <changeSet id="v0_0_import_projects" author=''>
+        <loadData tableName="project" file="csv/projects.csv" relativeToChangelogFile="true" separator=";"/>
     </changeSet>
 </databaseChangeLog>
