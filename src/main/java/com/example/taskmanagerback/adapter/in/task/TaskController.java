@@ -4,6 +4,7 @@ import com.example.taskmanagerback.adapter.in.task.dto.ListOfTasksDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
+import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
 import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetTaskByKey;
 import com.example.taskmanagerback.app.api.task.GetTasksByProject;
@@ -35,9 +36,10 @@ public class TaskController {
     GetTaskByKey getTaskByKey;
     TaskTypeRepo taskTypeRepo;
     TaskStatusRepo taskStatusRepo;
+    GetAuthParticipant getAuthParticipant;
 
     @GetMapping("/all/{projectName}")
-    public ListOfTasksDto getAllTasks(@PathVariable String projectName, JwtAuthenticationToken jwtAuthenticationToken) {
+    public ListOfTasksDto getAllTasks(@PathVariable String projectName) {
         log.info("Requested tasks by projectName: {}", projectName);
         return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectName));
     }
@@ -78,5 +80,12 @@ public class TaskController {
                         taskMapper.taskDtoToTask(taskDto)
                 )
         );
+    }
+
+    @GetMapping("/all")
+    public ListOfTasksDto getAllTaskByAuthParticipantProject(JwtAuthenticationToken authenticationToken) {
+        var authParticipantProject = getAuthParticipant.execute(authenticationToken).getProject().getName();
+        log.info("Requested tasks by auth participant project: {}", authParticipantProject);
+        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(authParticipantProject));
     }
 }

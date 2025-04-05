@@ -4,6 +4,7 @@
         <createTable tableName="participant">
             <column name="id" type="varchar"/>
             <column name="username" type="varchar"/>
+            <column name="project_key" type="varchar"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

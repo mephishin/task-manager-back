@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.adapter.in.project;
 
+import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
 import com.example.taskmanagerback.app.api.project.GetAllProjects;
-import com.example.taskmanagerback.model.project.Project;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,10 +21,13 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProjectController {
     GetAllProjects getAllProjects;
+    ProjectMapper projectMapper;
 
     @GetMapping
-    public List<Project> getAllProjects() {
+    public List<ProjectDto> getAllProjects() {
         log.info("Requested all projects");
-        return getAllProjects.execute();
+        return getAllProjects.execute().stream()
+                .map(projectMapper::projectToProjectDto)
+                .toList();
     }
 }

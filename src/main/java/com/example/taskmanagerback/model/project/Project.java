@@ -1,12 +1,12 @@
 package com.example.taskmanagerback.model.project;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.taskmanagerback.model.participant.Participant;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -16,4 +16,7 @@ public class Project {
     String key;
 
     String name;
+
+    @OneToMany(mappedBy = "project")
+    List<Participant> participants;
 }

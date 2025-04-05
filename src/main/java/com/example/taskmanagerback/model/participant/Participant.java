@@ -1,5 +1,6 @@
 package com.example.taskmanagerback.model.participant;
 
+import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -22,4 +23,8 @@ public class Participant {
 
     @OneToMany(mappedBy = "reporter")
     List<Task> reportedTasks;
+
+    @ManyToOne
+    @JoinColumn(name = "project_key")
+    Project project;
 }
