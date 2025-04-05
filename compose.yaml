@@ -1,9 +1,0 @@
-name: task-manager
-services:
-  postgres:
-    image: postgres:15
-    ports:
-      - 5433:5432
-    environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin

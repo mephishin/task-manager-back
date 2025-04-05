@@ -1,0 +1,40 @@
+name: task-manager
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+  keycloak-postgres:
+    image: postgres:16
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+    ports:
+    - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.2
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/postgres
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+#      KC_LOG_LEVEL: DEBUG
+#      KC_IMPORT_LOG_LEVEL: DEBUG
+    volumes:
+    - ./import/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    ports:
+    - 9090:8080
+    command:
+    - "start-dev"
+    - "--import-realm"
+    - "--http-port=8080"
+volumes:
+  postgres_data:
+    driver: local
