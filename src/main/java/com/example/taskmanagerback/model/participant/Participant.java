@@ -15,7 +15,7 @@ public class Participant {
     @Id
     String id;
 
-    String fullname;
+    String username;
 
     @OneToMany(mappedBy = "assignee")
     List<Task> assignedTasks;

@@ -3,7 +3,7 @@
     <changeSet id="v0_3_create_participant" author=''>
         <createTable tableName="participant">
             <column name="id" type="varchar"/>
-            <column name="fullname" type="varchar"/>
+            <column name="username" type="varchar"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

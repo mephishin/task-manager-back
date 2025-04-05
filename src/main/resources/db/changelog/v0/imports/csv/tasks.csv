@@ -1,16 +1,16 @@
 ﻿name;key;description;status_id;type_id;project_key;assignee_id;reporter_id
-Write contract;SPHR-1;some description;REVIEW;TASK;SPHR;1;0
-Create API;CRSPCT-2;some description;TO_DO;TASK;CRSPCT;2;0
-Write doc;DSC-3;some description;IN_PROGRESS;TASK;DSC;3;0
-Create design;SPHR-4;some description;IN_REVIEW;TASK;SPHR;4;0
-Update DB;CRSPCT-5;some description;CLOSED;TASK;CRSPCT;2;0
-Create integration;DSC-6;some description;DONE;TASK;DSC;3;0
-Increase test coverage;SPHR-7;some description;REVIEW;TASK;SPHR;1;0
-Create adapter;CRSPCT-8;some description;TO_DO;TASK;CRSPCT;2;0
-Refactor controller;DSC-9;some description;IN_PROGRESS;TASK;DSC;3;0
-Write mapper;SPHR-10;some description;IN_REVIEW;TASK;SPHR;4;0
-500 on create task API;CRSPCT-11;some description;CLOSED;BUG;CRSPCT;2;0
-Design migration;DSC-12;some description;DONE;TASK;DSC;3;0
-Create api ;SPHR-13;some description;REVIEW;TASK;SPHR;1;0
-500 on delete task API;CRSPCT-14;some description;TO_DO;BUG;CRSPCT;2;0
-Write contract use case;DSC-15;some description;IN_PROGRESS;TASK;DSC;3;0
+Write contract;SPHR-1;some description;REVIEW;TASK;SPHR;f942863d-2f57-49a0-9a39-010f1dee5693;89169204-fb53-4c55-b595-0350536ec77f
+Create API;CRSPCT-2;some description;TO_DO;TASK;CRSPCT;bc48bf02-9f78-49b8-80bd-4cb6bd31521e;89169204-fb53-4c55-b595-0350536ec77f
+Write doc;DSC-3;some description;IN_PROGRESS;TASK;DSC;923c0760-0489-4922-ba8d-a512abeeed39;89169204-fb53-4c55-b595-0350536ec77f
+Create design;SPHR-4;some description;IN_REVIEW;TASK;SPHR;323a8455-34df-44b5-b7a2-7bd5dd8fdc28;89169204-fb53-4c55-b595-0350536ec77f
+Update DB;CRSPCT-5;some description;CLOSED;TASK;CRSPCT;bc48bf02-9f78-49b8-80bd-4cb6bd31521e;89169204-fb53-4c55-b595-0350536ec77f
+Create integration;DSC-6;some description;DONE;TASK;DSC;923c0760-0489-4922-ba8d-a512abeeed39;89169204-fb53-4c55-b595-0350536ec77f
+Increase test coverage;SPHR-7;some description;REVIEW;TASK;SPHR;f942863d-2f57-49a0-9a39-010f1dee5693;89169204-fb53-4c55-b595-0350536ec77f
+Create adapter;CRSPCT-8;some description;TO_DO;TASK;CRSPCT;bc48bf02-9f78-49b8-80bd-4cb6bd31521e;89169204-fb53-4c55-b595-0350536ec77f
+Refactor controller;DSC-9;some description;IN_PROGRESS;TASK;DSC;923c0760-0489-4922-ba8d-a512abeeed39;89169204-fb53-4c55-b595-0350536ec77f
+Write mapper;SPHR-10;some description;IN_REVIEW;TASK;SPHR;323a8455-34df-44b5-b7a2-7bd5dd8fdc28;89169204-fb53-4c55-b595-0350536ec77f
+500 on create task API;CRSPCT-11;some description;CLOSED;BUG;CRSPCT;bc48bf02-9f78-49b8-80bd-4cb6bd31521e;89169204-fb53-4c55-b595-0350536ec77f
+Design migration;DSC-12;some description;DONE;TASK;DSC;923c0760-0489-4922-ba8d-a512abeeed39;89169204-fb53-4c55-b595-0350536ec77f
+Create api ;SPHR-13;some description;REVIEW;TASK;SPHR;f942863d-2f57-49a0-9a39-010f1dee5693;89169204-fb53-4c55-b595-0350536ec77f
+500 on delete task API;CRSPCT-14;some description;TO_DO;BUG;CRSPCT;bc48bf02-9f78-49b8-80bd-4cb6bd31521e;89169204-fb53-4c55-b595-0350536ec77f
+Write contract use case;DSC-15;some description;IN_PROGRESS;TASK;DSC;923c0760-0489-4922-ba8d-a512abeeed39;89169204-fb53-4c55-b595-0350536ec77f

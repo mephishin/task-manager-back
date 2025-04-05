@@ -50,8 +50,8 @@ public class TaskMapper {
                 .project(task.getProject().getName())
                 .status(task.getStatus().getValue())
                 .type(task.getType().getValue())
-                .assignee(task.getAssignee().getFullname())
-                .reporter(task.getReporter().getFullname())
+                .assignee(task.getAssignee().getUsername())
+                .reporter(task.getReporter().getUsername())
                 .build();
     }
 
@@ -77,12 +77,12 @@ public class TaskMapper {
                         ).orElseThrow()
                 )
                 .setAssignee(
-                        participantRepo.findByFullname(
+                        participantRepo.findByUsername(
                                 taskDto.getAssignee()
                         ).orElseThrow()
                 )
                 .setReporter(
-                        participantRepo.findByFullname(
+                        participantRepo.findByUsername(
                                 taskDto.getReporter()
                         ).orElseThrow()
                 );
