@@ -1,9 +1,10 @@
 package com.example.taskmanagerback.adapter.in.task;
 
-import com.example.taskmanagerback.adapter.in.task.dto.ListOfTasksDto;
+import com.example.taskmanagerback.adapter.in.task.dto.TasksPageDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
+import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
 import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetTaskByKey;
@@ -37,11 +38,12 @@ public class TaskController {
     TaskTypeRepo taskTypeRepo;
     TaskStatusRepo taskStatusRepo;
     GetAuthParticipant getAuthParticipant;
+    GetProjectByName getProjectByName;
 
     @GetMapping("/all/{projectName}")
-    public ListOfTasksDto getAllTasks(@PathVariable String projectName) {
+    public TasksPageDto getAllTasks(@PathVariable String projectName) {
         log.info("Requested tasks by projectName: {}", projectName);
-        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectName));
+        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectName), getProjectByName.execute(projectName));
     }
 
     @GetMapping("/statuses")
@@ -83,9 +85,9 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public ListOfTasksDto getAllTaskByAuthParticipantProject(JwtAuthenticationToken authenticationToken) {
-        var authParticipantProject = getAuthParticipant.execute(authenticationToken).getProject().getName();
-        log.info("Requested tasks by auth participant project: {}", authParticipantProject);
-        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(authParticipantProject));
+    public TasksPageDto getAllTaskByAuthParticipantProject(JwtAuthenticationToken authenticationToken) {
+        var authParticipantProject = getAuthParticipant.execute(authenticationToken).getProject();
+        log.info("Requested tasks by auth participant project: {}", authParticipantProject.getName());
+        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(authParticipantProject.getName()), authParticipantProject);
     }
 }

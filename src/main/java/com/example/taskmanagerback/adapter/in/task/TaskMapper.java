@@ -1,11 +1,12 @@
 package com.example.taskmanagerback.adapter.in.task;
 
-import com.example.taskmanagerback.adapter.in.task.dto.ListOfTasksDto;
+import com.example.taskmanagerback.adapter.in.task.dto.TasksPageDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
+import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -14,7 +15,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -25,18 +25,29 @@ public class TaskMapper {
     TaskTypeRepo taskTypeRepo;
     ParticipantRepo participantRepo;
 
-    public ListOfTasksDto listOfTasksToListOfTasksDto(List<Task> tasks) {
-        var getAllTasks = new ListOfTasksDto();
+    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks, Project project) {
+        var getAllTasks = new TasksPageDto();
 
-        getAllTasks.setTasks(
-                tasks.stream().map(task ->
-                    ListOfTasksDto.Task.builder()
-                            .key(task.getKey())
-                            .status(task.getStatus().getValue())
-                            .type(task.getType().getValue())
-                            .name(task.getName())
-                            .build()
-                ).collect(Collectors.toList())
+        getAllTasks.setParticipants(tasks.stream()
+                .map(Task::getAssignee)
+                .distinct()
+                .map(participant -> TasksPageDto.Participant.builder()
+                        .username(participant.getUsername())
+                        .tasks(tasks.stream()
+                                .filter(task -> task.getAssignee().getUsername().equals(participant.getUsername()))
+                                .map(task -> TasksPageDto.Participant.Task.builder()
+                                        .key(task.getKey())
+                                        .name(task.getName())
+                                        .type(task.getType().getValue())
+                                        .status(task.getStatus().getValue())
+                                        .build()
+
+                                )
+                                .toList()
+                        )
+                        .build()
+                )
+                .toList()
         );
 
         return getAllTasks;
