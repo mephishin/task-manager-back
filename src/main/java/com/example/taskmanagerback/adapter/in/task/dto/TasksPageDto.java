@@ -9,8 +9,10 @@ import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class TasksPageDto {
     List<Participant> participants;
+    List<Participant.Task> notAssignedTasks;
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)

@@ -1,56 +1,71 @@
 package com.example.taskmanagerback.adapter.in.task;
 
+import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TasksPageDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
-import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
-import com.example.taskmanagerback.model.project.Project;
+import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Objects;
 
-@Component
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TaskMapper {
-    ProjectRepo projectRepo;
+import static java.util.Objects.isNull;
+
+@Mapper(componentModel = "spring")
+@FieldDefaults(level = AccessLevel.PROTECTED)
+public abstract class TaskMapper {
+    @Autowired
+    GetProjectByName getProjectByName;
+    @Autowired
     TaskStatusRepo taskStatusRepo;
+    @Autowired
     TaskTypeRepo taskTypeRepo;
+    @Autowired
     ParticipantRepo participantRepo;
 
-    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks, Project project) {
-        var getAllTasks = new TasksPageDto();
+    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks) {;
 
-        getAllTasks.setParticipants(tasks.stream()
-                .map(Task::getAssignee)
-                .distinct()
-                .map(participant -> TasksPageDto.Participant.builder()
-                        .username(participant.getUsername())
-                        .tasks(tasks.stream()
-                                .filter(task -> task.getAssignee().getUsername().equals(participant.getUsername()))
-                                .map(task -> TasksPageDto.Participant.Task.builder()
-                                        .key(task.getKey())
-                                        .name(task.getName())
-                                        .type(task.getType().getValue())
-                                        .status(task.getStatus().getValue())
-                                        .build()
-
+        return TasksPageDto.builder()
+                .participants(tasks.stream()
+                        .map(Task::getAssignee)
+                        .filter(Objects::nonNull)
+                        .distinct()
+                        .map(participant -> TasksPageDto.Participant.builder()
+                                .username(participant.getUsername())
+                                .tasks(participant.getAssignedTasks().stream()
+                                        .map(task -> TasksPageDto.Participant.Task.builder()
+                                                .key(task.getKey())
+                                                .name(task.getName())
+                                                .type(task.getType().getValue())
+                                                .status(task.getStatus().getValue())
+                                                .build()
+                                        )
+                                        .toList()
                                 )
-                                .toList()
+                                .build()
                         )
-                        .build()
+                        .toList()
                 )
-                .toList()
-        );
-
-        return getAllTasks;
+                .notAssignedTasks(tasks.stream()
+                        .filter(task -> isNull(task.getAssignee()))
+                        .map(task -> TasksPageDto.Participant.Task.builder()
+                                .key(task.getKey())
+                                .name(task.getName())
+                                .status(task.getStatus().getValue())
+                                .type(task.getType().getValue())
+                                .build()
+                        )
+                        .toList()
+                )
+                .build();
     }
 
     public TaskDto taskToTaskDto(Task task) {
@@ -61,7 +76,7 @@ public class TaskMapper {
                 .project(task.getProject().getName())
                 .status(task.getStatus().getValue())
                 .type(task.getType().getValue())
-                .assignee(task.getAssignee().getUsername())
+                .assignee(isNull(task.getAssignee()) ? null : task.getAssignee().getUsername())
                 .reporter(task.getReporter().getUsername())
                 .build();
     }
@@ -83,9 +98,9 @@ public class TaskMapper {
                         ).orElseThrow()
                 )
                 .setProject(
-                        projectRepo.findByName(
+                        getProjectByName.execute(
                                 taskDto.getProject()
-                        ).orElseThrow()
+                        )
                 )
                 .setAssignee(
                         participantRepo.findByUsername(
@@ -97,5 +112,15 @@ public class TaskMapper {
                                 taskDto.getReporter()
                         ).orElseThrow()
                 );
+    }
+
+    public Task createTaskDtoToTask(CreateTaskDto createTaskDto) {
+        return new Task()
+                .setName(createTaskDto.getName())
+                .setDescription(createTaskDto.getDescription())
+                .setStatus(taskStatusRepo.findByValue(createTaskDto.getStatus()).orElseThrow())
+                .setType(taskTypeRepo.findByValue(createTaskDto.getType()).orElseThrow())
+                .setProject(getProjectByName.execute(createTaskDto.getProject()))
+                .setAssignee(isNull(createTaskDto.getAssignee()) ? null : participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow());
     }
 }
