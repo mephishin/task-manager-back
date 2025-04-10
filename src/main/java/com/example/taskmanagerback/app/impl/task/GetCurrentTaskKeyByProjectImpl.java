@@ -30,6 +30,6 @@ public class GetCurrentTaskKeyByProjectImpl implements GetCurrentTaskKeyByProjec
                 ))
                 .max(Comparator.naturalOrder())
                 .orElseThrow();
-        return shortedName + "-" + lastId;
+        return shortedName + "-" + ++lastId;
     }
 }
