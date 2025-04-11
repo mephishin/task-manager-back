@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Mapper(componentModel = "spring")
 @FieldDefaults(level = AccessLevel.PROTECTED)
@@ -31,7 +32,7 @@ public abstract class TaskMapper {
     @Autowired
     ParticipantRepo participantRepo;
 
-    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks) {;
+    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks) {
 
         return TasksPageDto.builder()
                 .participants(tasks.stream()
@@ -40,7 +41,9 @@ public abstract class TaskMapper {
                         .distinct()
                         .map(participant -> TasksPageDto.Participant.builder()
                                 .username(participant.getUsername())
-                                .tasks(participant.getAssignedTasks().stream()
+                                .tasks(tasks.stream()
+                                        .filter(task -> nonNull(task.getAssignee()) &&
+                                                        task.getAssignee().getUsername().equals(participant.getUsername()))
                                         .map(task -> TasksPageDto.Participant.Task.builder()
                                                 .key(task.getKey())
                                                 .name(task.getName())
@@ -118,7 +121,6 @@ public abstract class TaskMapper {
         return new Task()
                 .setName(createTaskDto.getName())
                 .setDescription(createTaskDto.getDescription())
-                .setStatus(taskStatusRepo.findByValue(createTaskDto.getStatus()).orElseThrow())
                 .setType(taskTypeRepo.findByValue(createTaskDto.getType()).orElseThrow())
                 .setProject(getProjectByName.execute(createTaskDto.getProject()))
                 .setAssignee(isNull(createTaskDto.getAssignee()) ? null : participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow());

@@ -1,6 +1,7 @@
 package com.example.taskmanagerback.app.impl.task;
 
 import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
+import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetCurrentTaskKeyByProject;
 import com.example.taskmanagerback.model.participant.Participant;
@@ -17,12 +18,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CreateTaskImpl implements CreateTask {
     TaskRepo taskRepo;
+    TaskStatusRepo taskStatusRepo;
     GetCurrentTaskKeyByProject getCurrentTaskKeyByProject;
 
     @Override
     public Task execute(Task task, Participant participant) {
         var currentProjectKey = getCurrentTaskKeyByProject.execute(task.getProject().getName());
         log.info("Creating a task with key: {}", currentProjectKey);
+        task.setStatus(taskStatusRepo.findByValue("To do").orElseThrow());
         task.setKey(currentProjectKey);
         task.setReporter(participant);
         return taskRepo.save(task);
