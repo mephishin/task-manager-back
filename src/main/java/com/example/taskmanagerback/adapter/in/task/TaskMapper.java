@@ -3,6 +3,7 @@ package com.example.taskmanagerback.adapter.in.task;
 import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TasksPageDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
+import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
@@ -43,7 +44,7 @@ public abstract class TaskMapper {
                                 .username(participant.getUsername())
                                 .tasks(tasks.stream()
                                         .filter(task -> nonNull(task.getAssignee()) &&
-                                                        task.getAssignee().getUsername().equals(participant.getUsername()))
+                                                task.getAssignee().getUsername().equals(participant.getUsername()))
                                         .map(task -> TasksPageDto.Participant.Task.builder()
                                                 .key(task.getKey())
                                                 .name(task.getName())
@@ -124,5 +125,15 @@ public abstract class TaskMapper {
                 .setType(taskTypeRepo.findByValue(createTaskDto.getType()).orElseThrow())
                 .setProject(getProjectByName.execute(createTaskDto.getProject()))
                 .setAssignee(isNull(createTaskDto.getAssignee()) ? null : participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow());
+    }
+
+    public Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto) {
+        return new Task()
+                .setKey(updateTaskDto.getKey())
+                .setName(updateTaskDto.getName())
+                .setDescription(updateTaskDto.getDescription())
+                .setStatus(taskStatusRepo.findByValue(updateTaskDto.getStatus()).orElseThrow())
+                .setType(taskTypeRepo.findByValue(updateTaskDto.getType()).orElseThrow())
+                .setAssignee(isNull(updateTaskDto.getAssignee()) ? null : participantRepo.findByUsername(updateTaskDto.getAssignee()).orElseThrow());
     }
 }

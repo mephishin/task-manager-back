@@ -3,6 +3,7 @@ package com.example.taskmanagerback.adapter.in.task;
 import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TasksPageDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
+import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
@@ -54,11 +55,11 @@ public class TaskController {
     }
 
     @PutMapping
-    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
-        log.info("Request to update task with body: {}", taskDto);
+    public TaskDto updateTask(@RequestBody UpdateTaskDto updateTaskDto) {
+        log.info("Request to update task with body: {}", updateTaskDto);
         return taskMapper.taskToTaskDto(
                 updateTask.execute(
-                        taskMapper.taskDtoToTask(taskDto)
+                        taskMapper.updateTaskDtoToTask(updateTaskDto)
                 )
         );
     }

@@ -1,4 +1,9 @@
 spring:
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
   application:
     name: task-manager-back
   datasource:
@@ -12,3 +17,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:9090/realms/task-manager
+#logging:
+#  level:
+#    org.hibernate.orm.jdbc.bind: trace
