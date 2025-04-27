@@ -9,7 +9,6 @@ import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
@@ -83,39 +82,6 @@ public abstract class TaskMapper {
                 .assignee(isNull(task.getAssignee()) ? null : task.getAssignee().getUsername())
                 .reporter(task.getReporter().getUsername())
                 .build();
-    }
-
-    @Transactional
-    public Task taskDtoToTask(TaskDto taskDto) {
-        return new Task()
-                .setKey(taskDto.getKey())
-                .setName(taskDto.getName())
-                .setDescription(taskDto.getDescription())
-                .setStatus(
-                        taskStatusRepo.findByValue(
-                                taskDto.getStatus()
-                        ).orElseThrow()
-                )
-                .setType(
-                        taskTypeRepo.findByValue(
-                                taskDto.getType()
-                        ).orElseThrow()
-                )
-                .setProject(
-                        getProjectByName.execute(
-                                taskDto.getProject()
-                        )
-                )
-                .setAssignee(
-                        participantRepo.findByUsername(
-                                taskDto.getAssignee()
-                        ).orElseThrow()
-                )
-                .setReporter(
-                        participantRepo.findByUsername(
-                                taskDto.getReporter()
-                        ).orElseThrow()
-                );
     }
 
     public Task createTaskDtoToTask(CreateTaskDto createTaskDto) {

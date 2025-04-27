@@ -16,7 +16,7 @@ import java.util.List;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping("/participant")
+@RequestMapping()
 @RequiredArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000", methods = {POST, GET, PUT})
@@ -25,8 +25,8 @@ public class ParticipantController {
     ParticipantMapper participantMapper;
     ParticipantRepo participantRepo;
 
-    @GetMapping("/all")
-    public List<ParticipantDto> getAllParticipants() {
+    @GetMapping("/participants")
+    public List<ParticipantDto> getParticipants() {
         return participantRepo.findAll().stream()
                 .map(participantMapper::participantToParticipantDto)
                 .toList();

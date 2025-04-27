@@ -6,8 +6,8 @@ import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
-import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
+import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetTaskByKey;
 import com.example.taskmanagerback.app.api.task.GetTasksByProject;
@@ -22,11 +22,11 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping("/task")
 @RequiredArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000", methods = {POST, GET, PUT})
@@ -40,21 +40,28 @@ public class TaskController {
     TaskTypeRepo taskTypeRepo;
     TaskStatusRepo taskStatusRepo;
     GetAuthParticipant getAuthParticipant;
-    GetProjectByName getProjectByName;
+    GetJwtAuthenticationToken getJwtAuthenticationToken;
 
-    @GetMapping("/all/{projectName}")
-    public TasksPageDto getAllTasks(@PathVariable String projectName) {
-        log.info("Requested tasks by projectName: {}", projectName);
-        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectName));
+    @GetMapping("/tasks")
+    public TasksPageDto getTasks(@RequestParam Optional<String> project) {
+        if (project.isPresent()) {
+            log.info("Requested tasks by projectName: {}", project.get());
+            return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(project.get()));
+        } else {
+            var authParticipantsProject =
+                    getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject();
+            log.info("Requested tasks by auth participant's project: {}", authParticipantsProject.getName());
+            return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(authParticipantsProject.getName()));
+        }
     }
 
-    @GetMapping("/statuses")
-    public List<TaskStatus> getAllTaskStatuses() {
+    @GetMapping("/task/statuses")
+    public List<TaskStatus> getTaskStatuses() {
         log.info("Requested all task statuses");
         return taskStatusRepo.findAll();
     }
 
-    @PutMapping
+    @PutMapping("/task")
     public TaskDto updateTask(@RequestBody UpdateTaskDto updateTaskDto) {
         log.info("Request to update task with body: {}", updateTaskDto);
         return taskMapper.taskToTaskDto(
@@ -64,19 +71,19 @@ public class TaskController {
         );
     }
 
-    @GetMapping("/{key}")
-    public TaskDto getTaskByKey(@PathVariable String key) {
+    @GetMapping("/task/{key}")
+    public TaskDto getTask(@PathVariable String key) {
         log.info("Requested task by key: {}", key);
         return taskMapper.taskToTaskDto(getTaskByKey.execute(key));
     }
 
-    @GetMapping("/types")
-    public List<TaskType> getAllTaskTypes() {
+    @GetMapping("/task/types")
+    public List<TaskType> getTaskTypes() {
         log.info("Requested all task types");
         return taskTypeRepo.findAll();
     }
 
-    @PostMapping
+    @PostMapping("/task")
     public TaskDto createTask(@RequestBody CreateTaskDto createTaskDto, JwtAuthenticationToken jwtAuthenticationToken) {
         log.info("Request to create task: {}", createTaskDto);
         return taskMapper.taskToTaskDto(
@@ -85,12 +92,5 @@ public class TaskController {
                         getAuthParticipant.execute(jwtAuthenticationToken)
                 )
         );
-    }
-
-    @GetMapping("/all")
-    public TasksPageDto getAllTaskByAuthParticipantProject(JwtAuthenticationToken authenticationToken) {
-        var authParticipantProject = getAuthParticipant.execute(authenticationToken).getProject();
-        log.info("Requested tasks by auth participant project: {}", authParticipantProject.getName());
-        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(authParticipantProject.getName()));
     }
 }
