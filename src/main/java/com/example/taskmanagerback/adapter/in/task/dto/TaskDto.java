@@ -17,4 +17,6 @@ public class TaskDto {
     String project;
     String assignee;
     String reporter;
+    String created;
+    String edited;
 }

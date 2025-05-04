@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 @Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -39,4 +41,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "reporter_id")
     Participant reporter;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant created;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant edited;
 }

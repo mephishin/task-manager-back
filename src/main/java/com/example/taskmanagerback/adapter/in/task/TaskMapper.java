@@ -9,13 +9,19 @@ import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
+import com.example.taskmanagerback.util.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -81,6 +87,14 @@ public abstract class TaskMapper {
                 .type(task.getType().getValue())
                 .assignee(isNull(task.getAssignee()) ? null : task.getAssignee().getUsername())
                 .reporter(task.getReporter().getUsername())
+                .created(Optional.ofNullable(task.getCreated())
+                        .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
+                        .map(DateTimeUtils.DATE_TIME_FORMAT::format)
+                        .orElse(null))
+                .edited(Optional.ofNullable(task.getEdited())
+                        .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
+                        .map(DateTimeUtils.DATE_TIME_FORMAT::format)
+                        .orElse(null))
                 .build();
     }
 

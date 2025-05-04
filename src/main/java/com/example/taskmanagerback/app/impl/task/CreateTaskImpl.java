@@ -6,11 +6,14 @@ import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetCurrentTaskKeyByProject;
 import com.example.taskmanagerback.model.participant.Participant;
 import com.example.taskmanagerback.model.task.Task;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +28,12 @@ public class CreateTaskImpl implements CreateTask {
     public Task execute(Task task, Participant participant) {
         var currentProjectKey = getCurrentTaskKeyByProject.execute(task.getProject().getName());
         log.info("Creating a task with key: {}", currentProjectKey);
+
         task.setStatus(taskStatusRepo.findByValue("To do").orElseThrow());
         task.setKey(currentProjectKey);
         task.setReporter(participant);
+        task.setCreated(Instant.now());
+
         return taskRepo.save(task);
     }
 }
