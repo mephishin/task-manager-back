@@ -1,24 +1,18 @@
 package com.example.taskmanagerback.adapter.in.task;
 
-import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
-import com.example.taskmanagerback.adapter.in.task.dto.TasksPageDto;
-import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
-import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
+import com.example.taskmanagerback.adapter.in.task.dto.*;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
-import com.example.taskmanagerback.adapter.repository.task.TaskStatusRepo;
-import com.example.taskmanagerback.adapter.repository.task.TaskTypeRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
+import com.example.taskmanagerback.model.task.constants.TaskStatus;
+import com.example.taskmanagerback.model.task.constants.TaskType;
 import com.example.taskmanagerback.util.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,10 +25,6 @@ import static java.util.Objects.nonNull;
 public abstract class TaskMapper {
     @Autowired
     GetProjectByName getProjectByName;
-    @Autowired
-    TaskStatusRepo taskStatusRepo;
-    @Autowired
-    TaskTypeRepo taskTypeRepo;
     @Autowired
     ParticipantRepo participantRepo;
 
@@ -53,8 +43,8 @@ public abstract class TaskMapper {
                                         .map(task -> TasksPageDto.Participant.Task.builder()
                                                 .key(task.getKey())
                                                 .name(task.getName())
-                                                .type(task.getType().getValue())
-                                                .status(task.getStatus().getValue())
+                                                .type(task.getType().name())
+                                                .status(task.getStatus().name())
                                                 .build()
                                         )
                                         .toList()
@@ -68,8 +58,8 @@ public abstract class TaskMapper {
                         .map(task -> TasksPageDto.Participant.Task.builder()
                                 .key(task.getKey())
                                 .name(task.getName())
-                                .status(task.getStatus().getValue())
-                                .type(task.getType().getValue())
+                                .status(task.getStatus().name())
+                                .type(task.getType().name())
                                 .build()
                         )
                         .toList()
@@ -78,31 +68,30 @@ public abstract class TaskMapper {
     }
 
     public TaskDto taskToTaskDto(Task task) {
-        return TaskDto.builder()
-                .key(task.getKey())
-                .name(task.getName())
-                .description(task.getDescription())
-                .project(task.getProject().getName())
-                .status(task.getStatus().getValue())
-                .type(task.getType().getValue())
-                .assignee(isNull(task.getAssignee()) ? null : task.getAssignee().getUsername())
-                .reporter(task.getReporter().getUsername())
-                .created(Optional.ofNullable(task.getCreated())
+        return new TaskDto()
+                .setKey(task.getKey())
+                .setName(task.getName())
+                .setDescription(task.getDescription())
+                .setProject(task.getProject().getName())
+                .setStatus(task.getStatus().name())
+                .setType(task.getType().name())
+                .setAssignee(isNull(task.getAssignee()) ? null : task.getAssignee().getUsername())
+                .setReporter(task.getReporter().getUsername())
+                .setCreated(Optional.ofNullable(task.getCreated())
                         .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
                         .map(DateTimeUtils.DATE_TIME_FORMAT::format)
                         .orElse(null))
-                .edited(Optional.ofNullable(task.getEdited())
+                .setEdited(Optional.ofNullable(task.getEdited())
                         .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
                         .map(DateTimeUtils.DATE_TIME_FORMAT::format)
-                        .orElse(null))
-                .build();
+                        .orElse(null));
     }
 
     public Task createTaskDtoToTask(CreateTaskDto createTaskDto) {
         return new Task()
                 .setName(createTaskDto.getName())
                 .setDescription(createTaskDto.getDescription())
-                .setType(taskTypeRepo.findByValue(createTaskDto.getType()).orElseThrow())
+                .setType(TaskType.valueOf(createTaskDto.getType().toUpperCase()))
                 .setProject(getProjectByName.execute(createTaskDto.getProject()))
                 .setAssignee(isNull(createTaskDto.getAssignee()) ? null : participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow());
     }
@@ -112,8 +101,8 @@ public abstract class TaskMapper {
                 .setKey(updateTaskDto.getKey())
                 .setName(updateTaskDto.getName())
                 .setDescription(updateTaskDto.getDescription())
-                .setStatus(taskStatusRepo.findByValue(updateTaskDto.getStatus()).orElseThrow())
-                .setType(taskTypeRepo.findByValue(updateTaskDto.getType()).orElseThrow())
+                .setStatus(TaskStatus.valueOf(updateTaskDto.getStatus().toUpperCase()))
+                .setType(TaskType.valueOf(updateTaskDto.getType().toUpperCase()))
                 .setAssignee(isNull(updateTaskDto.getAssignee()) ? null : participantRepo.findByUsername(updateTaskDto.getAssignee()).orElseThrow());
     }
 }

@@ -2,6 +2,8 @@ package com.example.taskmanagerback.model.task;
 
 import com.example.taskmanagerback.model.participant.Participant;
 import com.example.taskmanagerback.model.project.Project;
+import com.example.taskmanagerback.model.task.constants.TaskStatus;
+import com.example.taskmanagerback.model.task.constants.TaskType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -22,12 +24,10 @@ public class Task {
 
     String description;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id")
+    @Enumerated(EnumType.STRING)
     TaskStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id")
+    @Enumerated(EnumType.STRING)
     TaskType type;
 
     @ManyToOne

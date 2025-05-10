@@ -1,13 +1,13 @@
 package com.example.taskmanagerback.adapter.in.task.dto;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
+@NoArgsConstructor
 public class CreateTaskDto {
     String name;
     String description;

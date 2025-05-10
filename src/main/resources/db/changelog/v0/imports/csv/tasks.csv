@@ -1,4 +1,4 @@
-﻿name;key;description;status_id;type_id;project_key;assignee_id;reporter_id;created;edited
+﻿name;key;description;status;type;project_key;assignee_id;reporter_id;created;edited
 Write contract;CRSPCT-1;some description;REVIEW;TASK;CRSPCT;803d7f4f-0b44-453b-ae41-6de0121ef04e;803d7f4f-0b44-453b-ae41-6de0121ef04e;2016-06-22 19:10:25;
 Create API;DSC-1;some description;TO_DO;TASK;DSC;b38173c8-c5de-4961-8a09-34dc414efdec;b38173c8-c5de-4961-8a09-34dc414efdec;2016-06-23 19:10:25;
 Write doc;SPHR-1;some description;IN_PROGRESS;TASK;SPHR;af01e93e-30ae-4cb6-80ab-332588faa594;af01e93e-30ae-4cb6-80ab-332588faa594;2010-06-11 19:10:25;
