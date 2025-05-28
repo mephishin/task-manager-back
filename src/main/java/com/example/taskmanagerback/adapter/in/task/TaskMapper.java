@@ -4,6 +4,7 @@ import com.example.taskmanagerback.adapter.in.task.dto.*;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
+import com.example.taskmanagerback.model.task.TaskTime;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import com.example.taskmanagerback.model.task.constants.TaskType;
 import com.example.taskmanagerback.util.DateTimeUtils;
@@ -77,11 +78,15 @@ public abstract class TaskMapper {
                 .setType(task.getType().name())
                 .setAssignee(isNull(task.getAssignee()) ? null : task.getAssignee().getUsername())
                 .setReporter(task.getReporter().getUsername())
-                .setCreated(Optional.ofNullable(task.getCreated())
-                        .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
+                .setCreated(Optional.ofNullable(task)
+                        .map(Task::getTaskTime)
+                        .map(TaskTime::getCreated)
+                        .map(created -> created.atZone(ZoneId.of("Europe/Moscow")))
                         .map(DateTimeUtils.DATE_TIME_FORMAT::format)
                         .orElse(null))
-                .setEdited(Optional.ofNullable(task.getEdited())
+                .setEdited(Optional.ofNullable(task)
+                        .map(Task::getTaskTime)
+                        .map(TaskTime::getEdited)
                         .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
                         .map(DateTimeUtils.DATE_TIME_FORMAT::format)
                         .orElse(null));

@@ -3,7 +3,11 @@
      <include file="migrations/v0_0_create_project.xml" relativeToChangelogFile="true"/>
      <include file="migrations/v0_1_create_participant.xml" relativeToChangelogFile="true"/>
      <include file="migrations/v0_2_create_task.xml" relativeToChangelogFile="true"/>
+     <include file="migrations/v0_3_create_task_time.xml" relativeToChangelogFile="true"/>
+     <include file="migrations/v0_4_create_time_interval.xml" relativeToChangelogFile="true"/>
+
      <include file="imports/v0_0_import_projects.xml" relativeToChangelogFile="true"/>
      <include file="imports/v0_1_import_participants.xml" relativeToChangelogFile="true"/>
      <include file="imports/v0_2_import_tasks.xml" relativeToChangelogFile="true"/>
+     <include file="imports/v0_3_import_task_times.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

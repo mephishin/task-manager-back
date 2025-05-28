@@ -1,0 +1,10 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="v0_3_create_task_time" author=''>
+        <createTable tableName="task_time">
+            <column name="task_key" type="varchar"/>
+            <column name="created" type="timestamp"/>
+            <column name="edited" type="timestamp"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -27,7 +27,7 @@ public class UpdateTaskImpl implements UpdateTask {
         task.setStatus(newTask.getStatus());
         task.setType(newTask.getType());
         task.setAssignee(newTask.getAssignee());
-        task.setEdited(Instant.now());
+        task.getTaskTime().setEdited(Instant.now());
 
         return task;
     }
