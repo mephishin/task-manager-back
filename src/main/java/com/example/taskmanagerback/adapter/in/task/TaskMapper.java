@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Duration;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
@@ -89,6 +90,13 @@ public abstract class TaskMapper {
                         .map(TaskTime::getEdited)
                         .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
                         .map(DateTimeUtils.DATE_TIME_FORMAT::format)
+                        .orElse(null))
+                .setTotal(task.getTaskTime().getTimeIntervals().stream()
+                        .filter(timeInterval -> nonNull(timeInterval.getStarted()))
+                        .filter(timeInterval -> nonNull(timeInterval.getStopped()))
+                        .map(timeInterval -> Duration.between(timeInterval.getStarted(), timeInterval.getStopped()))
+                        .reduce(Duration::plus)
+                        .map(duration -> duration.toDaysPart() + " days " + duration.toHoursPart() + " hours " + duration.toMinutesPart() + " minutes")
                         .orElse(null));
     }
 

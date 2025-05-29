@@ -14,12 +14,11 @@ import java.time.Instant;
 @Accessors(chain = true)
 public class TimeInterval {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     String id;
 
-    @ManyToOne
-    @JoinColumn(name = "time_id")
-    TaskTime taskTime;
+    @Column(name = "task_key")
+    String taskKey;
 
     @Temporal(TemporalType.TIMESTAMP)
     Instant started;

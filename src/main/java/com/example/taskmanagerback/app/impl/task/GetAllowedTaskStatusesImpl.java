@@ -19,7 +19,7 @@ import static com.example.taskmanagerback.model.task.constants.TaskStatus.*;
 public class GetAllowedTaskStatusesImpl implements GetAllowedTaskStatuses {
     static Map<TaskStatus, List<TaskStatus>> TRANSITIONS = Map.of(
             TO_DO, List.of(IN_PROGRESS, CLOSED),
-            IN_PROGRESS, List.of(REVIEW, CLOSED),
+            IN_PROGRESS, List.of(REVIEW, CLOSED, TO_DO),
             REVIEW, List.of(IN_REVIEW, CLOSED),
             IN_REVIEW, List.of(TO_DO, DONE, CLOSED),
             DONE, List.of(TO_DO),

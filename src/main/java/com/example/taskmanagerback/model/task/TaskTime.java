@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,7 +16,11 @@ import java.time.Instant;
 public class TaskTime {
     @Id
     @Column(name = "task_key")
-    String id;
+    String taskKey;
+
+    @OneToMany
+    @JoinColumn(name = "task_key")
+    List<TimeInterval> timeIntervals;
 
     @Temporal(TemporalType.TIMESTAMP)
     Instant created;

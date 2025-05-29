@@ -21,4 +21,5 @@ public class TaskDto {
     String reporter;
     String created;
     String edited;
+    String total;
 }

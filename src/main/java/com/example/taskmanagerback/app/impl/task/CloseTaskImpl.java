@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,6 +24,7 @@ public class CloseTaskImpl implements CloseTask {
     public void execute(String key) {
         var task = taskRepo.findById(key).orElseThrow();
 
+        task.getTaskTime().setEdited(Instant.now());
         task.setStatus(TaskStatus.CLOSED);
     }
 }

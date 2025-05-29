@@ -49,7 +49,7 @@ public class CreateTaskImpl implements CreateTask {
         return taskTimeRepo.save(
                 new TaskTime()
                         .setCreated(Instant.now())
-                        .setId(task.getKey())
+                        .setTaskKey(task.getKey())
         );
     }
 }
