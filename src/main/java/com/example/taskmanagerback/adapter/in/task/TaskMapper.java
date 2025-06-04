@@ -118,4 +118,16 @@ public abstract class TaskMapper {
                 .setType(TaskType.valueOf(updateTaskDto.getType().toUpperCase()))
                 .setAssignee(isNull(updateTaskDto.getAssignee()) ? null : participantRepo.findByUsername(updateTaskDto.getAssignee()).orElseThrow());
     }
+
+    public List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks) {
+        return tasks.stream()
+                .map(task -> new SearchTaskDto()
+                        .setTaskKey(task.getKey())
+                        .setName(task.getName())
+                        .setDescription(task.getDescription())
+                        .setProject(task.getProject().getName())
+                        .setAssignee(task.getAssignee().getUsername())
+                        .setReporter(task.getReporter().getUsername()))
+                .toList();
+    }
 }

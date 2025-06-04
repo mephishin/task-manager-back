@@ -1,6 +1,7 @@
 package com.example.taskmanagerback.adapter.in.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.*;
+import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import com.example.taskmanagerback.app.api.task.*;
@@ -35,6 +36,7 @@ public class TaskController {
     UpdateTaskStatus updateTaskStatus;
     CloseTask closeTask;
     GetAllowedTaskStatuses getAllowedTaskStatuses;
+    TaskRepo taskRepo;
 
     @GetMapping("/tasks")
     public TasksPageDto getTasks(
@@ -116,6 +118,12 @@ public class TaskController {
     ) {
         log.info("Requested allowed task statuses of task with key: {}", key);
         return getAllowedTaskStatuses.execute(key);
+    }
+
+    @GetMapping("/task")
+    public List<SearchTaskDto> getTaskByFilter() {
+        log.info("Requested all task to search");
+        return taskMapper.toListOfSearchTaskDto(taskRepo.findAll());
     }
 
     @DeleteMapping("/task/{key}")
