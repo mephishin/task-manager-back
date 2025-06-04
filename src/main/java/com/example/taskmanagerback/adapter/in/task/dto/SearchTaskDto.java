@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class SearchTaskDto {
-    String taskKey;
+    String key;
     String name;
     String description;
     String project;

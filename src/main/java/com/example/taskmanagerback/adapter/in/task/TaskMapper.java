@@ -5,12 +5,12 @@ import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TaskTime;
-import com.example.taskmanagerback.model.task.constants.TaskStatus;
-import com.example.taskmanagerback.model.task.constants.TaskType;
+
 import com.example.taskmanagerback.util.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
@@ -31,7 +31,6 @@ public abstract class TaskMapper {
     ParticipantRepo participantRepo;
 
     public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks) {
-
         return TasksPageDto.builder()
                 .participants(tasks.stream()
                         .map(Task::getAssignee)
@@ -91,7 +90,11 @@ public abstract class TaskMapper {
                         .map(edited -> edited.atZone(ZoneId.of("Europe/Moscow")))
                         .map(DateTimeUtils.DATE_TIME_FORMAT::format)
                         .orElse(null))
-                .setTotal(task.getTaskTime().getTimeIntervals().stream()
+                .setTotal(Optional.ofNullable(task)
+                        .map(Task::getTaskTime)
+                        .map(TaskTime::getTimeIntervals)
+                        .orElse(List.of())
+                        .stream()
                         .filter(timeInterval -> nonNull(timeInterval.getStarted()))
                         .filter(timeInterval -> nonNull(timeInterval.getStopped()))
                         .map(timeInterval -> Duration.between(timeInterval.getStarted(), timeInterval.getStopped()))
@@ -100,34 +103,18 @@ public abstract class TaskMapper {
                         .orElse(null));
     }
 
-    public Task createTaskDtoToTask(CreateTaskDto createTaskDto) {
-        return new Task()
-                .setName(createTaskDto.getName())
-                .setDescription(createTaskDto.getDescription())
-                .setType(TaskType.valueOf(createTaskDto.getType().toUpperCase()))
-                .setProject(getProjectByName.execute(createTaskDto.getProject()))
-                .setAssignee(isNull(createTaskDto.getAssignee()) ? null : participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow());
-    }
+    @Mapping(target = "type", expression = "java(TaskType.valueOf(createTaskDto.getType()))")
+    @Mapping(target = "project", expression = "java(getProjectByName.execute(createTaskDto.getProject()))")
+    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow())")
+    public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
 
-    public Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto) {
-        return new Task()
-                .setKey(updateTaskDto.getKey())
-                .setName(updateTaskDto.getName())
-                .setDescription(updateTaskDto.getDescription())
-                .setStatus(TaskStatus.valueOf(updateTaskDto.getStatus().toUpperCase()))
-                .setType(TaskType.valueOf(updateTaskDto.getType().toUpperCase()))
-                .setAssignee(isNull(updateTaskDto.getAssignee()) ? null : participantRepo.findByUsername(updateTaskDto.getAssignee()).orElseThrow());
-    }
+    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(updateTaskDto.getAssignee()).orElseThrow())")
+    public abstract Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto);
 
-    public List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks) {
-        return tasks.stream()
-                .map(task -> new SearchTaskDto()
-                        .setTaskKey(task.getKey())
-                        .setName(task.getName())
-                        .setDescription(task.getDescription())
-                        .setProject(task.getProject().getName())
-                        .setAssignee(task.getAssignee().getUsername())
-                        .setReporter(task.getReporter().getUsername()))
-                .toList();
-    }
+    public abstract List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks);
+
+    @Mapping(target = "project", source = "task.project.name")
+    @Mapping(target = "assignee", source = "task.assignee.username")
+    @Mapping(target = "reporter", source = "task.reporter.username")
+    protected abstract SearchTaskDto taskToSearchTaskDto(Task task);
 }
