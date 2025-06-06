@@ -5,16 +5,11 @@ import com.example.taskmanagerback.model.project.Project;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProjectMapper {
-    public ProjectDto projectToProjectDto(Project project) {
-        return ProjectDto.builder()
-                .key(project.getKey())
-                .name(project.getName())
-                .build();
-    }
+@Mapper(componentModel = "spring")
+@FieldDefaults(level = AccessLevel.PROTECTED)
+public abstract class ProjectMapper {
+    public abstract ProjectDto projectToProjectDto(Project project);
 }
