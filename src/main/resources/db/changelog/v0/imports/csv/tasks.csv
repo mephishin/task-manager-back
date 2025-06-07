@@ -1,7 +1,7 @@
-﻿name;key;description;status;type;project_key;assignee_id;reporter_id
-Write contract;CRSPCT-1;some description;TO_DO;TASK;CRSPCT;803d7f4f-0b44-453b-ae41-6de0121ef04e;803d7f4f-0b44-453b-ae41-6de0121ef04e
-Create API;DSC-1;some description;TO_DO;TASK;DSC;b38173c8-c5de-4961-8a09-34dc414efdec;b38173c8-c5de-4961-8a09-34dc414efdec
-Write doc;SPHR-1;some description;TO_DO;TASK;SPHR;af01e93e-30ae-4cb6-80ab-332588faa594;af01e93e-30ae-4cb6-80ab-332588faa594
-Create design;CRSPCT-2;some description;TO_DO;TASK;CRSPCT;803d7f4f-0b44-453b-ae41-6de0121ef04e;803d7f4f-0b44-453b-ae41-6de0121ef04e
-Update DB;DSC-2;some description;TO_DO;TASK;DSC;b38173c8-c5de-4961-8a09-34dc414efdec;b38173c8-c5de-4961-8a09-34dc414efdec
-Create integration;SPHR-2;some description;TO_DO;TASK;SPHR;af01e93e-30ae-4cb6-80ab-332588faa594;af01e93e-30ae-4cb6-80ab-332588faa594
+﻿name;key;description;status;type;project_key;assignee_id;reporter_id;period_id
+Write contract;CRSPCT-1;some description;TO_DO;TASK;CRSPCT;803d7f4f-0b44-453b-ae41-6de0121ef04e;803d7f4f-0b44-453b-ae41-6de0121ef04e;1
+Create API;DSC-1;some description;TO_DO;TASK;DSC;b38173c8-c5de-4961-8a09-34dc414efdec;b38173c8-c5de-4961-8a09-34dc414efdec;0
+Write doc;SPHR-1;some description;TO_DO;TASK;SPHR;af01e93e-30ae-4cb6-80ab-332588faa594;af01e93e-30ae-4cb6-80ab-332588faa594;2
+Create design;CRSPCT-2;some description;TO_DO;TASK;CRSPCT;803d7f4f-0b44-453b-ae41-6de0121ef04e;803d7f4f-0b44-453b-ae41-6de0121ef04e;1
+Update DB;DSC-2;some description;TO_DO;TASK;DSC;b38173c8-c5de-4961-8a09-34dc414efdec;b38173c8-c5de-4961-8a09-34dc414efdec;0
+Create integration;SPHR-2;some description;TO_DO;TASK;SPHR;af01e93e-30ae-4cb6-80ab-332588faa594;af01e93e-30ae-4cb6-80ab-332588faa594;2

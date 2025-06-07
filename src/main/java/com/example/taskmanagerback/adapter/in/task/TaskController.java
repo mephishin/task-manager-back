@@ -1,6 +1,7 @@
 package com.example.taskmanagerback.adapter.in.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.*;
+import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -37,23 +37,37 @@ public class TaskController {
     CloseTask closeTask;
     GetAllowedTaskStatuses getAllowedTaskStatuses;
     TaskRepo taskRepo;
+    ProjectRepo projectRepo;
 
-    @GetMapping("/tasks")
-    public TasksPageDto getTasks(
-            @RequestParam Optional<String> project
+    @GetMapping(path = "/tasksPage", params = "project")
+    public TasksPageDto getTasksPage(
+            @RequestParam String project
     ) {
-        if (project.isPresent()) {
-            log.info("Requested tasks by projectName: {}", project.get());
-            return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(project.get()));
-        } else {
-            var authParticipantsProject =
-                    getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject();
-            log.info("Requested tasks by auth participant's project: {}", authParticipantsProject.getName());
-            return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(authParticipantsProject.getName()));
-        }
+        log.info("Requested tasks by projectName: {}", project);
+        return taskMapper.listOfTasksToListOfTasksDto(
+                getTasksByProject.execute(project),
+                projectRepo.findByName(project).orElseThrow()
+        );
     }
 
-    @GetMapping("/task/statuses")
+    @GetMapping(path = "/tasksPage", params = "!project")
+    public TasksPageDto getTasksPage() {
+        var authParticipantsProject =
+                getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject();
+        log.info("Requested tasks by auth participant's project: {}", authParticipantsProject.getName());
+        return taskMapper.listOfTasksToListOfTasksDto(
+                getTasksByProject.execute(authParticipantsProject.getName()),
+                authParticipantsProject
+        );
+    }
+
+    @GetMapping("/searchTasks")
+    public List<SearchTaskDto> getSearchTasks() {
+        log.info("Requested all task to search");
+        return taskMapper.toListOfSearchTaskDto(taskRepo.findAll());
+    }
+
+    @GetMapping("/statuses")
     public List<String> getTaskStatuses() {
         log.info("Requested all task statuses");
         return Arrays.stream(TaskStatus.values())
@@ -61,7 +75,7 @@ public class TaskController {
                 .toList();
     }
 
-    @GetMapping("/task/types")
+    @GetMapping("/types")
     public List<String> getTaskTypes() {
         log.info("Requested all task types");
         return Arrays.stream(TaskType.values())
@@ -103,27 +117,21 @@ public class TaskController {
         );
     }
 
-    @PutMapping("/task/{key}/status")
+    @PutMapping("/task/{key}/status/{status}")
     public void updateTaskStatus(
             @PathVariable String key,
-            @RequestParam TaskStatus status
-    ) {
+            @PathVariable String status)
+    {
         log.info("Request to push task status of task with key: {}", key);
-        updateTaskStatus.execute(key, status);
+        updateTaskStatus.execute(key, TaskStatus.valueOf(status));
     }
 
-    @GetMapping("/task/{key}/allowedStatuses")
+    @GetMapping(path = "/task/{key}/statuses", params = "allowed=true")
     public List<String> getAllowedTaskStatus(
             @PathVariable String key
     ) {
         log.info("Requested allowed task statuses of task with key: {}", key);
         return getAllowedTaskStatuses.execute(key);
-    }
-
-    @GetMapping("/task")
-    public List<SearchTaskDto> getTaskByFilter() {
-        log.info("Requested all task to search");
-        return taskMapper.toListOfSearchTaskDto(taskRepo.findAll());
     }
 
     @DeleteMapping("/task/{key}")

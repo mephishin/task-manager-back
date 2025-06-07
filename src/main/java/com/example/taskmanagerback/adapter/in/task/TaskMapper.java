@@ -3,6 +3,8 @@ package com.example.taskmanagerback.adapter.in.task;
 import com.example.taskmanagerback.adapter.in.task.dto.*;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
+import com.example.taskmanagerback.model.period.Period;
+import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TimeInterval;
 import com.example.taskmanagerback.util.DateTimeUtils;
@@ -17,6 +19,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -29,8 +32,14 @@ public abstract class TaskMapper {
     @Autowired
     ParticipantRepo participantRepo;
 
-    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks) {
+    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks, Project project) {
+        var activePeriod = project.getPeriods().stream().filter(Period::getActive).findFirst().orElseThrow();
         return TasksPageDto.builder()
+                .period(TasksPageDto.Period.builder()
+                        .name(activePeriod.getName())
+                        .started(getFormattedInstant(activePeriod.getStarted()))
+                        .ended(getFormattedInstant(activePeriod.getEnded()))
+                        .build())
                 .participants(getParticipants(tasks))
                 .notAssignedTasks(getNotAssignedTasks(tasks))
                 .build();
@@ -44,8 +53,7 @@ public abstract class TaskMapper {
                         .name(task.getName())
                         .status(task.getStatus().name())
                         .type(task.getType().name())
-                        .build()
-                )
+                        .build())
                 .toList();
     }
 
@@ -64,12 +72,9 @@ public abstract class TaskMapper {
                                         .name(task.getName())
                                         .type(task.getType().name())
                                         .status(task.getStatus().name())
-                                        .build()
-                                )
-                                .toList()
-                        )
-                        .build()
-                )
+                                        .build())
+                                .toList())
+                        .build())
                 .toList();
     }
 
@@ -78,25 +83,32 @@ public abstract class TaskMapper {
     @Mapping(target = "type", expression = "java(task.getType().name())")
     @Mapping(target = "assignee", source = "task.assignee.username")
     @Mapping(target = "reporter", source = "task.reporter.username")
-    @Mapping(target = "created", qualifiedByName = "getFormattedDateTime", source = "task.taskTime.created")
-    @Mapping(target = "edited", qualifiedByName = "getFormattedDateTime", source = "task.taskTime.edited")
+    @Mapping(target = "created", qualifiedByName = "getFormattedInstant", source = "task.taskTime.created")
+    @Mapping(target = "edited", qualifiedByName = "getFormattedInstant", source = "task.taskTime.edited")
     @Mapping(target = "total", qualifiedByName = "getTotal", source = "task.taskTime.timeIntervals")
     public abstract TaskDto taskToTaskDto(Task task);
 
-    @Named("getFormattedDateTime")
-    protected String getFormattedDateTime(Instant created) {
-        return DateTimeUtils.DATE_TIME_FORMAT.format(created.atZone(ZoneId.of("Europe/Moscow")));
+    @Named("getFormattedInstant")
+    protected String getFormattedInstant(Instant instant) {
+        return Optional.ofNullable(instant)
+                .map(TaskMapper::formatInstant)
+                .orElse(null);
+    }
+
+    private static String formatInstant(Instant value) {
+        return DateTimeUtils.DATE_TIME_FORMAT.format(value.atZone(ZoneId.of("Europe/Moscow")));
     }
 
     @Named("getTotal")
     protected String getTotal(List<TimeInterval> timeIntervals) {
-        return timeIntervals.stream()
-                .filter(timeInterval -> nonNull(timeInterval.getStarted()))
-                .filter(timeInterval -> nonNull(timeInterval.getStopped()))
-                .map(timeInterval -> Duration.between(timeInterval.getStarted(), timeInterval.getStopped()))
-                .reduce(Duration::plus)
-                .map(duration -> duration.toDaysPart() + " days " + duration.toHoursPart() + " hours " + duration.toMinutesPart() + " minutes")
-                .orElse(null);
+        return Optional.ofNullable(timeIntervals)
+                .flatMap(intervals -> intervals.stream()
+                    .filter(timeInterval -> nonNull(timeInterval.getStarted()))
+                    .filter(timeInterval -> nonNull(timeInterval.getStopped()))
+                    .map(timeInterval -> Duration.between(timeInterval.getStarted(), timeInterval.getStopped()))
+                    .reduce(Duration::plus)
+                    .map(duration -> duration.toDaysPart() + " days " + duration.toHoursPart() + " hours " + duration.toMinutesPart() + " minutes")
+                ).orElse(null);
     }
 
     @Mapping(target = "type", expression = "java(TaskType.valueOf(createTaskDto.getType()))")

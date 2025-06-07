@@ -1,6 +1,7 @@
 package com.example.taskmanagerback.model.task;
 
 import com.example.taskmanagerback.model.participant.Participant;
+import com.example.taskmanagerback.model.period.Period;
 import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import com.example.taskmanagerback.model.task.constants.TaskType;
@@ -39,6 +40,10 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "reporter_id")
     Participant reporter;
+
+    @ManyToOne
+    @JoinColumn(name = "period_id")
+    Period period;
 
     @OneToOne
     @PrimaryKeyJoinColumn

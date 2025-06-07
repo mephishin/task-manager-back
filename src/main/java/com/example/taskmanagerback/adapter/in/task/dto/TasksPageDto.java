@@ -11,8 +11,18 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class TasksPageDto {
+    Period period;
     List<Participant> participants;
     List<Participant.Task> notAssignedTasks;
+
+    @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    @Builder
+    public static class Period {
+        String name;
+        String started;
+        String ended;
+    }
 
     @Data
     @FieldDefaults(level = AccessLevel.PRIVATE)

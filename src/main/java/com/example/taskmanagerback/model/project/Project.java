@@ -1,6 +1,7 @@
 package com.example.taskmanagerback.model.project;
 
 import com.example.taskmanagerback.model.participant.Participant;
+import com.example.taskmanagerback.model.period.Period;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -19,4 +20,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     List<Participant> participants;
+
+    @OneToMany(mappedBy = "project")
+    List<Period> periods;
 }

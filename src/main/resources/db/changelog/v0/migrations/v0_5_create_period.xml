@@ -1,0 +1,13 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="v0_5_create_period" author=''>
+        <createTable tableName="period">
+            <column name="id" type="varchar"/>
+            <column name="project_key" type="varchar"/>
+            <column name="name" type="varchar"/>
+            <column name="active" type="boolean"/>
+            <column name="started" type="timestamp"/>
+            <column name="ended" type="timestamp"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

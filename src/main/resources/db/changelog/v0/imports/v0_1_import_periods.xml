@@ -1,6 +1,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet id="v0_3_import_task_times" author=''>
-        <loadData tableName="task_time" file="csv/task_times.csv" relativeToChangelogFile="true" separator=";"/>
+    <changeSet id="v0_1_import_periods" author=''>
+        <loadData tableName="period" file="csv/periods.csv" relativeToChangelogFile="true" separator=";"/>
     </changeSet>
 </databaseChangeLog>
