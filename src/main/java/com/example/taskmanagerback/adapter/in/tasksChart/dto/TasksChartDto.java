@@ -1,4 +1,4 @@
-package com.example.taskmanagerback.adapter.in.task.dto;
+package com.example.taskmanagerback.adapter.in.tasksChart.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class TasksPageDto {
+public class TasksChartDto {
     Period period;
     List<Participant> participants;
     List<Participant.Task> notAssignedTasks;

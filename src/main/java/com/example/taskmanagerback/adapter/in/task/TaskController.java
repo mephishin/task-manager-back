@@ -1,10 +1,8 @@
 package com.example.taskmanagerback.adapter.in.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.*;
-import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
 import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
-import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import com.example.taskmanagerback.app.api.task.*;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import com.example.taskmanagerback.model.task.constants.TaskType;
@@ -27,39 +25,14 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TaskController {
     TaskMapper taskMapper;
-    GetTasksByProject getTasksByProject;
     UpdateTask updateTask;
     CreateTask createTask;
     GetTaskByKey getTaskByKey;
     GetAuthParticipant getAuthParticipant;
-    GetJwtAuthenticationToken getJwtAuthenticationToken;
     UpdateTaskStatus updateTaskStatus;
     CloseTask closeTask;
     GetAllowedTaskStatuses getAllowedTaskStatuses;
     TaskRepo taskRepo;
-    ProjectRepo projectRepo;
-
-    @GetMapping(path = "/tasksPage", params = "project")
-    public TasksPageDto getTasksPage(
-            @RequestParam String project
-    ) {
-        log.info("Requested tasks by projectName: {}", project);
-        return taskMapper.listOfTasksToListOfTasksDto(
-                getTasksByProject.execute(project),
-                projectRepo.findByName(project).orElseThrow()
-        );
-    }
-
-    @GetMapping(path = "/tasksPage", params = "!project")
-    public TasksPageDto getTasksPage() {
-        var authParticipantsProject =
-                getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject();
-        log.info("Requested tasks by auth participant's project: {}", authParticipantsProject.getName());
-        return taskMapper.listOfTasksToListOfTasksDto(
-                getTasksByProject.execute(authParticipantsProject.getName()),
-                authParticipantsProject
-        );
-    }
 
     @GetMapping("/searchTasks")
     public List<SearchTaskDto> getSearchTasks() {

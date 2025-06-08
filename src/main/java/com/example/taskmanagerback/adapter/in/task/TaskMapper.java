@@ -3,8 +3,6 @@ package com.example.taskmanagerback.adapter.in.task;
 import com.example.taskmanagerback.adapter.in.task.dto.*;
 import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
-import com.example.taskmanagerback.model.period.Period;
-import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TimeInterval;
 import com.example.taskmanagerback.util.DateTimeUtils;
@@ -18,10 +16,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Mapper(componentModel = "spring")
@@ -31,52 +27,6 @@ public abstract class TaskMapper {
     GetProjectByName getProjectByName;
     @Autowired
     ParticipantRepo participantRepo;
-
-    public TasksPageDto listOfTasksToListOfTasksDto(List<Task> tasks, Project project) {
-        var activePeriod = project.getPeriods().stream().filter(Period::getActive).findFirst().orElseThrow();
-        return TasksPageDto.builder()
-                .period(TasksPageDto.Period.builder()
-                        .name(activePeriod.getName())
-                        .started(getFormattedInstant(activePeriod.getStarted()))
-                        .ended(getFormattedInstant(activePeriod.getEnded()))
-                        .build())
-                .participants(getParticipants(tasks))
-                .notAssignedTasks(getNotAssignedTasks(tasks))
-                .build();
-    }
-
-    private List<TasksPageDto.Participant.Task> getNotAssignedTasks(List<Task> tasks) {
-        return tasks.stream()
-                .filter(task -> isNull(task.getAssignee()))
-                .map(task -> TasksPageDto.Participant.Task.builder()
-                        .key(task.getKey())
-                        .name(task.getName())
-                        .status(task.getStatus().name())
-                        .type(task.getType().name())
-                        .build())
-                .toList();
-    }
-
-    private List<TasksPageDto.Participant> getParticipants(List<Task> tasks) {
-        return tasks.stream()
-                .map(Task::getAssignee)
-                .filter(Objects::nonNull)
-                .distinct()
-                .map(participant -> TasksPageDto.Participant.builder()
-                        .username(participant.getUsername())
-                        .tasks(tasks.stream()
-                                .filter(task -> nonNull(task.getAssignee()) &&
-                                        task.getAssignee().getUsername().equals(participant.getUsername()))
-                                .map(task -> TasksPageDto.Participant.Task.builder()
-                                        .key(task.getKey())
-                                        .name(task.getName())
-                                        .type(task.getType().name())
-                                        .status(task.getStatus().name())
-                                        .build())
-                                .toList())
-                        .build())
-                .toList();
-    }
 
     @Mapping(target = "project", source = "task.project.name")
     @Mapping(target = "status", expression = "java(task.getStatus().name())")

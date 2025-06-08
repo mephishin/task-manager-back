@@ -2,6 +2,8 @@ package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
 import com.example.taskmanagerback.app.api.project.GetAllProjects;
+import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
+import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +22,8 @@ import java.util.List;
 public class ProjectController {
     GetAllProjects getAllProjects;
     ProjectMapper projectMapper;
+    GetJwtAuthenticationToken getJwtAuthenticationToken;
+    GetAuthParticipant getAuthParticipant;
 
     @GetMapping("/projects")
     public List<ProjectDto> getAllProjects() {
@@ -27,5 +31,14 @@ public class ProjectController {
         return getAllProjects.execute().stream()
                 .map(projectMapper::projectToProjectDto)
                 .toList();
+    }
+
+    @GetMapping(path = "/project", params = "filter=auth")
+    public ProjectDto getProjectByAuthParticipant() {
+        log.info("Requested project by auth participant");
+
+        return projectMapper.projectToProjectDto(
+                getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject()
+        );
     }
 }
