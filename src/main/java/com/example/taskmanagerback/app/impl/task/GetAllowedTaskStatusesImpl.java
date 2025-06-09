@@ -29,9 +29,9 @@ public class GetAllowedTaskStatusesImpl implements GetAllowedTaskStatuses {
     TaskRepo taskRepo;
 
     @Override
-    public List<String> execute(String key) {
+    public List<TaskStatus> execute(String key) {
         var task = taskRepo.findById(key).orElseThrow();
 
-        return TRANSITIONS.get(task.getStatus()).stream().map(TaskStatus::name).toList();
+        return TRANSITIONS.get(task.getStatus()).stream().toList();
     }
 }

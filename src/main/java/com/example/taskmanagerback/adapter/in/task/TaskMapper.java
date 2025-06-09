@@ -29,8 +29,8 @@ public abstract class TaskMapper {
     ParticipantRepo participantRepo;
 
     @Mapping(target = "project", source = "task.project.name")
-    @Mapping(target = "status", expression = "java(task.getStatus().name())")
-    @Mapping(target = "type", expression = "java(task.getType().name())")
+    @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
+    @Mapping(target = "type", expression = "java(task.getType().getValue())")
     @Mapping(target = "assignee", source = "task.assignee.username")
     @Mapping(target = "reporter", source = "task.reporter.username")
     @Mapping(target = "created", qualifiedByName = "getFormattedInstant", source = "task.taskTime.created")
@@ -61,7 +61,7 @@ public abstract class TaskMapper {
                 ).orElse(null);
     }
 
-    @Mapping(target = "type", expression = "java(TaskType.valueOf(createTaskDto.getType()))")
+    @Mapping(target = "type", expression = "java(TaskType.findByValue(createTaskDto.getType()))")
     @Mapping(target = "project", expression = "java(getProjectByName.execute(createTaskDto.getProject()))")
     @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow())")
     public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
