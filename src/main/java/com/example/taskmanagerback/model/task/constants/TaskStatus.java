@@ -20,7 +20,7 @@ public enum TaskStatus {
 
     String value;
 
-    public static TaskStatus findByValue(String value) {
+    public static TaskStatus findStatusByValue(String value) {
         return Arrays.stream(TaskStatus.values())
                 .filter(taskStatus -> taskStatus.getValue().equals(value))
                 .findFirst()

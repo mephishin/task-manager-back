@@ -15,7 +15,7 @@ public enum TaskType {
 
     String value;
 
-    public static TaskType findByValue(String value) {
+    public static TaskType findTypeByValue(String value) {
         return Arrays.stream(TaskType.values())
                 .filter(taskType -> taskType.getValue().equals(value))
                 .findFirst()

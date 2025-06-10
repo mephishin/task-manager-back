@@ -5,6 +5,8 @@ import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TimeInterval;
+import com.example.taskmanagerback.model.task.constants.TaskStatus;
+import com.example.taskmanagerback.model.task.constants.TaskType;
 import com.example.taskmanagerback.util.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -61,13 +63,25 @@ public abstract class TaskMapper {
                 ).orElse(null);
     }
 
-    @Mapping(target = "type", expression = "java(TaskType.findByValue(createTaskDto.getType()))")
     @Mapping(target = "project", expression = "java(getProjectByName.execute(createTaskDto.getProject()))")
-    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(createTaskDto.getAssignee()).orElseThrow())")
+    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(createTaskDto.getAssignee()).orElse(null))")
+    @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "createTaskDto.type")
     public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
 
-    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(updateTaskDto.getAssignee()).orElseThrow())")
+    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(updateTaskDto.getAssignee()).orElse(null))")
+    @Mapping(target = "status", qualifiedByName = "getTaskStatusByValue", source = "updateTaskDto.status")
+    @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "updateTaskDto.type")
     public abstract Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto);
+
+    @Named("getTaskTypeByValue")
+    protected TaskType getTaskTypeByValue(String value) {
+        return TaskType.findTypeByValue(value);
+    }
+
+    @Named("getTaskStatusByValue")
+    protected TaskStatus getTaskStatusByValue(String value) {
+        return TaskStatus.findStatusByValue(value);
+    }
 
     public abstract List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks);
 

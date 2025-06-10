@@ -12,6 +12,6 @@ public class TaskStatusMapper {
     }
 
     public TaskStatus taskStatusValueToTaskStatus(String value) {
-        return TaskStatus.findByValue(value);
+        return TaskStatus.findStatusByValue(value);
     }
 }
