@@ -1,4 +1,4 @@
-key;name
-SPHR;Sphere
-CRSPCT;Coreaspect
-DSC;Diseco
+key;name;statuses;status_flow
+SPHR;Sphere;["TO_DO", "IN_PROGRESS", "DONE"];{"IN_PROGRESS":["DONE","TO_DO"],"DONE":["TO_DO"],"TO_DO":["IN_PROGRESS","DONE"]}
+CRSPCT;Coreaspect;["TO_DO", "IN_PROGRESS", "REVIEW", "DONE"];{"IN_PROGRESS":["TO_DO", "REVIEW"],"REVIEW":["TO_DO","DONE"],"DONE":["TO_DO"],"TO_DO":["IN_PROGRESS","DONE"]}
+DSC;Diseco;["TO_DO", "IN_PROGRESS", "DONE"];{"IN_PROGRESS":["DONE","TO_DO"],"DONE":["TO_DO"],"TO_DO":["IN_PROGRESS","DONE"]}

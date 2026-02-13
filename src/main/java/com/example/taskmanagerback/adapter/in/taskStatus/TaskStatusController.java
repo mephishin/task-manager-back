@@ -1,14 +1,13 @@
 package com.example.taskmanagerback.adapter.in.taskStatus;
 
 import com.example.taskmanagerback.app.api.task.*;
-import com.example.taskmanagerback.model.task.constants.TaskStatus;
+import com.example.taskmanagerback.app.api.task.status.GetProjectStatuses;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -23,12 +22,12 @@ public class TaskStatusController {
     UpdateTaskStatus updateTaskStatus;
     GetAllowedTaskStatuses getAllowedTaskStatuses;
     TaskStatusMapper taskStatusMapper;
+    GetProjectStatuses getProjectStatuses;
 
-
-    @GetMapping("/statuses")
-    public List<String> getTaskStatuses() {
+    @GetMapping("/statuses/{projectId}")
+    public List<String> getTaskStatuses(@PathVariable("projectId") String projectId) {
         log.info("Requested all task statuses");
-        return taskStatusMapper.arrayOfTaskStatusToListOfTaskStatusValues(Arrays.asList(TaskStatus.values()));
+        return taskStatusMapper.arrayOfTaskStatusToListOfTaskStatusValues(getProjectStatuses.execute(projectId));
     }
 
     @PutMapping("/task/{key}/status/{status}")

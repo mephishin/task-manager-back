@@ -18,6 +18,12 @@ public class Project {
 
     String name;
 
+    @Column(name = "statuses")
+    String statuses;
+
+    @Column(name = "status_flow")
+    String statusFlow;
+
     @OneToMany(mappedBy = "project")
     List<Participant> participants;
 
