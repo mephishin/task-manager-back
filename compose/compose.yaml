@@ -18,6 +18,14 @@ services:
       POSTGRES_DB: keycloak_postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
+  tg-postgres:
+    image: postgres:16
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.2
     environment:
