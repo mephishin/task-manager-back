@@ -5,18 +5,17 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000", methods = {POST, GET, PUT, DELETE})
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@PreAuthorize("isAuthenticated()")
 public class TaskTypeController {
     TaskTypeMapper taskTypeMapper;
 

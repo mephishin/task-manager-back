@@ -18,8 +18,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@PreAuthorize("isAuthenticated()")
 public class ProjectController {
     GetAllProjects getAllProjects;
     ProjectMapper projectMapper;
@@ -45,8 +45,8 @@ public class ProjectController {
 
     @PostMapping(path = "/project")
     @PreAuthorize("hasAnyAuthority('task-manager_leader', 'task-manager_admin')")
-    public ProjectDto createProject(@RequestBody CreateProjectDto createProjectDto) {
-        log.info("Requested project by auth participant");
+    public ProjectDto createProject(@RequestBody CreateProjectDto createProjectDto, Principal principal) {
+        log.info("Requested creating project by auth participant {}", principal.getName());
 
         return projectMapper.projectToProjectDto(
                 getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject()

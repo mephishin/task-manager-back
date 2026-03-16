@@ -1,25 +1,30 @@
 package com.example.taskmanagerback.adapter.in.task;
 
-import com.example.taskmanagerback.adapter.in.task.dto.*;
+import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
+import com.example.taskmanagerback.adapter.in.task.dto.SearchTaskDto;
+import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
+import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
-import com.example.taskmanagerback.app.api.task.*;
+import com.example.taskmanagerback.app.api.task.CloseTask;
+import com.example.taskmanagerback.app.api.task.CreateTask;
+import com.example.taskmanagerback.app.api.task.GetTaskByKey;
+import com.example.taskmanagerback.app.api.task.UpdateTask;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000", methods = {POST, GET, PUT, DELETE})
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@PreAuthorize("isAuthenticated()")
 public class TaskController {
     TaskMapper taskMapper;
     UpdateTask updateTask;
