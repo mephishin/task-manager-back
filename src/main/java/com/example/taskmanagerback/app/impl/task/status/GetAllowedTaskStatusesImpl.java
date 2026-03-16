@@ -2,8 +2,6 @@ package com.example.taskmanagerback.app.impl.task.status;
 
 import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
 import com.example.taskmanagerback.app.api.task.GetAllowedTaskStatuses;
-import com.example.taskmanagerback.app.api.task.status.GetProjectStatuses;
-import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -30,7 +28,7 @@ public class GetAllowedTaskStatusesImpl implements GetAllowedTaskStatuses {
     @Override
     @Transactional
     public List<TaskStatus> execute(String key) {
-        var task = taskRepo.findById(key).orElseThrow();
+        var task = taskRepo.findById(key).orElseThrow(() -> new RuntimeException("No such task: " + key));
 
         try {
             var statusFlow = objectMapper.readValue(task.getProject().getStatusFlow(), new TypeReference<Map<TaskStatus, List<TaskStatus>>>() {});

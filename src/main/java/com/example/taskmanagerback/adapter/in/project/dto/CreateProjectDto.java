@@ -5,5 +5,6 @@ import java.util.List;
 public record CreateProjectDto(
         String name,
         String description,
-        List<String> participants
+        List<String> participants,
+        String taskPrefix
 ) {}

@@ -6,6 +6,9 @@
             <column name="name" type="varchar"/>
             <column name="statuses" type="varchar"/>
             <column name="status_flow" type="varchar"/>
+            <column name="task_prefix" type="varchar">
+                <constraints unique="true"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

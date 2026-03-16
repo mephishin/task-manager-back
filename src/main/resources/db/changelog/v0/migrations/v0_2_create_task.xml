@@ -3,7 +3,9 @@
     <changeSet id="v0_2_create_task" author=''>
         <createTable tableName="task">
             <column name="name" type="varchar"/>
-            <column name="key" type="varchar"/>
+            <column name="key" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
             <column name="description" type="varchar"/>
             <column name="status" type="varchar"/>
             <column name="type" type="varchar"/>

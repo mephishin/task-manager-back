@@ -2,6 +2,7 @@ package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
+import com.example.taskmanagerback.app.api.project.CreateProject;
 import com.example.taskmanagerback.app.api.project.GetAllProjects;
 import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
@@ -25,6 +26,7 @@ public class ProjectController {
     ProjectMapper projectMapper;
     GetJwtAuthenticationToken getJwtAuthenticationToken;
     GetAuthParticipant getAuthParticipant;
+    CreateProject createProject;
 
     @GetMapping("/projects")
     public List<ProjectDto> getAllProjects() {
@@ -45,11 +47,10 @@ public class ProjectController {
 
     @PostMapping(path = "/project")
     @PreAuthorize("hasAnyAuthority('task-manager_leader', 'task-manager_admin')")
-    public ProjectDto createProject(@RequestBody CreateProjectDto createProjectDto, Principal principal) {
-        log.info("Requested creating project by auth participant {}", principal.getName());
+    public ProjectDto createProject(@RequestBody CreateProjectDto createProjectDto) {
+        log.info("Requested creating project by auth participant");
 
         return projectMapper.projectToProjectDto(
-                getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject()
-        );
+                createProject.execute(projectMapper.projectDtoToProject(createProjectDto)));
     }
 }

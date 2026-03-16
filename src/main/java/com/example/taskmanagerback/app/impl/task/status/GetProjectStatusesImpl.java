@@ -24,7 +24,7 @@ public class GetProjectStatusesImpl implements GetProjectStatuses {
 
     @Override
     public List<TaskStatus> execute(String projectId) {
-        var project = projectRepo.findById(projectId).orElseThrow();
+        var project = projectRepo.findById(projectId).orElseThrow(() -> new RuntimeException("No such project: " + projectId));
         try {
             return objectMapper.readValue(project.getStatuses(), new TypeReference<>() {});
         } catch (JsonProcessingException e) {
