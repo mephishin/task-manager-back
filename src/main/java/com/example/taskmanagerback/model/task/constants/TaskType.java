@@ -11,7 +11,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum TaskType {
-    TASK("Task");
+    TASK("Задача");
 
     String value;
 

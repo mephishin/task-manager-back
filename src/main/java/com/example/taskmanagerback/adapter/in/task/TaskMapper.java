@@ -59,16 +59,16 @@ public abstract class TaskMapper {
                     .filter(timeInterval -> nonNull(timeInterval.getStopped()))
                     .map(timeInterval -> Duration.between(timeInterval.getStarted(), timeInterval.getStopped()))
                     .reduce(Duration::plus)
-                    .map(duration -> duration.toDaysPart() + " days " + duration.toHoursPart() + " hours " + duration.toMinutesPart() + " minutes")
+                    .map(Duration::toString)
                 ).orElse(null);
     }
 
-    @Mapping(target = "project", expression = "java(getProjectByName.execute(createTaskDto.getProject()))")
-    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(createTaskDto.getAssignee()).orElse(null))")
+    @Mapping(target = "project", expression = "java(getProjectByName.execute(createTaskDto.project()))")
+    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(createTaskDto.assignee()).orElse(null))")
     @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "createTaskDto.type")
     public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
 
-    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(updateTaskDto.getAssignee()).orElse(null))")
+    @Mapping(target = "assignee", expression = "java(participantRepo.findByUsername(updateTaskDto.assignee()).orElse(null))")
     @Mapping(target = "status", qualifiedByName = "getTaskStatusByValue", source = "updateTaskDto.status")
     @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "updateTaskDto.type")
     public abstract Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto);

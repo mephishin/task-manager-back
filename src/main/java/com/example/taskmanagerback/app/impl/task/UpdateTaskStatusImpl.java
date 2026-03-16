@@ -25,8 +25,6 @@ import static java.util.Objects.nonNull;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class UpdateTaskStatusImpl implements UpdateTaskStatus {
-    static List<TaskStatus> taskStatusList = List.of(TO_DO, REVIEW);
-
     TaskRepo taskRepo;
     TimeIntervalRepo timeIntervalRepo;
 
@@ -48,7 +46,7 @@ public class UpdateTaskStatusImpl implements UpdateTaskStatus {
             var listOfTimeIntervals = taskTime.getTimeIntervals();
             listOfTimeIntervals.add(timeInterval);
 
-        } else if (IN_PROGRESS.equals(task.getStatus()) && taskStatusList.contains(newStatus)) {
+        } else if (IN_PROGRESS.equals(task.getStatus())) {
             var taskTime = task.getTaskTime();
 
             var unfinishedTimeInterval = taskTime.getTimeIntervals().stream()

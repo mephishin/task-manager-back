@@ -11,12 +11,12 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public enum TaskStatus {
-    TO_DO("TO DO"),
-    IN_PROGRESS("IN PROGRESS"),
-    REVIEW("REVIEW"),
-    IN_REVIEW("IN REVIEW"),
-    DONE("DONE"),
-    CLOSED("CLOSED");
+    TO_DO("К ВЫПОЛНЕНИЮ"),
+    IN_PROGRESS("В ПРОГРЕССЕ"),
+    REVIEW("К ПРОВЕРКЕ"),
+    IN_REVIEW("НА ПРОВЕРКЕ"),
+    DONE("ВЫПОЛНЕНА"),
+    CLOSED("ЗАКРЫТА");
 
     String value;
 
