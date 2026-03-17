@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Component
@@ -26,7 +27,10 @@ public class GetProjectStatusesImpl implements GetProjectStatuses {
     public List<TaskStatus> execute(String projectId) {
         var project = projectRepo.findById(projectId).orElseThrow(() -> new RuntimeException("No such project: " + projectId));
         try {
-            return objectMapper.readValue(project.getStatuses(), new TypeReference<>() {});
+            return objectMapper.readValue(
+                    project.getStatusFlow(),
+                    new TypeReference<LinkedHashMap<TaskStatus, List<TaskStatus>>>() {})
+                    .keySet().stream().toList();
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -28,9 +28,6 @@ public class Project {
     @Column(name="task_prefix")
     String taskPrefix;
 
-    @Column(name = "statuses")
-    String statuses;
-
     @Column(name = "status_flow")
     String statusFlow;
 

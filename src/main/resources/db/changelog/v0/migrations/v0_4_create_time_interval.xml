@@ -2,7 +2,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet id="v0_4_create_time_interval" author=''>
         <createTable tableName="time_interval">
-            <column name="task_key" type="varchar"/>
+            <column name="task_key" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
             <column name="id" type="varchar"/>
             <column name="started" type="timestamp"/>
             <column name="stopped" type="timestamp"/>

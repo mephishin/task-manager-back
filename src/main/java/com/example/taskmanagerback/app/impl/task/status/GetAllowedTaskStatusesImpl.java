@@ -32,7 +32,7 @@ public class GetAllowedTaskStatusesImpl implements GetAllowedTaskStatuses {
 
         try {
             var statusFlow = objectMapper.readValue(task.getProject().getStatusFlow(), new TypeReference<Map<TaskStatus, List<TaskStatus>>>() {});
-            return statusFlow.get(task.getStatus()).stream().toList();
+            return statusFlow.get(task.getStatus());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
