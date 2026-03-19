@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.app.impl.project;
 
-import com.example.taskmanagerback.adapter.repository.project.ProjectRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
 import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.project.Project;
 import lombok.AccessLevel;

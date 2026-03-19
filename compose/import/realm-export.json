@@ -27,11 +27,11 @@
   "oauth2DevicePollingInterval": 5,
   "enabled": true,
   "sslRequired": "external",
-  "registrationAllowed": true,
+  "registrationAllowed": false,
   "registrationEmailAsUsername": false,
-  "rememberMe": false,
+  "rememberMe": true,
   "verifyEmail": false,
-  "loginWithEmailAllowed": true,
+  "loginWithEmailAllowed": false,
   "duplicateEmailsAllowed": false,
   "resetPasswordAllowed": false,
   "editUsernameAllowed": false,
@@ -46,6 +46,15 @@
   "failureFactor": 30,
   "roles": {
     "realm": [
+      {
+        "id": "d54fa91c-555b-4e6d-9191-3a39ee2d7fd3",
+        "name": "task-manager_admin",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "0d9f3d99-b45d-45bd-b1cf-05590bacdbfa",
+        "attributes": {}
+      },
       {
         "id": "38cb3989-bdee-4ce7-8c4f-cc1438f7f146",
         "name": "default-roles-task-manager",
@@ -68,6 +77,15 @@
         "attributes": {}
       },
       {
+        "id": "2c8f3e67-dc4f-495f-8e40-6b0824c1a7cb",
+        "name": "task-manager_leader",
+        "description": "",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "0d9f3d99-b45d-45bd-b1cf-05590bacdbfa",
+        "attributes": {}
+      },
+      {
         "id": "ffe60583-ac53-454c-81b4-ada1322c69d7",
         "name": "uma_authorization",
         "description": "${role_uma_authorization}",
@@ -80,6 +98,15 @@
         "id": "d41135d6-42b5-42d6-b907-4cf822c65f0e",
         "name": "offline_access",
         "description": "${role_offline-access}",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "0d9f3d99-b45d-45bd-b1cf-05590bacdbfa",
+        "attributes": {}
+      },
+      {
+        "id": "5c41a149-767c-4436-9c59-66f0dffba0f5",
+        "name": "task-manager_participant",
+        "description": "",
         "composite": false,
         "clientRole": false,
         "containerId": "0d9f3d99-b45d-45bd-b1cf-05590bacdbfa",
@@ -423,21 +450,7 @@
       "task-manager-bot": []
     }
   },
-  "groups": [
-    {
-      "id": "18739800-485f-419e-a46e-3b9b68b8444a",
-      "name": "participant",
-      "path": "/participant",
-      "subGroups": [],
-      "attributes": {},
-      "realmRoles": [],
-      "clientRoles": {
-        "task-manager-front": [
-          "participant"
-        ]
-      }
-    }
-  ],
+  "groups": [],
   "defaultRole": {
     "id": "38cb3989-bdee-4ce7-8c4f-cc1438f7f146",
     "name": "default-roles-task-manager",
@@ -943,7 +956,7 @@
           "protocolMapper": "oidc-usermodel-realm-role-mapper",
           "consentRequired": false,
           "config": {
-            "introspection.token.claim": "true",
+            "introspection.token.claim": "false",
             "multivalued": "true",
             "userinfo.token.claim": "false",
             "user.attribute": "foo",

@@ -8,6 +8,7 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
+
   keycloak-postgres:
     image: postgres:16
     volumes:
@@ -18,6 +19,7 @@ services:
       POSTGRES_DB: keycloak_postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
+
   tg-postgres:
     image: postgres:16
     ports:
@@ -26,6 +28,7 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
+
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.2
     environment:
@@ -37,6 +40,7 @@ services:
       KC_DB_PASSWORD: admin
 #      KC_LOG_LEVEL: DEBUG
 #      KC_IMPORT_LOG_LEVEL: DEBUG
+
     volumes:
     - ./import/realm-export.json:/opt/keycloak/data/import/realm-export.json
     ports:
@@ -45,6 +49,39 @@ services:
     - "start-dev"
     - "--import-realm"
     - "--http-port=8080"
+
+  minio:
+    image: quay.io/minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: [ "server", "--console-address", ":9001", "/data" ]
+    volumes:
+      - data-minio:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+
+  minio-buckets:
+    image: quay.io/minio/mc:latest
+    depends_on:
+      - minio
+    restart: on-failure
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc alias set min http://minio:9000 minioadmin minioadmin) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb min/task-files;
+      /usr/bin/mc mb min/project-files;
+      /usr/bin/mc anonymous set public min/task-files;
+      /usr/bin/mc anonymous set public min/project-files;      
+      /usr/bin/mc admin trace -v -e min;
+      "
+
 volumes:
   postgres_data:
     driver: local
+  data-minio:
+
+networks:
+  task-manager:
+    driver : bridge

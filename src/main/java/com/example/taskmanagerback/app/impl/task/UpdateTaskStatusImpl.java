@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
-import com.example.taskmanagerback.adapter.repository.task.TimeIntervalRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TimeIntervalRepo;
 import com.example.taskmanagerback.app.api.task.UpdateTaskStatus;
 import com.example.taskmanagerback.model.task.TimeInterval;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
@@ -13,10 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
-import static com.example.taskmanagerback.model.task.constants.TaskStatus.*;
+import static com.example.taskmanagerback.model.task.constants.TaskStatus.IN_PROGRESS;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 

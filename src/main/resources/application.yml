@@ -20,3 +20,12 @@ spring:
 #logging:
 #  level:
 #    org.hibernate.orm.jdbc.bind: trace
+
+minio:
+  url: http://localhost
+  port: 9000
+  bucket:
+    task-files: task-files
+    project-files: project-files
+  accessKey: minioadmin
+  secretKey : minioadmin

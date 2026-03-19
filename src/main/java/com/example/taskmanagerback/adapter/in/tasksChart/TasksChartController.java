@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.adapter.in.tasksChart;
 
 import com.example.taskmanagerback.adapter.in.tasksChart.dto.TasksChartDto;
-import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
+import com.example.taskmanagerback.app.api.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import com.example.taskmanagerback.app.api.task.GetTasksByProject;
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ public class TasksChartController {
     GetJwtAuthenticationToken getJwtAuthenticationToken;
     GetTasksByProject getTasksByProject;
     TasksChartMapper tasksChartMapper;
-    GetAuthParticipant getAuthParticipant;
+    GetAuthUser getAuthUser;
 
     @GetMapping(path = "/tasksChart", params = "project")
     public TasksChartDto getTasksChart(
@@ -36,11 +36,11 @@ public class TasksChartController {
 
     @GetMapping(path = "/tasksChart", params = "!project")
     public TasksChartDto getTasksChart() {
-        var authParticipantsProject =
-                getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject();
-        log.info("Requested tasks by auth participant's project: {}", authParticipantsProject.getName());
+        var authUsersProject =
+                getAuthUser.execute(getJwtAuthenticationToken.execute()).getProject();
+        log.info("Requested tasks by auth user's project: {}", authUsersProject.getName());
         return tasksChartMapper.listOfTasksToTasksChartDto(
-                getTasksByProject.execute(authParticipantsProject.getName())
+                getTasksByProject.execute(authUsersProject.getName())
         );
     }
 }

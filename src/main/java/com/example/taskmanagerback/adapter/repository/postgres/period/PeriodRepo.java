@@ -1,4 +1,4 @@
-package com.example.taskmanagerback.adapter.repository.period;
+package com.example.taskmanagerback.adapter.repository.postgres.period;
 
 import com.example.taskmanagerback.model.period.Period;
 import com.example.taskmanagerback.model.project.Project;

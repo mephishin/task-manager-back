@@ -15,7 +15,7 @@ public abstract class TasksChartMapper {
     public TasksChartDto listOfTasksToTasksChartDto(List<Task> tasks) {
         return new TasksChartDto(
                 null,
-                getParticipants(tasks),
+                getUsers(tasks),
                 getNotAssignedTasks(tasks)
         );
     }
@@ -32,16 +32,16 @@ public abstract class TasksChartMapper {
                 .toList();
     }
 
-    private List<TasksChartDto.Participant> getParticipants(List<Task> tasks) {
+    private List<TasksChartDto.Participant> getUsers(List<Task> tasks) {
         return tasks.stream()
                 .map(Task::getAssignee)
                 .filter(Objects::nonNull)
                 .distinct()
-                .map(participant -> new TasksChartDto.Participant(
-                        participant.getUsername(),
+                .map(user -> new TasksChartDto.Participant(
+                        user.getUsername(),
                         tasks.stream()
                                 .filter(task -> nonNull(task.getAssignee()) &&
-                                        task.getAssignee().getUsername().equals(participant.getUsername()))
+                                        task.getAssignee().getUsername().equals(user.getUsername()))
                                 .map(task -> new TasksChartDto.Participant.Task(
                                         task.getKey(),
                                         task.getName(),

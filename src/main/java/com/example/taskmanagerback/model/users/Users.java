@@ -1,7 +1,7 @@
-package com.example.taskmanagerback.model.project;
+package com.example.taskmanagerback.model.users;
 
-import com.example.taskmanagerback.model.users.Users;
-import com.example.taskmanagerback.model.period.Period;
+import com.example.taskmanagerback.model.project.Project;
+import com.example.taskmanagerback.model.task.Task;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -16,28 +16,25 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Accessors(chain=true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Project {
+@Accessors(chain = true)
+public class Users {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String key;
+    String id;
 
-    String name;
+    String username;
 
-    @Column(name="task_prefix")
-    String taskPrefix;
-
-    @Column(name = "status_flow")
-    String statusFlow;
-
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "assignee")
     @ToString.Exclude
-    List<Users> participants;
+    List<Task> assignedTasks;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "reporter")
     @ToString.Exclude
-    List<Period> periods;
+    List<Task> reportedTasks;
+
+    @ManyToOne
+    @JoinColumn(name = "project_key")
+    Project project;
 
     @Override
     public final boolean equals(Object o) {
@@ -52,8 +49,8 @@ public class Project {
         if (thisEffectiveClass != objectEffectiveClass) {
             return false;
         }
-        Project project = (Project) o;
-        return getKey() != null && Objects.equals(getKey(), project.getKey());
+        Users users = (Users) o;
+        return getId() != null && Objects.equals(getId(), users.getId());
     }
 
     @Override

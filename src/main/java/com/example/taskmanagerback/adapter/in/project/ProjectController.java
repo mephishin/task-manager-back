@@ -2,9 +2,11 @@ package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
+import com.example.taskmanagerback.adapter.repository.minio.File;
 import com.example.taskmanagerback.app.api.project.CreateProject;
 import com.example.taskmanagerback.app.api.project.GetAllProjects;
-import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
+import com.example.taskmanagerback.app.api.project.GetAllProjectsFiles;
+import com.example.taskmanagerback.app.api.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,9 @@ public class ProjectController {
     GetAllProjects getAllProjects;
     ProjectMapper projectMapper;
     GetJwtAuthenticationToken getJwtAuthenticationToken;
-    GetAuthParticipant getAuthParticipant;
+    GetAuthUser getAuthUser;
     CreateProject createProject;
+    GetAllProjectsFiles getAllProjectsFiles;
 
     @GetMapping("/projects")
     public List<ProjectDto> getAllProjects() {
@@ -36,12 +39,18 @@ public class ProjectController {
                 .toList();
     }
 
+    @GetMapping("/projects/{projectId}/file")
+    public List<File> getAllProjects(@PathVariable("projectId") String projectId) {
+        log.info("Requested all projects files");
+        return getAllProjectsFiles.execute(projectId);
+    }
+
     @GetMapping(path = "/project", params = "filter=auth")
-    public ProjectDto getProjectByAuthParticipant(Principal principal) {
+    public ProjectDto getProjectByAuthUser(Principal principal) {
         log.info("Requested project by auth participant {}", principal.getName());
 
         return projectMapper.projectToProjectDto(
-                getAuthParticipant.execute(getJwtAuthenticationToken.execute()).getProject()
+                getAuthUser.execute(getJwtAuthenticationToken.execute()).getProject()
         );
     }
 

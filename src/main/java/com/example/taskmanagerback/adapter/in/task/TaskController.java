@@ -4,8 +4,8 @@ import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.SearchTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
-import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
-import com.example.taskmanagerback.app.api.security.GetAuthParticipant;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.app.api.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.task.CloseTask;
 import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.GetTaskByKey;
@@ -30,7 +30,7 @@ public class TaskController {
     UpdateTask updateTask;
     CreateTask createTask;
     GetTaskByKey getTaskByKey;
-    GetAuthParticipant getAuthParticipant;
+    GetAuthUser getAuthUser;
     CloseTask closeTask;
     TaskRepo taskRepo;
 
@@ -69,7 +69,7 @@ public class TaskController {
         return taskMapper.taskToTaskDto(
                 createTask.execute(
                         taskMapper.createTaskDtoToTask(createTaskDto),
-                        getAuthParticipant.execute(jwtAuthenticationToken)
+                        getAuthUser.execute(jwtAuthenticationToken)
                 )
         );
     }

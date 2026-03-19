@@ -1,12 +1,12 @@
 package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
-import com.example.taskmanagerback.adapter.repository.task.TaskTimeRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TaskTimeRepo;
 import com.example.taskmanagerback.app.api.task.CreateTask;
 import com.example.taskmanagerback.app.api.task.status.GetProjectStatuses;
-import com.example.taskmanagerback.model.participant.Participant;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TaskTime;
+import com.example.taskmanagerback.model.users.Users;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +27,13 @@ public class CreateTaskImpl implements CreateTask {
 
     @Override
     @Transactional
-    public Task execute(Task task, Participant participant) {
+    public Task execute(Task task, Users users) {
         var currentProjectKey = getCurrentProjectKey(task);
         log.info("Creating a task with key: {}", currentProjectKey);
 
         task.setStatus(getProjectStatuses.execute(task.getProject().getKey()).get(0));
         task.setKey(currentProjectKey);
-        task.setReporter(participant);
+        task.setReporter(users);
 
         var createdTask = taskRepo.save(task);
 

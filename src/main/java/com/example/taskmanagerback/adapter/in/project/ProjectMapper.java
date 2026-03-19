@@ -2,9 +2,9 @@ package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
-import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
-import com.example.taskmanagerback.model.participant.Participant;
+import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
 import com.example.taskmanagerback.model.project.Project;
+import com.example.taskmanagerback.model.users.Users;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.mapstruct.Mapper;
@@ -18,7 +18,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class ProjectMapper {
     @Autowired
-    ParticipantRepo participantRepo;
+    UsersRepo usersRepo;
 
     public abstract ProjectDto projectToProjectDto(Project project);
 
@@ -26,7 +26,7 @@ public abstract class ProjectMapper {
     public abstract Project projectDtoToProject(CreateProjectDto createProjectDto);
 
     @Named("usernamesToParticipants")
-    protected List<Participant> usernamesToParticipants(List<String> usernames) {
-        return participantRepo.findAllByUsernameIn(usernames);
+    protected List<Users> usernamesToParticipants(List<String> usernames) {
+        return usersRepo.findAllByUsernameIn(usernames);
     }
 }

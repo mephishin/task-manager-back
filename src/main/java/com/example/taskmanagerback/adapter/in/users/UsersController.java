@@ -1,7 +1,7 @@
-package com.example.taskmanagerback.adapter.in.participant;
+package com.example.taskmanagerback.adapter.in.users;
 
-import com.example.taskmanagerback.adapter.in.participant.dto.ParticipantDto;
-import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
+import com.example.taskmanagerback.adapter.in.users.dto.UsersDto;
+import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,14 +17,14 @@ import java.util.List;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @PreAuthorize("isAuthenticated()")
-public class ParticipantController {
-    ParticipantMapper participantMapper;
-    ParticipantRepo participantRepo;
+public class UsersController {
+    UsersMapper usersMapper;
+    UsersRepo usersRepo;
 
-    @GetMapping("/participants")
-    public List<ParticipantDto> getParticipants() {
-        return participantRepo.findAll().stream()
-                .map(participantMapper::participantToParticipantDto)
+    @GetMapping("/users")
+    public List<UsersDto> getUsers() {
+        return usersRepo.findAll().stream()
+                .map(usersMapper::usersToUsersDto)
                 .toList();
     }
 }

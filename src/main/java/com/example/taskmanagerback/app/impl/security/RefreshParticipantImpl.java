@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.app.impl.security;
 
-import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
 import com.example.taskmanagerback.app.api.security.RefreshParticipant;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RefreshParticipantImpl implements RefreshParticipant {
-    ParticipantRepo participantRepo;
+    UsersRepo usersRepo;
 
     @Override
     public void execute(String preferredUsername, String id) {

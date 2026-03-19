@@ -1,7 +1,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
      <include file="migrations/v0_0_create_project.xml" relativeToChangelogFile="true"/>
-     <include file="migrations/v0_1_create_participant.xml" relativeToChangelogFile="true"/>
+     <include file="migrations/v0_1_create_users.xml" relativeToChangelogFile="true"/>
      <include file="migrations/v0_2_create_task.xml" relativeToChangelogFile="true"/>
      <include file="migrations/v0_3_create_task_time.xml" relativeToChangelogFile="true"/>
      <include file="migrations/v0_4_create_time_interval.xml" relativeToChangelogFile="true"/>
@@ -9,7 +9,7 @@
 
      <include file="imports/v0_0_import_projects.xml" relativeToChangelogFile="true"/>
      <include file="imports/v0_1_import_periods.xml" relativeToChangelogFile="true"/>
-     <include file="imports/v0_2_import_participants.xml" relativeToChangelogFile="true"/>
+     <include file="imports/v0_2_import_users.xml" relativeToChangelogFile="true"/>
      <include file="imports/v0_3_import_tasks.xml" relativeToChangelogFile="true"/>
      <include file="imports/v0_4_import_task_times.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

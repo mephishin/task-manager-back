@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.adapter.in.period;
 
 import com.example.taskmanagerback.adapter.in.period.dto.PeriodDto;
+import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
 import com.example.taskmanagerback.app.api.period.GetActivePeriodByProject;
-import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @PreAuthorize("isAuthenticated()")
 public class PeriodController {
-    GetProjectByName getProjectByName;
+    ProjectRepo projectRepo;
     GetActivePeriodByProject getActivePeriodByProject;
     PeriodMapper periodMapper;
 
@@ -27,6 +27,9 @@ public class PeriodController {
             @RequestParam String project
     ) {
         log.info("Requested active period by project");
-        return periodMapper.periodToPeriodDto(getActivePeriodByProject.execute(getProjectByName.execute(project)));
+        return periodMapper.periodToPeriodDto(
+                getActivePeriodByProject.execute(
+                        projectRepo.findById(project)
+                                .orElseThrow(() -> new RuntimeException("No such a project with key: " + project))));
     }
 }

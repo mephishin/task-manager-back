@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.app.impl.task.status;
 
-import com.example.taskmanagerback.adapter.repository.task.TaskRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
 import com.example.taskmanagerback.app.api.task.GetAllowedTaskStatuses;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;

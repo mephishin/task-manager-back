@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.app.impl.security.handler;
 
-import com.example.taskmanagerback.adapter.repository.task.ParticipantRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
 import com.example.taskmanagerback.app.api.security.RefreshParticipant;
 import com.example.taskmanagerback.app.api.security.TransferParticipant;
 import com.example.taskmanagerback.app.api.security.handler.AuthSuccessEventHandler;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AuthSuccessEventHandlerImpl implements AuthSuccessEventHandler {
     static String SUB = "sub";
-    ParticipantRepo participantRepo;
+    UsersRepo usersRepo;
     TransferParticipant transferParticipant;
     RefreshParticipant refreshParticipant;
 
@@ -27,7 +27,7 @@ public class AuthSuccessEventHandlerImpl implements AuthSuccessEventHandler {
         var jwtAuthenticationToken = (JwtAuthenticationToken) authenticationSuccessEvent.getAuthentication();
         log.info("Token of auth participant: {}", jwtAuthenticationToken.getTokenAttributes());
         var authUserId = jwtAuthenticationToken.getToken().getClaimAsString(SUB);
-        var participant = participantRepo.findById(authUserId);
+        var participant = usersRepo.findById(authUserId);
         participant.ifPresentOrElse(
                 value -> {
                     log.info("User with id: {} and username: {} exists", authUserId, value.getUsername());

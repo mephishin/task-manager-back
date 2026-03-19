@@ -1,4 +1,4 @@
-package com.example.taskmanagerback.adapter.repository.task;
+package com.example.taskmanagerback.adapter.repository.postgres.task;
 
 import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;
