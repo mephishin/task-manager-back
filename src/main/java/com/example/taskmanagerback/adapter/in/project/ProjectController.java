@@ -3,10 +3,7 @@ package com.example.taskmanagerback.adapter.in.project;
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
 import com.example.taskmanagerback.adapter.repository.minio.File;
-import com.example.taskmanagerback.app.api.project.CreateProject;
-import com.example.taskmanagerback.app.api.project.GetAllProjects;
-import com.example.taskmanagerback.app.api.project.GetAllProjectsFiles;
-import com.example.taskmanagerback.app.api.project.SaveProjectFile;
+import com.example.taskmanagerback.app.api.project.*;
 import com.example.taskmanagerback.app.api.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,6 +37,7 @@ public class ProjectController {
     CreateProject createProject;
     GetAllProjectsFiles getAllProjectsFiles;
     SaveProjectFile saveProjectFile;
+    DeleteProjectFile deleteProjectFile;
 
     @GetMapping("/projects")
     public List<ProjectDto> getAllProjects() {
@@ -77,6 +75,15 @@ public class ProjectController {
     ) throws IOException {
         log.info("Request to save project file {} {}", file.getOriginalFilename(), file.getContentType());
         saveProjectFile.execute(projectId, new File(file.getOriginalFilename(), file.getBytes(), file.getContentType()));
+    }
+
+    @DeleteMapping("/projects/{projectId}/file")
+    public void saveProjectFile(
+            @PathVariable("projectId") String projectId,
+            @RequestParam("filename") String filename
+    ) {
+        log.info("Request to delete project file {}", filename);
+        deleteProjectFile.execute(projectId, filename);
     }
 
     @GetMapping(path = "/project", params = "filter=auth")

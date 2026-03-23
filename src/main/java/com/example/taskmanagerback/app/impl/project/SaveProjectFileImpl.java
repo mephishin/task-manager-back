@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.project;
 
 import com.example.taskmanagerback.adapter.repository.minio.File;
-import com.example.taskmanagerback.adapter.repository.minio.FilesRepo;
+import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
 import com.example.taskmanagerback.app.api.project.SaveProjectFile;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SaveProjectFileImpl implements SaveProjectFile {
-    FilesRepo filesRepo;
+    FileRepo fileRepo;
 
     @Override
     public void execute(String projectId, File file) {
-        filesRepo.saveProjectFile(projectId, file);
+        fileRepo.saveProjectFile(projectId, file);
     }
 }

@@ -1,23 +1,20 @@
 package com.example.taskmanagerback.app.impl.project;
 
-import com.example.taskmanagerback.adapter.repository.minio.File;
 import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
-import com.example.taskmanagerback.app.api.project.GetAllProjectsFiles;
+import com.example.taskmanagerback.app.api.project.DeleteProjectFile;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class GetAllProjectsFilesImpl implements GetAllProjectsFiles {
+public class DeleteProjectFileImpl implements DeleteProjectFile {
     FileRepo fileRepo;
 
     @Override
-    public List<File> execute(String projectId) {
-        return fileRepo.getAllProjectFiles(projectId);
+    public void execute(String projectId, String filename) {
+        fileRepo.deleteProjectFile(projectId, filename);
     }
 }

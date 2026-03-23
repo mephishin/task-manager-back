@@ -12,12 +12,13 @@ import org.springframework.security.authentication.event.AuthenticationSuccessEv
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
+import static org.springframework.security.oauth2.core.oidc.StandardClaimNames.SUB;
+
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 @Slf4j
 public class AuthSuccessEventHandlerImpl implements AuthSuccessEventHandler {
-    static String SUB = "sub";
     UsersRepo usersRepo;
     TransferParticipant transferParticipant;
     RefreshParticipant refreshParticipant;
