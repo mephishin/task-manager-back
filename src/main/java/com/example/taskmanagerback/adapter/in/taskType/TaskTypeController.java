@@ -19,7 +19,7 @@ import java.util.List;
 public class TaskTypeController {
     TaskTypeMapper taskTypeMapper;
 
-    @GetMapping("/types")
+    @GetMapping("/type")
     public List<String> getTaskTypes() {
         log.info("Requested all task types");
         return taskTypeMapper.arrayOfTaskTypesToListOfTaskValues(TaskType.values());

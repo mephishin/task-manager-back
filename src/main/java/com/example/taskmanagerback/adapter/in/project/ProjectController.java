@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @RestController
+@RequestMapping("/project")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -39,7 +40,7 @@ public class ProjectController {
     SaveProjectFile saveProjectFile;
     DeleteProjectFile deleteProjectFile;
 
-    @GetMapping("/projects")
+    @GetMapping
     public List<ProjectDto> getAllProjects() {
         log.info("Requested all projects");
         return getAllProjects.execute().stream()
@@ -47,8 +48,8 @@ public class ProjectController {
                 .toList();
     }
 
-    @GetMapping("/projects/{projectId}/file")
-    public void getAllProjectsFiles(@PathVariable("projectId") String projectId, HttpServletResponse response) {
+    @GetMapping("/{projectId}/file")
+    public void getAllProjectFiles(@PathVariable("projectId") String projectId, HttpServletResponse response) {
         log.info("Requested all projects files");
         var listOfFiles = getAllProjectsFiles.execute(projectId);
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"files.zip\"");
@@ -68,7 +69,7 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/projects/{projectId}/file")
+    @PostMapping("/{projectId}/file")
     public void saveProjectFile(
             @PathVariable("projectId") String projectId,
             @RequestParam("file") MultipartFile file
@@ -77,7 +78,7 @@ public class ProjectController {
         saveProjectFile.execute(projectId, new File(file.getOriginalFilename(), file.getBytes(), file.getContentType()));
     }
 
-    @DeleteMapping("/projects/{projectId}/file")
+    @DeleteMapping("/{projectId}/file")
     public void saveProjectFile(
             @PathVariable("projectId") String projectId,
             @RequestParam("filename") String filename
@@ -86,7 +87,7 @@ public class ProjectController {
         deleteProjectFile.execute(projectId, filename);
     }
 
-    @GetMapping(path = "/project", params = "filter=auth")
+    @GetMapping(params = "filter=auth")
     public ProjectDto getProjectByAuthUser(Principal principal) {
         log.info("Requested project by auth participant {}", principal.getName());
 
@@ -95,7 +96,7 @@ public class ProjectController {
         );
     }
 
-    @PostMapping(path = "/project")
+    @PostMapping
     @PreAuthorize("hasAnyAuthority('task-manager_leader', 'task-manager_admin')")
     public ProjectDto createProject(@RequestBody CreateProjectDto createProjectDto) {
         log.info("Requested creating project by auth participant");

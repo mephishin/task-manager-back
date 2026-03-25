@@ -22,14 +22,14 @@ public class PeriodController {
     GetActivePeriodByProject getActivePeriodByProject;
     PeriodMapper periodMapper;
 
-    @GetMapping(path = "/period", params = {"project", "active=true"})
+    @GetMapping(path = "/period", params = {"projectId", "active=true"})
     public PeriodDto getActivePeriodByProject(
-            @RequestParam String project
+            @RequestParam String projectId
     ) {
         log.info("Requested active period by project");
         return periodMapper.periodToPeriodDto(
                 getActivePeriodByProject.execute(
-                        projectRepo.findById(project)
-                                .orElseThrow(() -> new RuntimeException("No such a project with key: " + project))));
+                        projectRepo.findById(projectId)
+                                .orElseThrow(() -> new RuntimeException("No such a project with id: " + projectId))));
     }
 }

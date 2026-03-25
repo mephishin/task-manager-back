@@ -1,5 +1,6 @@
 package com.example.taskmanagerback.model.task;
 
+import com.example.taskmanagerback.model.users.Users;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -16,19 +17,24 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Accessors(chain = true)
-public class TimeInterval {
+public class TaskComment {
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy=GenerationType.UUID)
     String id;
 
-    @Column(name = "task_key")
-    String taskKey;
+    String text;
 
     @Temporal(TemporalType.TIMESTAMP)
-    Instant started;
+    Instant created;
 
     @Temporal(TemporalType.TIMESTAMP)
-    Instant stopped;
+    Instant edited;
+
+    Boolean deleted;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    Users author;
 
     @Override
     public final boolean equals(Object o) {
@@ -43,7 +49,7 @@ public class TimeInterval {
         if (thisEffectiveClass != objectEffectiveClass) {
             return false;
         }
-        TimeInterval that = (TimeInterval) o;
+        TaskComment that = (TaskComment) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

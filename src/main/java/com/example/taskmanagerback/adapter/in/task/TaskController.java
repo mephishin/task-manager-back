@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/task")
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -34,13 +35,13 @@ public class TaskController {
     CloseTask closeTask;
     TaskRepo taskRepo;
 
-    @GetMapping("/searchTasks")
+    @GetMapping("/search")
     public List<SearchTaskDto> getSearchTasks() {
         log.info("Requested all task to search");
         return taskMapper.toListOfSearchTaskDto(taskRepo.findAll());
     }
 
-    @PutMapping("/task")
+    @PutMapping
     public TaskDto updateTask(
             @RequestBody UpdateTaskDto updateTaskDto
     ) {
@@ -52,7 +53,7 @@ public class TaskController {
         );
     }
 
-    @GetMapping("/task/{key}")
+    @GetMapping("/{key}")
     public TaskDto getTask(
             @PathVariable String key
     ) {
@@ -60,7 +61,7 @@ public class TaskController {
         return taskMapper.taskToTaskDto(getTaskByKey.execute(key));
     }
 
-    @PostMapping("/task")
+    @PostMapping
     public TaskDto createTask(
             @RequestBody CreateTaskDto createTaskDto,
             JwtAuthenticationToken jwtAuthenticationToken
@@ -74,7 +75,7 @@ public class TaskController {
         );
     }
 
-    @DeleteMapping("/task/{key}")
+    @DeleteMapping("/{key}")
     public void closeTask(
             @PathVariable String key
     ) {

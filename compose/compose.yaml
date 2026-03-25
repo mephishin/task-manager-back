@@ -72,8 +72,7 @@ services:
       until (/usr/bin/mc alias set min http://minio:9000 minioadmin minioadmin) do echo '...waiting...' && sleep 1; done;
       /usr/bin/mc mb min/task-files;
       /usr/bin/mc mb min/project-files;
-      /usr/bin/mc anonymous set public min/task-files;
-      /usr/bin/mc anonymous set public min/project-files;      
+      /usr/bin/mc mb min/comment-files;
       /usr/bin/mc admin trace -v -e min;
       "
 

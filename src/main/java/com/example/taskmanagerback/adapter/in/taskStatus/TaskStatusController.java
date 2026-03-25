@@ -26,7 +26,7 @@ public class TaskStatusController {
     TaskStatusMapper taskStatusMapper;
     GetProjectStatuses getProjectStatuses;
 
-    @GetMapping("/statuses/{projectId}")
+    @GetMapping("/status/{projectId}")
     public List<String> getTaskStatuses(@PathVariable("projectId") String projectId) {
         log.info("Requested all task statuses");
         return taskStatusMapper.arrayOfTaskStatusToListOfTaskStatusValues(getProjectStatuses.execute(projectId));

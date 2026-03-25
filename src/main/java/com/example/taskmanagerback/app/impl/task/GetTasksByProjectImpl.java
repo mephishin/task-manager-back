@@ -21,8 +21,8 @@ public class GetTasksByProjectImpl implements GetTasksByProject {
 
     @Override
     @Transactional
-    public List<Task> execute(String projectName) {
-        var project = projectRepo.findByName(projectName).orElseThrow();
+    public List<Task> execute(String projectId) {
+        var project = projectRepo.findById(projectId).orElseThrow();
 
         return taskRepo.findAllByProject(project);
     }

@@ -19,8 +19,8 @@ import java.util.List;
 @Slf4j
 public class FileRepo {
     private final MinioClient minioClient;
-    @Value("${minio.bucket.task-files}")
-    private String minioTaskFilesBucket;
+    @Value("${minio.bucket.comment-files}")
+    private String minioCommentFilesBucket;
     @Value("${minio.bucket.project-files}")
     private String minioProjectFilesBucket;
 
@@ -39,13 +39,13 @@ public class FileRepo {
     }
 
     public void saveCommentFile(String taskKey, String commentId, File file) {
-        String objectKey = getCommentFileKey(taskKey, commentId, file.name());
+        String objectKey = getCommentFileKey(commentId, file.name());
 
-        save(minioTaskFilesBucket, file, objectKey);
+        save(minioCommentFilesBucket, file, objectKey);
     }
 
-    public List<File> getAllCommentFiles(String taskKey, String commentId) {
-        return getAllFilesByPrefix(minioTaskFilesBucket, getCommentFilePrefix(taskKey, commentId));
+    public List<File> getAllCommentFiles(String commentId) {
+        return getAllFilesByPrefix(minioCommentFilesBucket, getCommentFilePrefix( commentId));
     }
 
     private List<File> getAllFilesByPrefix(String bucket, String prefix) {
@@ -66,7 +66,7 @@ public class FileRepo {
                         .build());
 
                 listOfFiles.add(new File(
-                        getCommentsFileNameFromKey(objectKey),
+                        getFileNameFromKey(objectKey),
                         minioClient.getObject(GetObjectArgs.builder()
                                         .bucket(bucket)
                                         .object(objectKey)
@@ -111,12 +111,12 @@ public class FileRepo {
         }
     }
 
-    private String getCommentFileKey(String taskKey, String commentId, String fileName) {
-        return String.join("/", getCommentFilePrefix(taskKey, commentId), fileName);
+    private String getCommentFileKey(String commentId, String fileName) {
+        return String.join("/", getCommentFilePrefix(commentId), fileName);
     }
 
-    private String getCommentFilePrefix(String taskKey, String commentId) {
-        return String.join("/", taskKey, commentId) + "/";
+    private String getCommentFilePrefix(String commentId) {
+        return String.join("/", commentId) + "/";
     }
 
     private String getProjectFilePrefix(String projectId) {
@@ -127,7 +127,7 @@ public class FileRepo {
         return String.join("/", projectId, fileName);
     }
 
-    private String getCommentsFileNameFromKey(String key) {
+    private String getFileNameFromKey(String key) {
         var parts = key.split("/");
         return parts[parts.length - 1];
     }

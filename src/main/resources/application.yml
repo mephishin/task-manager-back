@@ -27,5 +27,6 @@ minio:
   bucket:
     task-files: task-files
     project-files: project-files
+    comment-files: comment-files
   accessKey: minioadmin
   secretKey : minioadmin

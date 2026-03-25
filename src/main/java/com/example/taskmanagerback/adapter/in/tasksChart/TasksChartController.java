@@ -24,23 +24,23 @@ public class TasksChartController {
     TasksChartMapper tasksChartMapper;
     GetAuthUser getAuthUser;
 
-    @GetMapping(path = "/tasksChart", params = "project")
+    @GetMapping(path = "/tasksChart", params = "projectId")
     public TasksChartDto getTasksChart(
-            @RequestParam String project
+            @RequestParam String projectId
     ) {
-        log.info("Requested tasks by projectName: {}", project);
+        log.info("Requested tasks by projectName: {}", projectId);
         return tasksChartMapper.listOfTasksToTasksChartDto(
-                getTasksByProject.execute(project)
+                getTasksByProject.execute(projectId)
         );
     }
 
-    @GetMapping(path = "/tasksChart", params = "!project")
+    @GetMapping(path = "/tasksChart", params = "!projectId")
     public TasksChartDto getTasksChart() {
         var authUsersProject =
                 getAuthUser.execute(getJwtAuthenticationToken.execute()).getProject();
         log.info("Requested tasks by auth user's project: {}", authUsersProject.getName());
         return tasksChartMapper.listOfTasksToTasksChartDto(
-                getTasksByProject.execute(authUsersProject.getName())
+                getTasksByProject.execute(authUsersProject.getKey())
         );
     }
 }
