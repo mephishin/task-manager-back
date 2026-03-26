@@ -1,10 +1,10 @@
 package com.example.taskmanagerback.adapter.in.comment;
 
 import com.example.taskmanagerback.adapter.in.comment.dto.CommentDto;
-import com.example.taskmanagerback.adapter.in.comment.dto.SaveCommentDto;
 import com.example.taskmanagerback.app.api.comment.GetAllCommentsFiles;
 import com.example.taskmanagerback.app.api.comment.GetTaskComments;
 import com.example.taskmanagerback.app.api.comment.SaveComment;
+import com.example.taskmanagerback.util.ZipUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -33,15 +34,30 @@ public class CommentController {
     GetTaskComments getTaskComments;
     GetAllCommentsFiles getAllCommentsFiles;
 
-
     @PostMapping("task/{taskKey}/comment")
     public void saveComment(
             @PathVariable String taskKey,
-            @RequestBody SaveCommentDto saveCommentDto,
-            @RequestParam("commentfiles") MultipartFile zippedComments
-    ) {
-        log.info("Request to save task comment {}", saveCommentDto);
-        saveComment.execute(taskKey,commentMapper.commentDtoToComment(saveCommentDto));
+            @RequestParam("text") String text,
+            @RequestParam(value = "zippedFiles", required = false) MultipartFile zippedFiles,
+            Principal principal
+    ) throws IOException {
+        log.info("Request to save task comment");
+
+        if (zippedFiles.isEmpty()) {
+            saveComment.execute(
+                    taskKey,
+                    text,
+                    principal.getName(),
+                    null
+            );
+        } else {
+            saveComment.execute(
+                    taskKey,
+                    text,
+                    principal.getName(),
+                    ZipUtils.unzip(zippedFiles)
+            );
+        }
     }
 
     @GetMapping("task/{taskKey}/comment")

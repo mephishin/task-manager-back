@@ -38,10 +38,12 @@ public class FileRepo {
         delete(minioProjectFilesBucket, getProjectsFileKey(projectId, filename));
     }
 
-    public void saveCommentFile(String taskKey, String commentId, File file) {
-        String objectKey = getCommentFileKey(commentId, file.name());
-
-        save(minioCommentFilesBucket, file, objectKey);
+    public void saveCommentFiles(String commentId, List<File> files) {
+        files.forEach(file -> save(
+                minioCommentFilesBucket,
+                file,
+                getCommentFileKey(commentId, file.name())
+        ));
     }
 
     public List<File> getAllCommentFiles(String commentId) {

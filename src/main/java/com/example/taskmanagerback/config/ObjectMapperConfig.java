@@ -12,6 +12,7 @@ public class ObjectMapperConfig {
     public ObjectMapper objectMapper() {
         return JsonMapper.builder()
                 .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
-                .build();
+                .build()
+                .findAndRegisterModules();
     }
 }

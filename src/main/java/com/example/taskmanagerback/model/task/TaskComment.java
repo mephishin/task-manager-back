@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.Instant;
@@ -30,6 +31,7 @@ public class TaskComment {
     @Temporal(TemporalType.TIMESTAMP)
     Instant edited;
 
+    @ColumnDefault("false")
     Boolean deleted;
 
     @ManyToOne

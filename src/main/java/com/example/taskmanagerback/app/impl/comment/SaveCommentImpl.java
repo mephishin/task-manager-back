@@ -1,6 +1,10 @@
 package com.example.taskmanagerback.app.impl.comment;
 
+import com.example.taskmanagerback.adapter.repository.minio.File;
+import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.TaskCommentRepo;
 import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
 import com.example.taskmanagerback.app.api.comment.SaveComment;
 import com.example.taskmanagerback.model.task.TaskComment;
 import jakarta.transaction.Transactional;
@@ -9,17 +13,31 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SaveCommentImpl implements SaveComment {
     TaskRepo taskRepo;
+    FileRepo fileRepo;
+    UsersRepo usersRepo;
+    TaskCommentRepo taskCommentRepo;
 
     @Override
     @Transactional
-    public void execute(String taskKey, TaskComment taskComment) {
+    public void execute(String taskKey, String text, String username, List<File> files) {
         var task = taskRepo.findById(taskKey)
                 .orElseThrow(() -> new RuntimeException("Task not found with key: " + taskKey));
-        task.getTaskComments().add(taskComment);
+
+        var comment = taskCommentRepo.save(new TaskComment()
+                .setText(text)
+                .setAuthor(usersRepo.findByUsername(username).orElseThrow())
+                .setCreated(Instant.now()));
+
+        task.getTaskComments().add(comment);
+
+        fileRepo.saveCommentFiles(comment.getId(), files);
     }
 }
