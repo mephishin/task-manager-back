@@ -6,6 +6,7 @@ import com.example.taskmanagerback.adapter.repository.minio.File;
 import com.example.taskmanagerback.app.api.project.*;
 import com.example.taskmanagerback.app.api.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
+import com.example.taskmanagerback.util.ZipUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -72,10 +73,13 @@ public class ProjectController {
     @PostMapping("/{projectId}/file")
     public void saveProjectFile(
             @PathVariable("projectId") String projectId,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("zippedFiles") MultipartFile file
     ) throws IOException {
         log.info("Request to save project file {} {}", file.getOriginalFilename(), file.getContentType());
-        saveProjectFile.execute(projectId, new File(file.getOriginalFilename(), file.getBytes(), file.getContentType()));
+        saveProjectFile.execute(
+                projectId,
+                ZipUtils.unzip(file)
+        );
     }
 
     @DeleteMapping("/{projectId}/file")

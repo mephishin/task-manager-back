@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -15,7 +17,7 @@ public class SaveProjectFileImpl implements SaveProjectFile {
     FileRepo fileRepo;
 
     @Override
-    public void execute(String projectId, File file) {
-        fileRepo.saveProjectFile(projectId, file);
+    public void execute(String projectId, List<File> files) {
+        fileRepo.saveProjectFile(projectId, files);
     }
 }

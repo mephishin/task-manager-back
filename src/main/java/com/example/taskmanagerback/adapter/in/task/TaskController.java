@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -38,7 +39,9 @@ public class TaskController {
     @GetMapping("/search")
     public List<SearchTaskDto> getSearchTasks() {
         log.info("Requested all task to search");
-        return taskMapper.toListOfSearchTaskDto(taskRepo.findAll());
+        return taskMapper.toListOfSearchTaskDto(taskRepo.findAll()).stream()
+                .sorted(Comparator.comparing(SearchTaskDto::key))
+                .toList();
     }
 
     @PutMapping

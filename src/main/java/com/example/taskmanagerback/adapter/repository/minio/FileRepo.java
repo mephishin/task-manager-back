@@ -24,10 +24,12 @@ public class FileRepo {
     @Value("${minio.bucket.project-files}")
     private String minioProjectFilesBucket;
 
-    public void saveProjectFile(String projectId, File file) {
-        String objectKey = getProjectsFileKey(projectId, file.name());
-
-        save(minioProjectFilesBucket,file, objectKey);
+    public void saveProjectFile(String projectId, List<File> files) {
+        files.forEach(file -> save(
+                minioProjectFilesBucket,
+                file,
+                getProjectsFileKey(projectId, file.name())
+        ));
     }
 
     public List<File> getAllProjectFiles(String projectId) {
@@ -36,6 +38,14 @@ public class FileRepo {
 
     public void deleteProjectFile(String projectId, String filename) {
         delete(minioProjectFilesBucket, getProjectsFileKey(projectId, filename));
+    }
+
+    public void deleteCommentFile(String commentId, String filename) {
+        delete(minioCommentFilesBucket, getCommentFileKey(commentId, filename));
+    }
+
+    public void deleteAllCommentFiles(String commentId) {
+        deleteAllFilesByPrefix(minioCommentFilesBucket, getCommentFilePrefix(commentId));
     }
 
     public void saveCommentFiles(String commentId, List<File> files) {
@@ -47,7 +57,27 @@ public class FileRepo {
     }
 
     public List<File> getAllCommentFiles(String commentId) {
-        return getAllFilesByPrefix(minioCommentFilesBucket, getCommentFilePrefix( commentId));
+        return getAllFilesByPrefix(minioCommentFilesBucket, getCommentFilePrefix(commentId));
+    }
+
+    private void deleteAllFilesByPrefix(String bucket, String prefix) {
+        try {
+            var results = minioClient.listObjects(ListObjectsArgs.builder()
+                    .bucket(bucket)
+                    .prefix(prefix)
+                    .build());
+
+            for (Result<Item> result : results) {
+                minioClient.removeObject(
+                        RemoveObjectArgs.builder()
+                                .bucket(bucket)
+                                .object(result.get().objectName())
+                                .build()
+                );
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private List<File> getAllFilesByPrefix(String bucket, String prefix) {
@@ -82,7 +112,6 @@ public class FileRepo {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void save(String bucket, File file, String objectKey) {

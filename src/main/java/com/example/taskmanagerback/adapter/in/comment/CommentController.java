@@ -1,16 +1,14 @@
 package com.example.taskmanagerback.adapter.in.comment;
 
 import com.example.taskmanagerback.adapter.in.comment.dto.CommentDto;
-import com.example.taskmanagerback.app.api.comment.GetAllCommentsFiles;
-import com.example.taskmanagerback.app.api.comment.GetTaskComments;
-import com.example.taskmanagerback.app.api.comment.SaveComment;
+import com.example.taskmanagerback.app.api.comment.*;
+import com.example.taskmanagerback.model.task.TaskComment;
 import com.example.taskmanagerback.util.ZipUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -33,6 +32,8 @@ public class CommentController {
     CommentMapper commentMapper;
     GetTaskComments getTaskComments;
     GetAllCommentsFiles getAllCommentsFiles;
+    DeleteCommentFile deleteCommentFile;
+    DeleteComment deleteComment;
 
     @PostMapping("task/{taskKey}/comment")
     public void saveComment(
@@ -60,10 +61,24 @@ public class CommentController {
         }
     }
 
+    @DeleteMapping("comment/{commentId}/file/{filename}")
+    public void deleteCommentFile(@PathVariable String commentId, @PathVariable String filename) {
+        log.info("Request to delete comment file");
+        deleteCommentFile.execute(commentId, filename);
+    }
+
+    @DeleteMapping("comment/{commentId}")
+    public void deleteCommentFile(@PathVariable String commentId) {
+        log.info("Request to delete comment");
+        deleteComment.execute(commentId);
+    }
+
     @GetMapping("task/{taskKey}/comment")
     public List<CommentDto> getComments(@PathVariable String taskKey) {
         log.info("Request to get task comments");
-        return commentMapper.commentListToCommentDtoList(getTaskComments.execute(taskKey));
+        return commentMapper.commentListToCommentDtoList(
+                getTaskComments.execute(taskKey).stream()
+                        .sorted(Comparator.comparing(TaskComment::getCreated)).toList());
     }
 
     @GetMapping("/comment/file")
@@ -73,7 +88,6 @@ public class CommentController {
     ) {
         log.info("Requested all comment files");
         var mapOfCommentsFiles = getAllCommentsFiles.execute(commentIds);
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"files.zip\"");
 
         try (ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream())) {
             for (var entry : mapOfCommentsFiles.entrySet()) {
