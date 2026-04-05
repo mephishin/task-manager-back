@@ -39,6 +39,10 @@ public abstract class TasksChartMapper {
                 .distinct()
                 .map(user -> new TasksChartDto.Participant(
                         user.getUsername(),
+                        user.getFirstName(),
+                        user.getMiddleName(),
+                        user.getLastName(),
+                        user.getGroup(),
                         tasks.stream()
                                 .filter(task -> nonNull(task.getAssignee()) &&
                                         task.getAssignee().getUsername().equals(user.getUsername()))

@@ -6,6 +6,10 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="username" type="varchar"/>
+            <column name="first_name" type="varchar"/>
+            <column name="middle_name" type="varchar"/>
+            <column name="last_name" type="varchar"/>
+            <column name="user_group" type="varchar"/>
             <column name="project_key" type="varchar"/>
         </createTable>
     </changeSet>

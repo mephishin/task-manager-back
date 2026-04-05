@@ -23,6 +23,14 @@ public class Users {
     String id;
 
     String username;
+    @Column(name = "first_name")
+    String firstName;
+    @Column(name = "middle_name")
+    String middleName;
+    @Column(name = "last_name")
+    String lastName;
+    @Column(name = "user_group")
+    String group;
 
     @OneToMany(mappedBy = "assignee")
     @ToString.Exclude

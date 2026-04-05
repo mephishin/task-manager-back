@@ -26,13 +26,15 @@ public class AuthSuccessEventHandlerImpl implements AuthSuccessEventHandler {
     @Override
     public void handle(AuthenticationSuccessEvent authenticationSuccessEvent) {
         var jwtAuthenticationToken = (JwtAuthenticationToken) authenticationSuccessEvent.getAuthentication();
-        log.info("Token of auth participant: {}", jwtAuthenticationToken.getTokenAttributes());
+        var tokenAttributes = jwtAuthenticationToken.getTokenAttributes();
+        log.info("Token of auth participant: {}", tokenAttributes);
         var authUserId = jwtAuthenticationToken.getToken().getClaimAsString(SUB);
         var participant = usersRepo.findById(authUserId);
         participant.ifPresentOrElse(
                 value -> {
                     log.info("User with id: {} and username: {} exists", authUserId, value.getUsername());
-                    log.info("Updating user");
+                    log.info("Refreshing user");
+                    refreshParticipant.execute(authUserId, tokenAttributes);
                 },
                 () -> {
                     log.info("User with id: {} not exists", authUserId);

@@ -15,6 +15,10 @@ public record TasksChartDto(
 
     public record Participant(
             String username,
+            String firstName,
+            String middleName,
+            String lastName,
+            String group,
             List<Task> tasks
     ) {
         public record Task(
