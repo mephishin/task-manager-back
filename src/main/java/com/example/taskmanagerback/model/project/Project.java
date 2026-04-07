@@ -31,6 +31,8 @@ public class Project {
     @Column(name = "status_flow")
     String statusFlow;
 
+    String description;
+
     @OneToMany(mappedBy = "project")
     @ToString.Exclude
     List<Users> participants;

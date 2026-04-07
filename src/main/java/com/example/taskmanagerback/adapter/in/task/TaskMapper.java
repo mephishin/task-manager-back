@@ -4,8 +4,8 @@ import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.SearchTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
+import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
 import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
-import com.example.taskmanagerback.app.api.project.GetProjectByName;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TimeInterval;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
@@ -30,9 +30,9 @@ import static java.util.Objects.nonNull;
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class TaskMapper {
     @Autowired
-    GetProjectByName getProjectByName;
-    @Autowired
     UsersRepo usersRepo;
+    @Autowired
+    ProjectRepo projectRepo;
 
     @Mapping(target = "project", source = "task.project.name")
     @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
@@ -67,12 +67,12 @@ public abstract class TaskMapper {
                 ).orElse(null);
     }
 
-    @Mapping(target = "project", expression = "java(getProjectByName.execute(createTaskDto.project()))")
-    @Mapping(target = "assignee", expression = "java(usersRepo.findByUsername(createTaskDto.assignee()).orElse(null))")
+    @Mapping(target = "project", expression = "java(projectRepo.findById(createTaskDto.project()).orElse(null))")
+    @Mapping(target = "assignee", expression = "java(usersRepo.findById(createTaskDto.assignee()).orElse(null))")
     @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "createTaskDto.type")
     public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
 
-    @Mapping(target = "assignee", expression = "java(usersRepo.findByUsername(updateTaskDto.assignee()).orElse(null))")
+    @Mapping(target = "assignee", expression = "java(usersRepo.findById(updateTaskDto.assignee()).orElse(null))")
     @Mapping(target = "status", qualifiedByName = "getTaskStatusByValue", source = "updateTaskDto.status")
     @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "updateTaskDto.type")
     public abstract Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto);

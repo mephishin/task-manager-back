@@ -22,11 +22,11 @@ public abstract class ProjectMapper {
 
     public abstract ProjectDto projectToProjectDto(Project project);
 
-    @Mapping(target = "participants", qualifiedByName = "usernamesToParticipants", source = "participants")
+    @Mapping(target = "participants", qualifiedByName = "idsToParticipants", source = "participants")
     public abstract Project projectDtoToProject(CreateProjectDto createProjectDto);
 
-    @Named("usernamesToParticipants")
-    protected List<Users> usernamesToParticipants(List<String> usernames) {
-        return usersRepo.findAllByUsernameIn(usernames);
+    @Named("idsToParticipants")
+    protected List<Users> usernamesToParticipants(List<String> ids) {
+        return usersRepo.findAllById(ids);
     }
 }
