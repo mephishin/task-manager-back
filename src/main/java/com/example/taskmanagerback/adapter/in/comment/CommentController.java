@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static java.util.Objects.nonNull;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -34,6 +36,7 @@ public class CommentController {
     GetAllCommentsFiles getAllCommentsFiles;
     DeleteCommentFile deleteCommentFile;
     DeleteComment deleteComment;
+    UpdateComment updateComment;
 
     @PostMapping("task/{taskKey}/comment")
     public void saveComment(
@@ -44,21 +47,29 @@ public class CommentController {
     ) throws IOException {
         log.info("Request to save task comment");
 
-        if (zippedFiles.isEmpty()) {
-            saveComment.execute(
-                    taskKey,
-                    text,
-                    principal.getName(),
-                    null
-            );
-        } else {
-            saveComment.execute(
-                    taskKey,
-                    text,
-                    principal.getName(),
-                    ZipUtils.unzip(zippedFiles)
-            );
-        }
+        saveComment.execute(
+                taskKey,
+                text,
+                principal.getName(),
+                (nonNull(zippedFiles) && !zippedFiles.isEmpty()) ? ZipUtils.unzip(zippedFiles) : null
+        );
+    }
+
+    @PatchMapping("/comment/{commentId}")
+    public void updateComment(
+            @PathVariable String commentId,
+            @RequestParam("text") String text,
+            @RequestParam(value = "zippedFiles", required = false) MultipartFile zippedFiles,
+            Principal principal
+    ) throws IOException {
+        log.info("Request to update task comment");
+
+        updateComment.execute(
+                commentId,
+                text,
+                principal.getName(),
+                (nonNull(zippedFiles) && !zippedFiles.isEmpty()) ? ZipUtils.unzip(zippedFiles) : null
+        );
     }
 
     @DeleteMapping("comment/{commentId}/file/{filename}")
@@ -91,8 +102,8 @@ public class CommentController {
 
         try (ZipOutputStream zipOut = new ZipOutputStream(response.getOutputStream())) {
             for (var entry : mapOfCommentsFiles.entrySet()) {
-                for (var file: entry.getValue()) {
-                    ZipEntry zipEntry = new ZipEntry(entry.getKey() + "_" + file.name());
+                for (var file : entry.getValue()) {
+                    ZipEntry zipEntry = new ZipEntry(entry.getKey() + file.name());
                     zipEntry.setSize(file.bytes().length);
                     zipOut.putNextEntry(zipEntry);
                     StreamUtils.copy(new ByteArrayInputStream(file.bytes()), zipOut);

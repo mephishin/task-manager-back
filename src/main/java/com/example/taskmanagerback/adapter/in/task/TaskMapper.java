@@ -73,8 +73,6 @@ public abstract class TaskMapper {
     public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
 
     @Mapping(target = "assignee", expression = "java(usersRepo.findById(updateTaskDto.assignee()).orElse(null))")
-    @Mapping(target = "status", qualifiedByName = "getTaskStatusByValue", source = "updateTaskDto.status")
-    @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "updateTaskDto.type")
     public abstract Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto);
 
     @Named("getTaskTypeByValue")

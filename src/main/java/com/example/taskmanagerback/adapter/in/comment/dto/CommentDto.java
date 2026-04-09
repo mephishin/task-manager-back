@@ -8,5 +8,12 @@ public record CommentDto(
         String edited,
         String created
 ) {
-    public record AuthorDto(String username) {}
+    public record AuthorDto(
+            String username,
+            String firstName,
+            String middleName,
+            String lastName,
+            String group
+    ) {
+    }
 }

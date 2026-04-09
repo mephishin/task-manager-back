@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -38,6 +40,8 @@ public class SaveCommentImpl implements SaveComment {
 
         task.getTaskComments().add(comment);
 
-        fileRepo.saveCommentFiles(comment.getId(), files);
+        if (nonNull(files)) {
+            fileRepo.saveCommentFiles(comment.getId(), files);
+        }
     }
 }
