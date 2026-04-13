@@ -3,6 +3,7 @@ package com.example.taskmanagerback.adapter.in.project;
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
 import com.example.taskmanagerback.adapter.repository.minio.File;
+import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
 import com.example.taskmanagerback.app.api.project.*;
 import com.example.taskmanagerback.app.api.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static java.util.Objects.nonNull;
+
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
@@ -38,8 +41,9 @@ public class ProjectController {
     GetAuthUser getAuthUser;
     CreateProject createProject;
     GetAllProjectsFiles getAllProjectsFiles;
-    SaveProjectFile saveProjectFile;
+    UpdateProject updateProject;
     DeleteProjectFile deleteProjectFile;
+    ProjectRepo projectRepo;
 
     @GetMapping
     public List<ProjectDto> getAllProjects() {
@@ -47,6 +51,12 @@ public class ProjectController {
         return getAllProjects.execute().stream()
                 .map(projectMapper::projectToProjectDto)
                 .toList();
+    }
+
+    @GetMapping("/{projectId}")
+    public ProjectDto getProject(@PathVariable("projectId") String projectId) {
+        log.info("Requested project by id: {}", projectId);
+        return projectMapper.projectToProjectDto(projectRepo.findById(projectId).orElseThrow());
     }
 
     @GetMapping("/{projectId}/file")
@@ -70,15 +80,17 @@ public class ProjectController {
         }
     }
 
-    @PostMapping("/{projectId}/file")
-    public void saveProjectFile(
+    @PutMapping("/{projectId}")
+    public void updateProjectInfo(
             @PathVariable("projectId") String projectId,
-            @RequestParam("zippedFiles") MultipartFile file
+            @RequestParam("zippedFiles") MultipartFile zippedFiles,
+            @RequestParam(value = "description", required = false) String description
     ) throws IOException {
-        log.info("Request to save project file {} {}", file.getOriginalFilename(), file.getContentType());
-        saveProjectFile.execute(
+        log.info("Request to update project with id: {}", projectId);
+        updateProject.execute(
                 projectId,
-                ZipUtils.unzip(file)
+                description,
+                (nonNull(zippedFiles) && !zippedFiles.isEmpty()) ? ZipUtils.unzip(zippedFiles) : null
         );
     }
 
@@ -102,10 +114,9 @@ public class ProjectController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('task-manager_leader', 'task-manager_admin')")
-    public ProjectDto createProject(@RequestBody CreateProjectDto createProjectDto) {
+    public void createProject(@RequestBody CreateProjectDto createProjectDto) {
         log.info("Requested creating project by auth participant");
 
-        return projectMapper.projectToProjectDto(
-                createProject.execute(projectMapper.projectDtoToProject(createProjectDto)));
+        createProject.execute(projectMapper.projectDtoToProject(createProjectDto));
     }
 }

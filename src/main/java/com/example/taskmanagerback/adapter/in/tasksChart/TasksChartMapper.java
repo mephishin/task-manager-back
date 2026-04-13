@@ -26,8 +26,7 @@ public abstract class TasksChartMapper {
                 .map(task -> new TasksChartDto.Participant.Task(
                         task.getKey(),
                         task.getName(),
-                        task.getStatus().getValue(),
-                        task.getType().getValue()
+                        task.getStatus().getValue()
                 ))
                 .toList();
     }
@@ -49,7 +48,6 @@ public abstract class TasksChartMapper {
                                 .map(task -> new TasksChartDto.Participant.Task(
                                         task.getKey(),
                                         task.getName(),
-                                        task.getType().getValue(),
                                         task.getStatus().getValue()
                                 ))
                                 .toList()

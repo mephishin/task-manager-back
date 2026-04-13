@@ -6,10 +6,7 @@ import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
 import com.example.taskmanagerback.app.api.security.GetAuthUser;
-import com.example.taskmanagerback.app.api.task.CloseTask;
-import com.example.taskmanagerback.app.api.task.CreateTask;
-import com.example.taskmanagerback.app.api.task.GetTaskByKey;
-import com.example.taskmanagerback.app.api.task.UpdateTask;
+import com.example.taskmanagerback.app.api.task.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,8 +32,9 @@ public class TaskController {
     GetAuthUser getAuthUser;
     CloseTask closeTask;
     TaskRepo taskRepo;
+    GetTasksByProject getTasksByProject;
 
-    @GetMapping("/search")
+    @GetMapping(value = "/search")
     public List<SearchTaskDto> getSearchTasks() {
         log.info("Requested all task to search");
         return taskMapper.toListOfSearchTaskDto(taskRepo.findAll()).stream()
@@ -44,16 +42,25 @@ public class TaskController {
                 .toList();
     }
 
+    @GetMapping(value = "/search", params = "filter=userProject")
+    public List<SearchTaskDto> getSearchTasksByUserProject(JwtAuthenticationToken jwtAuthenticationToken) {
+        log.info("Requested all task to search by user project");
+        return taskMapper.toListOfSearchTaskDto(getTasksByProject.execute(
+                        getAuthUser.execute(jwtAuthenticationToken).getProject().getKey()))
+                .stream()
+                .sorted(Comparator.comparing(SearchTaskDto::key))
+                .toList();
+    }
+
     @PutMapping
-    public TaskDto updateTask(
+    public void updateTask(
             @RequestBody UpdateTaskDto updateTaskDto
     ) {
         log.info("Request to update task with body: {}", updateTaskDto);
-        return taskMapper.taskToTaskDto(
-                updateTask.execute(
-                        taskMapper.updateTaskDtoToTask(updateTaskDto)
-                )
+        updateTask.execute(
+                taskMapper.updateTaskDtoToTask(updateTaskDto)
         );
+
     }
 
     @GetMapping("/{key}")
@@ -65,17 +72,16 @@ public class TaskController {
     }
 
     @PostMapping
-    public TaskDto createTask(
+    public void createTask(
             @RequestBody CreateTaskDto createTaskDto,
             JwtAuthenticationToken jwtAuthenticationToken
     ) {
         log.info("Request to create task: {}", createTaskDto);
-        return taskMapper.taskToTaskDto(
-                createTask.execute(
-                        taskMapper.createTaskDtoToTask(createTaskDto),
-                        getAuthUser.execute(jwtAuthenticationToken)
-                )
+        createTask.execute(
+                taskMapper.createTaskDtoToTask(createTaskDto),
+                getAuthUser.execute(jwtAuthenticationToken)
         );
+
     }
 
     @DeleteMapping("/{key}")

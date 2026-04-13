@@ -1,6 +1,6 @@
-id;username;project_key
-0b4961cd-c2b6-4de3-b962-f18970237a83;admin;
-2502e7c4-eed6-4e37-a25a-44d81209f29f;volodina;9f174c09-014c-41dd-b833-d55d4825508a
-b38173c8-c5de-4961-8a09-34dc414efdec;ivanov;9f174c09-014c-41dd-b833-d55d4825508a
-5749759d-ead6-44ac-8b16-2ca9d15f1ee8;petrov;413c21b2-1fa1-44f7-9e28-a10710350e77
-accaa7c3-4d71-4c5f-b0c8-7c7c091166e2;olegov;df211566-0aa1-4da6-83b8-0dc8ae4113bb
+id;username;project_key;first_name;middle_name;last_name;user_group
+0b4961cd-c2b6-4de3-b962-f18970237a83;admin;;;;;
+2502e7c4-eed6-4e37-a25a-44d81209f29f;volodina;9f174c09-014c-41dd-b833-d55d4825508a;Ольга;;Володина;
+b38173c8-c5de-4961-8a09-34dc414efdec;ivanov;9f174c09-014c-41dd-b833-d55d4825508a;Иван;Иванович;Иванов;201-142
+5749759d-ead6-44ac-8b16-2ca9d15f1ee8;petrov;413c21b2-1fa1-44f7-9e28-a10710350e77;Петр;Петрович;Петров;211-172
+accaa7c3-4d71-4c5f-b0c8-7c7c091166e2;olegov;df211566-0aa1-4da6-83b8-0dc8ae4113bb;Олег;Олегович;Олегов;221-171

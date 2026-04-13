@@ -8,8 +8,7 @@ import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRe
 import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TimeInterval;
-import com.example.taskmanagerback.model.task.constants.TaskStatus;
-import com.example.taskmanagerback.model.task.constants.TaskType;
+import com.example.taskmanagerback.model.users.Users;
 import com.example.taskmanagerback.util.DateTimeUtils;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -36,7 +35,6 @@ public abstract class TaskMapper {
 
     @Mapping(target = "project", source = "task.project.name")
     @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
-    @Mapping(target = "type", expression = "java(task.getType().getValue())")
     @Mapping(target = "assignee", source = "task.assignee.username")
     @Mapping(target = "reporter", source = "task.reporter.username")
     @Mapping(target = "created", qualifiedByName = "getFormattedInstant", source = "task.taskTime.created")
@@ -68,21 +66,15 @@ public abstract class TaskMapper {
     }
 
     @Mapping(target = "project", expression = "java(projectRepo.findById(createTaskDto.project()).orElse(null))")
-    @Mapping(target = "assignee", expression = "java(usersRepo.findById(createTaskDto.assignee()).orElse(null))")
-    @Mapping(target = "type", qualifiedByName = "getTaskTypeByValue", source = "createTaskDto.type")
+    @Mapping(target = "assignee", qualifiedByName = "assigneeToUser", source = "assignee")
     public abstract Task createTaskDtoToTask(CreateTaskDto createTaskDto);
 
-    @Mapping(target = "assignee", expression = "java(usersRepo.findById(updateTaskDto.assignee()).orElse(null))")
+    @Mapping(target = "assignee", qualifiedByName = "assigneeToUser", source = "assignee")
     public abstract Task updateTaskDtoToTask(UpdateTaskDto updateTaskDto);
 
-    @Named("getTaskTypeByValue")
-    protected TaskType getTaskTypeByValue(String value) {
-        return TaskType.findTypeByValue(value);
-    }
-
-    @Named("getTaskStatusByValue")
-    protected TaskStatus getTaskStatusByValue(String value) {
-        return TaskStatus.findStatusByValue(value);
+    @Named("assigneeToUser")
+    protected Users assigneeToUser(String value) {
+        return nonNull(value) ? usersRepo.findById(value).orElseThrow() : null;
     }
 
     public abstract List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks);

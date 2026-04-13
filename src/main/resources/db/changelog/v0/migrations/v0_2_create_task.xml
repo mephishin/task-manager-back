@@ -8,7 +8,6 @@
             </column>
             <column name="description" type="varchar"/>
             <column name="status" type="varchar"/>
-            <column name="type" type="varchar"/>
             <column name="project_key" type="varchar"/>
             <column name="assignee_id" type="varchar"/>
             <column name="reporter_id" type="varchar"/>

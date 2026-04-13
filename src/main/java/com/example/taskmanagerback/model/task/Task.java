@@ -3,7 +3,6 @@ package com.example.taskmanagerback.model.task;
 import com.example.taskmanagerback.model.period.Period;
 import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
-import com.example.taskmanagerback.model.task.constants.TaskType;
 import com.example.taskmanagerback.model.users.Users;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +30,6 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     TaskStatus status;
-
-    @Enumerated(EnumType.STRING)
-    TaskType type;
 
     @ManyToOne
     @JoinColumn(name = "project_key")

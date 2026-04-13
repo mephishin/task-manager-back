@@ -24,7 +24,6 @@ public record TasksChartDto(
         public record Task(
                 String key,
                 String name,
-                String type,
                 String status
         ) {}
     }

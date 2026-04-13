@@ -5,7 +5,6 @@ public record TaskDto(
         String name,
         String description,
         String status,
-        String type,
         String project,
         String assignee,
         String reporter,

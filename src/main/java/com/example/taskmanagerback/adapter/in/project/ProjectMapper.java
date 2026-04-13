@@ -21,6 +21,7 @@ public abstract class ProjectMapper {
     UsersRepo usersRepo;
 
     public abstract ProjectDto projectToProjectDto(Project project);
+    public abstract ProjectDto.ParticipantDto projectToProjectDto(Users users);
 
     @Mapping(target = "participants", qualifiedByName = "idsToParticipants", source = "participants")
     public abstract Project projectDtoToProject(CreateProjectDto createProjectDto);
