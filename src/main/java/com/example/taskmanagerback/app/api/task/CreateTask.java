@@ -4,5 +4,5 @@ import com.example.taskmanagerback.model.users.Users;
 import com.example.taskmanagerback.model.task.Task;
 
 public interface CreateTask {
-    Task execute(Task task, Users users);
+    String execute(Task task, Users users);
 }

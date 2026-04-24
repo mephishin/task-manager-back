@@ -79,7 +79,7 @@ public abstract class TaskMapper {
 
     public abstract List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks);
 
-    @Mapping(target = "project", source = "task.project.name")
+    @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
     @Mapping(target = "assignee", source = "task.assignee.username")
     @Mapping(target = "reporter", source = "task.reporter.username")
     protected abstract SearchTaskDto taskToSearchTaskDto(Task task);

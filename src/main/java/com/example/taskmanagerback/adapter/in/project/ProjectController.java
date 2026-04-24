@@ -83,7 +83,7 @@ public class ProjectController {
     @PutMapping("/{projectId}")
     public void updateProjectInfo(
             @PathVariable("projectId") String projectId,
-            @RequestParam("zippedFiles") MultipartFile zippedFiles,
+            @RequestParam(value = "zippedFiles", required = false) MultipartFile zippedFiles,
             @RequestParam(value = "description", required = false) String description
     ) throws IOException {
         log.info("Request to update project with id: {}", projectId);

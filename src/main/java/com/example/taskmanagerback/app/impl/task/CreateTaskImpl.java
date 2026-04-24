@@ -27,7 +27,7 @@ public class CreateTaskImpl implements CreateTask {
 
     @Override
     @Transactional
-    public Task execute(Task task, Users users) {
+    public String execute(Task task, Users users) {
         var currentProjectKey = getCurrentProjectKey(task);
         log.info("Creating a task with key: {}", currentProjectKey);
 
@@ -41,7 +41,7 @@ public class CreateTaskImpl implements CreateTask {
 
         createdTask.setTaskTime(taskTime);
 
-        return createdTask;
+        return createdTask.getKey();
     }
 
     private String getCurrentProjectKey(Task task) {

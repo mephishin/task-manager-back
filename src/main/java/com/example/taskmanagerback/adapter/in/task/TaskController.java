@@ -72,12 +72,12 @@ public class TaskController {
     }
 
     @PostMapping
-    public void createTask(
+    public String createTask(
             @RequestBody CreateTaskDto createTaskDto,
             JwtAuthenticationToken jwtAuthenticationToken
     ) {
         log.info("Request to create task: {}", createTaskDto);
-        createTask.execute(
+        return createTask.execute(
                 taskMapper.createTaskDtoToTask(createTaskDto),
                 getAuthUser.execute(jwtAuthenticationToken)
         );
