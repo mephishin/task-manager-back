@@ -15,7 +15,7 @@ public interface TaskRepo extends JpaRepository<Task, String> {
     List<Task> findAllByProject(Project project);
 
     @Query(value =
-            "SELECT MAX(SUBSTRING(t.key, LOCATE('-', t.key) + 1)) "
+            "SELECT MAX(CAST(SUBSTRING(t.key, LOCATE('-', t.key) + 1) AS long)) "
                     + "FROM Task t "
                     + "WHERE t.key LIKE CONCAT('%', :taskPrefix, '%')")
     Optional<Long> getCurrentTaskNumberByTaskPrefix(@Param("taskPrefix") String taskPrefix);

@@ -8,6 +8,7 @@
     <include file="migrations/v0_4_create_time_interval.xml" relativeToChangelogFile="true"/>
     <include file="migrations/v0_5_create_period.xml" relativeToChangelogFile="true"/>
     <include file="migrations/v0_6_create_task_comment.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/v0_7_create_project_invite.xml" relativeToChangelogFile="true"/>
 
     <include file="imports/v0_0_import_projects.xml" relativeToChangelogFile="true"/>
     <include file="imports/v0_1_import_periods.xml" relativeToChangelogFile="true"/>

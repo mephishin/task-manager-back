@@ -6,6 +6,7 @@ import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
 import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
+import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TimeInterval;
 import com.example.taskmanagerback.model.users.Users;
@@ -33,7 +34,6 @@ public abstract class TaskMapper {
     @Autowired
     ProjectRepo projectRepo;
 
-    @Mapping(target = "project", source = "task.project.name")
     @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
     @Mapping(target = "assignee", source = "task.assignee.username")
     @Mapping(target = "reporter", source = "task.reporter.username")
@@ -41,6 +41,9 @@ public abstract class TaskMapper {
     @Mapping(target = "edited", qualifiedByName = "getFormattedInstant", source = "task.taskTime.edited")
     @Mapping(target = "total", qualifiedByName = "getTotal", source = "task.taskTime.timeIntervals")
     public abstract TaskDto taskToTaskDto(Task task);
+
+    @Mapping(target = "id", source = "project.key")
+    public abstract TaskDto.ProjectDto taskToTaskDto(Project project);
 
     @Named("getFormattedInstant")
     protected String getFormattedInstant(Instant instant) {

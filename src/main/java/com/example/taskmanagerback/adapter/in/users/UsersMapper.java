@@ -7,6 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public abstract class UsersMapper {
-    @Mapping(target="project", source = "users.project.name")
+    @Mapping(target="project", source = "users.project.key")
     public abstract UsersDto usersToUsersDto(Users users);
 }
