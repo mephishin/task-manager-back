@@ -35,7 +35,6 @@ public abstract class TaskMapper {
     ProjectRepo projectRepo;
 
     @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
-    @Mapping(target = "assignee", source = "task.assignee.username")
     @Mapping(target = "reporter", source = "task.reporter.username")
     @Mapping(target = "created", qualifiedByName = "getFormattedInstant", source = "task.taskTime.created")
     @Mapping(target = "edited", qualifiedByName = "getFormattedInstant", source = "task.taskTime.edited")
@@ -44,6 +43,8 @@ public abstract class TaskMapper {
 
     @Mapping(target = "id", source = "project.key")
     public abstract TaskDto.ProjectDto taskToTaskDto(Project project);
+
+    public abstract TaskDto.AssigneeDto taskToTaskDto(Users users);
 
     @Named("getFormattedInstant")
     protected String getFormattedInstant(Instant instant) {

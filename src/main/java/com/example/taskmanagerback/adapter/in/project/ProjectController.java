@@ -108,7 +108,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/invite")
-    public String acceptProject(
+    public String acceptProjectInvite(
             @PathVariable("projectId") String projectId
     ) {
         log.info("Request to get invite to project with id: {}", projectId);

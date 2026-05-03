@@ -6,7 +6,7 @@ public record TaskDto(
         String description,
         String status,
         ProjectDto project,
-        String assignee,
+        AssigneeDto assignee,
         String reporter,
         String created,
         String edited,
@@ -15,5 +15,14 @@ public record TaskDto(
     public record ProjectDto(
             String id,
             String name
+    ) {}
+
+    public record AssigneeDto(
+            String id,
+            String username,
+            String firstName,
+            String middleName,
+            String lastName,
+            String group
     ) {}
 }
