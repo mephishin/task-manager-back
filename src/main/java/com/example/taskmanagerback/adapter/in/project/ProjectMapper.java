@@ -2,7 +2,7 @@ package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
-import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
+import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
 import com.example.taskmanagerback.model.project.Project;
 import com.example.taskmanagerback.model.users.Users;
 import lombok.AccessLevel;
@@ -27,7 +27,7 @@ public abstract class ProjectMapper {
     public abstract Project projectDtoToProject(CreateProjectDto createProjectDto);
 
     @Named("idsToParticipants")
-    protected List<Users> usernamesToParticipants(List<String> ids) {
+    protected List<Users> idsToParticipants(List<String> ids) {
         return usersRepo.findAllById(ids);
     }
 }

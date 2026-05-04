@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.security;
 
-import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
-import com.example.taskmanagerback.app.api.security.GetAuthUser;
+import com.example.taskmanagerback.app.api.in.security.GetAuthUser;
+import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
 import com.example.taskmanagerback.model.users.Users;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

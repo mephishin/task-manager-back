@@ -30,7 +30,8 @@ services:
       POSTGRES_USER: admin
 
   keycloak:
-    image: quay.io/keycloak/keycloak:25.0.2
+#    image: quay.io/keycloak/keycloak:25.0.2
+    image: quay.io/keycloak/keycloak:26.5.1
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -38,8 +39,8 @@ services:
       KC_DB_URL: jdbc:postgresql://keycloak-postgres:5432/keycloak_postgres
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
-#      KC_LOG_LEVEL: DEBUG
-#      KC_IMPORT_LOG_LEVEL: DEBUG
+      KC_LOG_LEVEL: DEBUG
+      KC_IMPORT_LOG_LEVEL: DEBUG
 
     volumes:
     - ./import/realm-export.json:/opt/keycloak/data/import/realm-export.json

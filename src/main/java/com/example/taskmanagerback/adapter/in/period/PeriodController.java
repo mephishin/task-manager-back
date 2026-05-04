@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.adapter.in.period;
 
 import com.example.taskmanagerback.adapter.in.period.dto.PeriodDto;
-import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
-import com.example.taskmanagerback.app.api.period.GetActivePeriodByProject;
+import com.example.taskmanagerback.adapter.out.repository.postgres.project.ProjectRepo;
+import com.example.taskmanagerback.app.api.in.period.GetActivePeriodByProject;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

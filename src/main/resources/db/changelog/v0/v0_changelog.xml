@@ -11,9 +11,5 @@
     <include file="migrations/v0_7_create_project_invite.xml" relativeToChangelogFile="true"/>
 
     <include file="imports/v0_0_import_projects.xml" relativeToChangelogFile="true"/>
-    <include file="imports/v0_1_import_periods.xml" relativeToChangelogFile="true"/>
-    <include file="imports/v0_2_import_users.xml" relativeToChangelogFile="true"/>
-    <include file="imports/v0_3_import_tasks.xml" relativeToChangelogFile="true"/>
-    <include file="imports/v0_4_import_task_times.xml" relativeToChangelogFile="true"/>
-    <include file="imports/v0_5_import_task_comments.xml" relativeToChangelogFile="true"/>
+    <include file="imports/v0_1_import_users.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

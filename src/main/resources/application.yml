@@ -25,8 +25,15 @@ minio:
   url: http://localhost
   port: 9000
   bucket:
-    task-files: task-files
-    project-files: project-files
-    comment-files: comment-files
+    taskFiles: task-files
+    projectFiles: project-files
+    commentFiles: comment-files
   accessKey: minioadmin
   secretKey : minioadmin
+
+keycloak:
+  url: http://localhost:9090
+  realm: task-manager
+  clientId: admin-cli
+  username: admin
+  password: admin

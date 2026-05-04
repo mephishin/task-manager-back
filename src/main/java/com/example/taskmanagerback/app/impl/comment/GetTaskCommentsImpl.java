@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.comment;
 
-import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
-import com.example.taskmanagerback.app.api.comment.GetTaskComments;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.app.api.in.comment.GetTaskComments;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TaskComment;
 import lombok.AccessLevel;

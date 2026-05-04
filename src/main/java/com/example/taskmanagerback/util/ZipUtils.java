@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.util;
 
-import com.example.taskmanagerback.adapter.repository.minio.File;
+import com.example.taskmanagerback.adapter.out.repository.minio.File;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

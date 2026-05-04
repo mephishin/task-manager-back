@@ -1,9 +1,9 @@
 package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
-import com.example.taskmanagerback.adapter.repository.postgres.task.TaskTimeRepo;
-import com.example.taskmanagerback.app.api.task.CreateTask;
-import com.example.taskmanagerback.app.api.task.status.GetProjectStatuses;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskTimeRepo;
+import com.example.taskmanagerback.app.api.in.task.CreateTask;
+import com.example.taskmanagerback.app.api.in.task.status.GetProjectStatuses;
 import com.example.taskmanagerback.model.task.Task;
 import com.example.taskmanagerback.model.task.TaskTime;
 import com.example.taskmanagerback.model.users.Users;

@@ -22,15 +22,18 @@ public class Users {
     @Id
     String id;
 
+    @Transient
     String username;
-    @Column(name = "first_name")
+    @Transient
     String firstName;
-    @Column(name = "middle_name")
+    @Transient
     String middleName;
-    @Column(name = "last_name")
+    @Transient
     String lastName;
-    @Column(name = "user_group")
+    @Transient
     String group;
+    @Transient
+    List<String> roles;
 
     @OneToMany(mappedBy = "assignee")
     @ToString.Exclude

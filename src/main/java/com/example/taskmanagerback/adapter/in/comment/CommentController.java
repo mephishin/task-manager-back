@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.adapter.in.comment;
 
 import com.example.taskmanagerback.adapter.in.comment.dto.CommentDto;
-import com.example.taskmanagerback.app.api.comment.*;
+import com.example.taskmanagerback.app.api.in.comment.*;
 import com.example.taskmanagerback.model.task.TaskComment;
 import com.example.taskmanagerback.util.ZipUtils;
 import jakarta.servlet.http.HttpServletResponse;

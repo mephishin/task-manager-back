@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
-import com.example.taskmanagerback.app.api.task.UpdateTask;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.app.api.in.task.UpdateTask;
 import com.example.taskmanagerback.model.task.Task;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;

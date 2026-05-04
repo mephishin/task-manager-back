@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.adapter.in.taskStatus;
 
-import com.example.taskmanagerback.app.api.task.GetAllowedTaskStatuses;
-import com.example.taskmanagerback.app.api.task.UpdateTaskStatus;
-import com.example.taskmanagerback.app.api.task.status.GetProjectStatuses;
+import com.example.taskmanagerback.app.api.in.task.GetAllowedTaskStatuses;
+import com.example.taskmanagerback.app.api.in.task.UpdateTaskStatus;
+import com.example.taskmanagerback.app.api.in.task.status.GetProjectStatuses;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.adapter.in.users;
 
 import com.example.taskmanagerback.adapter.in.users.dto.UsersDto;
-import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
-import com.example.taskmanagerback.app.api.users.RemoveUserFromProject;
+import com.example.taskmanagerback.app.api.in.users.RemoveUserFromProject;
+import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.app.impl.comment;
 
-import com.example.taskmanagerback.adapter.repository.minio.File;
-import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
-import com.example.taskmanagerback.app.api.comment.GetAllCommentsFiles;
+import com.example.taskmanagerback.adapter.out.repository.minio.File;
+import com.example.taskmanagerback.adapter.out.repository.minio.FileRepo;
+import com.example.taskmanagerback.app.api.in.comment.GetAllCommentsFiles;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

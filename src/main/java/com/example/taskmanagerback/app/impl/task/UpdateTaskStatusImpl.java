@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.app.impl.task;
 
-import com.example.taskmanagerback.adapter.repository.postgres.task.TaskRepo;
-import com.example.taskmanagerback.adapter.repository.postgres.task.TimeIntervalRepo;
-import com.example.taskmanagerback.app.api.task.UpdateTaskStatus;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskRepo;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TimeIntervalRepo;
+import com.example.taskmanagerback.app.api.in.task.UpdateTaskStatus;
 import com.example.taskmanagerback.model.task.TimeInterval;
 import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import jakarta.transaction.Transactional;

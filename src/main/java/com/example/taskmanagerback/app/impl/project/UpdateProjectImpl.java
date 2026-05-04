@@ -1,9 +1,9 @@
 package com.example.taskmanagerback.app.impl.project;
 
-import com.example.taskmanagerback.adapter.repository.minio.File;
-import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
-import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
-import com.example.taskmanagerback.app.api.project.UpdateProject;
+import com.example.taskmanagerback.adapter.out.repository.minio.File;
+import com.example.taskmanagerback.adapter.out.repository.minio.FileRepo;
+import com.example.taskmanagerback.adapter.out.repository.postgres.project.ProjectRepo;
+import com.example.taskmanagerback.app.api.in.project.UpdateProject;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

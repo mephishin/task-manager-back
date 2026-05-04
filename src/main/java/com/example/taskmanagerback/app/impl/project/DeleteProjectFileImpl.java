@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.project;
 
-import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
-import com.example.taskmanagerback.app.api.project.DeleteProjectFile;
+import com.example.taskmanagerback.adapter.out.repository.minio.FileRepo;
+import com.example.taskmanagerback.app.api.in.project.DeleteProjectFile;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

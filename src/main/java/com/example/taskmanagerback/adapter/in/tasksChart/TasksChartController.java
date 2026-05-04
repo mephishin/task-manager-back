@@ -1,9 +1,9 @@
 package com.example.taskmanagerback.adapter.in.tasksChart;
 
 import com.example.taskmanagerback.adapter.in.tasksChart.dto.TasksChartDto;
-import com.example.taskmanagerback.app.api.security.GetAuthUser;
-import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
-import com.example.taskmanagerback.app.api.task.GetTasksByProject;
+import com.example.taskmanagerback.app.api.in.security.GetAuthUser;
+import com.example.taskmanagerback.app.api.in.security.GetJwtAuthenticationToken;
+import com.example.taskmanagerback.app.api.in.task.GetTasksByProject;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

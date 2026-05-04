@@ -1,6 +1,6 @@
 package com.example.taskmanagerback.app.impl.security;
 
-import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
+import com.example.taskmanagerback.app.api.in.security.GetJwtAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;

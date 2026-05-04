@@ -2,11 +2,11 @@ package com.example.taskmanagerback.adapter.in.project;
 
 import com.example.taskmanagerback.adapter.in.project.dto.CreateProjectDto;
 import com.example.taskmanagerback.adapter.in.project.dto.ProjectDto;
-import com.example.taskmanagerback.adapter.repository.minio.File;
-import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
-import com.example.taskmanagerback.app.api.project.*;
-import com.example.taskmanagerback.app.api.security.GetAuthUser;
-import com.example.taskmanagerback.app.api.security.GetJwtAuthenticationToken;
+import com.example.taskmanagerback.adapter.out.repository.minio.File;
+import com.example.taskmanagerback.adapter.out.repository.postgres.project.ProjectRepo;
+import com.example.taskmanagerback.app.api.in.project.*;
+import com.example.taskmanagerback.app.api.in.security.GetAuthUser;
+import com.example.taskmanagerback.app.api.in.security.GetJwtAuthenticationToken;
 import com.example.taskmanagerback.util.ZipUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;

@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.app.impl.comment;
 
-import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
-import com.example.taskmanagerback.adapter.repository.postgres.task.TaskCommentRepo;
-import com.example.taskmanagerback.app.api.comment.DeleteComment;
+import com.example.taskmanagerback.adapter.out.repository.minio.FileRepo;
+import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskCommentRepo;
+import com.example.taskmanagerback.app.api.in.comment.DeleteComment;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

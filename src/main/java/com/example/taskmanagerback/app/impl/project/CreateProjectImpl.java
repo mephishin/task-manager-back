@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.project;
 
-import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectRepo;
-import com.example.taskmanagerback.app.api.project.CreateProject;
+import com.example.taskmanagerback.adapter.out.repository.postgres.project.ProjectRepo;
+import com.example.taskmanagerback.app.api.in.project.CreateProject;
 import com.example.taskmanagerback.model.project.Project;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;

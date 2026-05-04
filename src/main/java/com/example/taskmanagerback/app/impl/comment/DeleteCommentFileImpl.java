@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.comment;
 
-import com.example.taskmanagerback.adapter.repository.minio.FileRepo;
-import com.example.taskmanagerback.app.api.comment.DeleteCommentFile;
+import com.example.taskmanagerback.adapter.out.repository.minio.FileRepo;
+import com.example.taskmanagerback.app.api.in.comment.DeleteCommentFile;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

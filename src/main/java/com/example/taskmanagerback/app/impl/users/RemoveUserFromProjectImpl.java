@@ -1,7 +1,7 @@
 package com.example.taskmanagerback.app.impl.users;
 
-import com.example.taskmanagerback.adapter.repository.postgres.task.UsersRepo;
-import com.example.taskmanagerback.app.api.users.RemoveUserFromProject;
+import com.example.taskmanagerback.app.api.in.users.RemoveUserFromProject;
+import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

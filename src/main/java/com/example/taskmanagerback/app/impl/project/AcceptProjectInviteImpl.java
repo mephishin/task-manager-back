@@ -1,8 +1,8 @@
 package com.example.taskmanagerback.app.impl.project;
 
-import com.example.taskmanagerback.adapter.repository.postgres.project.ProjectInviteRepo;
-import com.example.taskmanagerback.app.api.project.AcceptProjectInvite;
-import com.example.taskmanagerback.app.api.security.GetAuthUser;
+import com.example.taskmanagerback.adapter.out.repository.postgres.project.ProjectInviteRepo;
+import com.example.taskmanagerback.app.api.in.project.AcceptProjectInvite;
+import com.example.taskmanagerback.app.api.in.security.GetAuthUser;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
