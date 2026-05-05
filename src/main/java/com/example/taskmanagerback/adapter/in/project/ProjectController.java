@@ -48,6 +48,7 @@ public class ProjectController {
     ProjectRepo projectRepo;
     AcceptProjectInvite acceptProjectInvite;
     GetProjectInvite getProjectInvite;
+    GetProjectById getProjectById;
 
     @GetMapping
     public List<ProjectDto> getAllProjects() {
@@ -58,13 +59,13 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public ProjectDto getProject(@PathVariable("projectId") String projectId) {
+    public ProjectDto getProject(@PathVariable String projectId) {
         log.info("Requested project by id: {}", projectId);
-        return projectMapper.projectToProjectDto(projectRepo.findById(projectId).orElseThrow());
+        return projectMapper.projectToProjectDto(getProjectById.execute(projectId));
     }
 
     @GetMapping("/{projectId}/file")
-    public void getAllProjectFiles(@PathVariable("projectId") String projectId, HttpServletResponse response) {
+    public void getAllProjectFiles(@PathVariable String projectId, HttpServletResponse response) {
         log.info("Requested all projects files");
         var listOfFiles = getAllProjectsFiles.execute(projectId);
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"files.zip\"");
@@ -86,7 +87,7 @@ public class ProjectController {
 
     @PutMapping("/{projectId}")
     public void updateProjectInfo(
-            @PathVariable("projectId") String projectId,
+            @PathVariable String projectId,
             @RequestParam(value = "zippedFiles", required = false) MultipartFile zippedFiles,
             @RequestParam(value = "description", required = false) String description
     ) throws IOException {
@@ -100,7 +101,7 @@ public class ProjectController {
 
     @PutMapping("/acceptInvite/{inviteKey}")
     public String updateProjectParticipants(
-            @PathVariable("inviteKey") String inviteKey,
+            @PathVariable String inviteKey,
             JwtAuthenticationToken jwtAuthenticationToken
     ) {
         log.info("Request to accept invite with key: {}", inviteKey);
@@ -109,7 +110,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/invite")
     public String acceptProjectInvite(
-            @PathVariable("projectId") String projectId
+            @PathVariable String projectId
     ) {
         log.info("Request to get invite to project with id: {}", projectId);
         return getProjectInvite.execute(projectId);
@@ -117,7 +118,7 @@ public class ProjectController {
 
     @DeleteMapping("/{projectId}/file")
     public void saveProjectFile(
-            @PathVariable("projectId") String projectId,
+            @PathVariable String projectId,
             @RequestParam("filename") String filename
     ) {
         log.info("Request to delete project file {}", filename);
@@ -128,13 +129,13 @@ public class ProjectController {
     public ProjectDto getProjectByAuthUser(Principal principal) {
         log.info("Requested project by auth participant {}", principal.getName());
 
-        return Optional.ofNullable( getAuthUser.execute(getJwtAuthenticationToken.execute()).getProject())
+        return Optional.ofNullable(getAuthUser.execute(getJwtAuthenticationToken.execute()).getProject())
                 .map(projectMapper::projectToProjectDto)
                 .orElse(null);
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('task-manager_leader', 'task-manager_admin')")
+    @PreAuthorize("hasAnyAuthority('task-manager_admin')")
     public void createProject(@RequestBody CreateProjectDto createProjectDto) {
         log.info("Requested creating project by auth participant");
 

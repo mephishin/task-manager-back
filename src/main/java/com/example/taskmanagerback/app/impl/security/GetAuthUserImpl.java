@@ -18,6 +18,9 @@ public class GetAuthUserImpl implements GetAuthUser {
 
     @Override
     public Users execute(JwtAuthenticationToken jwtAuthenticationToken) {
-        return usersRepo.findById(jwtAuthenticationToken.getToken().getClaimAsString(SUB)).orElseThrow();
+
+        var user = usersRepo.findById(jwtAuthenticationToken.getToken().getClaimAsString(SUB)).orElseThrow();
+
+        return user;
     }
 }

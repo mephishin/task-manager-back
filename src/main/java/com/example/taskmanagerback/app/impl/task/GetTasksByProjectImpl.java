@@ -40,7 +40,7 @@ public class GetTasksByProjectImpl implements GetTasksByProject {
                 .collect(Collectors.toMap(Users::getId, u -> u));
         return tasks.stream().peek(task -> {
             task.setAssignee(mapOfEnrichedUsers.get(task.getAssignee().getId()));
-            task.setAssignee(mapOfEnrichedUsers.get(task.getReporter().getId()));
+            task.setReporter(mapOfEnrichedUsers.get(task.getReporter().getId()));
         }).toList();
     }
 }

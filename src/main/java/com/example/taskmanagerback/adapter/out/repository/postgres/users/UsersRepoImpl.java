@@ -3,6 +3,7 @@ package com.example.taskmanagerback.adapter.out.repository.postgres.users;
 import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
 import com.example.taskmanagerback.config.keycloak.KeycloakProperties;
 import com.example.taskmanagerback.model.users.Users;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,8 +13,11 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Component
 @RequiredArgsConstructor
@@ -25,48 +29,62 @@ public class UsersRepoImpl implements UsersRepo {
     Keycloak keycloakAdminClient;
 
     @Override
+    @Transactional
     public Optional<Users> findById(String id) {
-        return usersJpaRepo.findById(id)
-                .map(user -> {
-                    var userRepresentation = keycloakAdminClient.realm(keycloakProperties.realm())
-                            .users()
-                            .get(id)
-                            .toRepresentation();
+        var userRepresentation = keycloakAdminClient.realm(keycloakProperties.realm())
+                .users()
+                .get(id)
+                .toRepresentation();
 
-                    return enrichUser(user, userRepresentation);
-                });
+        if (isNull(userRepresentation)) {
+            return Optional.empty();
+        }
+
+        var user = usersJpaRepo.findById(id);
+
+        return user.map(users -> enrichUser(users, userRepresentation)).or(() -> Optional.of(enrichUser(
+                usersJpaRepo.save(new Users().setId(userRepresentation.getId())), userRepresentation)));
     }
 
     @Override
+    @Transactional
     public List<Users> findAllById(List<String> ids) {
-        var mapOfKeycloakUsers = keycloakAdminClient.realm(keycloakProperties.realm())
+        var listOfKeycloakUsers = keycloakAdminClient.realm(keycloakProperties.realm())
                 .users()
-                .search("id:" + String.join(" ", ids), null, null)
-                .stream()
-                .collect(Collectors.toMap(
-                        UserRepresentation::getId,
-                        userRepresentation -> userRepresentation
-                ));
+                .search("id:" + String.join(" ", ids), null, null);
 
-        return usersJpaRepo.findAllById(ids).stream()
-                .map(users -> enrichUser(users, mapOfKeycloakUsers.get(users.getId())))
-                .toList();
+        var mapOfUsers =  usersJpaRepo.findAllById(ids).stream()
+                .collect(Collectors.toMap(Users::getId, users -> users));
+
+        enrichMapOfUsers(listOfKeycloakUsers, mapOfUsers);
+
+        return mapOfUsers.values().stream().toList();
     }
 
     @Override
+    @Transactional
     public List<Users> findAll() {
-        var mapOfKeycloakUsers = keycloakAdminClient.realm(keycloakProperties.realm())
+        var listOfKeycloakUsers = keycloakAdminClient.realm(keycloakProperties.realm())
                 .users()
-                .list()
-                .stream()
-                .collect(Collectors.toMap(
-                        UserRepresentation::getId,
-                        userRepresentation -> userRepresentation
-                ));
+                .list();
 
-        return usersJpaRepo.findAll().stream()
-                .map(users -> enrichUser(users, mapOfKeycloakUsers.get(users.getId())))
-                .toList();
+        var mapOfUsers =  usersJpaRepo.findAll().stream().collect(Collectors.toMap(Users::getId, users -> users));
+
+        enrichMapOfUsers(listOfKeycloakUsers, mapOfUsers);
+
+        return mapOfUsers.values().stream().toList();
+
+    }
+
+    private void enrichMapOfUsers(List<UserRepresentation> listOfKeycloakUsers, Map<String, Users> mapOfUsers) {
+        for (var keycloakUser: listOfKeycloakUsers) {
+            mapOfUsers.computeIfAbsent(
+                    keycloakUser.getId(),
+                    key -> usersJpaRepo.save(new Users().setId(key)));
+            mapOfUsers.computeIfPresent(
+                    keycloakUser.getId(),
+                    (id, user) -> enrichUser(user, keycloakUser));
+        }
     }
 
     private static Users enrichUser(Users user, UserRepresentation userRepresentation) {
