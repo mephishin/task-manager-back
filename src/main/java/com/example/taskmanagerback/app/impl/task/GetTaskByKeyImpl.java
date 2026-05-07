@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.isNull;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -20,7 +22,7 @@ public class GetTaskByKeyImpl implements GetTaskByKey {
     public Task execute(String key) {
         var task = taskRepo.findById(key).orElseThrow();
 
-        task.setAssignee(usersRepo.findById(task.getAssignee().getId()).orElseThrow());
+        task.setAssignee(isNull(task.getAssignee()) ? null :usersRepo.findById(task.getAssignee().getId()).orElseThrow());
         task.setReporter(usersRepo.findById(task.getReporter().getId()).orElseThrow());
 
         return task;

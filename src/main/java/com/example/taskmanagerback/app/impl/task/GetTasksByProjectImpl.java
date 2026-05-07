@@ -13,8 +13,12 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +34,10 @@ public class GetTasksByProjectImpl implements GetTasksByProject {
         var project = projectRepo.findById(projectId).orElseThrow();
         var tasks = taskRepo.findAllByProject(project);
 
-        var assignees = tasks.stream().map(t -> t.getAssignee().getId());
+        var assignees = tasks.stream().map(t -> Optional.ofNullable(t.getAssignee())
+                .map(Users::getId)
+                .orElse(null)
+        ).filter(Objects::nonNull);
         var reportees = tasks.stream().map(t -> t.getReporter().getId());
 
         var mapOfEnrichedUsers = usersRepo.findAllById(Stream.concat(assignees, reportees)
@@ -39,7 +46,7 @@ public class GetTasksByProjectImpl implements GetTasksByProject {
                 ).stream()
                 .collect(Collectors.toMap(Users::getId, u -> u));
         return tasks.stream().peek(task -> {
-            task.setAssignee(mapOfEnrichedUsers.get(task.getAssignee().getId()));
+            task.setAssignee(isNull(task.getAssignee()) ? null : mapOfEnrichedUsers.get(task.getAssignee().getId()));
             task.setReporter(mapOfEnrichedUsers.get(task.getReporter().getId()));
         }).toList();
     }
