@@ -1,7 +1,6 @@
 package com.example.taskmanagerback.adapter.in.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
-import com.example.taskmanagerback.adapter.in.task.dto.SearchTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.out.repository.postgres.task.TaskRepo;
@@ -34,21 +33,20 @@ public class TaskController {
     TaskRepo taskRepo;
     GetTasksByProject getTasksByProject;
 
-    @GetMapping(value = "/search")
-    public List<SearchTaskDto> getSearchTasks() {
-        log.info("Requested all task to search");
-        return taskMapper.toListOfSearchTaskDto(taskRepo.findAll()).stream()
-                .sorted(Comparator.comparing(SearchTaskDto::key))
+    @GetMapping()
+    public List<TaskDto> getTasks() {
+        log.info("Requested all task");
+        return taskMapper.listOfTasksToListOfTasksDto(taskRepo.findAll()).stream()
+                .sorted(Comparator.comparing(TaskDto::key))
                 .toList();
     }
 
-    @GetMapping(value = "/search", params = "filter=userProject")
-    public List<SearchTaskDto> getSearchTasksByUserProject(JwtAuthenticationToken jwtAuthenticationToken) {
-        log.info("Requested all task to search by user project");
-        return taskMapper.toListOfSearchTaskDto(getTasksByProject.execute(
-                        getAuthUser.execute(jwtAuthenticationToken).getProject().getKey()))
+    @GetMapping(params = "projectId")
+    public List<TaskDto> getTasksByProject(@RequestParam String projectId) {
+        log.info("Requested all task to search by project");
+        return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectId))
                 .stream()
-                .sorted(Comparator.comparing(SearchTaskDto::key))
+                .sorted(Comparator.comparing(TaskDto::key))
                 .toList();
     }
 

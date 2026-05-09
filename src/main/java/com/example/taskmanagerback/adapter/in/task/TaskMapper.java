@@ -1,7 +1,6 @@
 package com.example.taskmanagerback.adapter.in.task;
 
 import com.example.taskmanagerback.adapter.in.task.dto.CreateTaskDto;
-import com.example.taskmanagerback.adapter.in.task.dto.SearchTaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.TaskDto;
 import com.example.taskmanagerback.adapter.in.task.dto.UpdateTaskDto;
 import com.example.taskmanagerback.adapter.out.repository.postgres.project.ProjectRepo;
@@ -33,6 +32,8 @@ public abstract class TaskMapper {
     UsersRepo usersRepo;
     @Autowired
     ProjectRepo projectRepo;
+
+    public abstract List<TaskDto> listOfTasksToListOfTasksDto(List<Task> tasks);
 
     @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
     @Mapping(target = "reporter", source = "task.reporter.username")
@@ -80,11 +81,4 @@ public abstract class TaskMapper {
     protected Users assigneeToUser(String value) {
         return nonNull(value) ? usersRepo.findById(value).orElseThrow() : null;
     }
-
-    public abstract List<SearchTaskDto> toListOfSearchTaskDto(List<Task> tasks);
-
-    @Mapping(target = "status", expression = "java(task.getStatus().getValue())")
-    @Mapping(target = "assignee", source = "task.assignee.username")
-    @Mapping(target = "reporter", source = "task.reporter.username")
-    protected abstract SearchTaskDto taskToSearchTaskDto(Task task);
 }
