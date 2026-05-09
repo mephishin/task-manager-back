@@ -33,20 +33,13 @@ public class TaskController {
     TaskRepo taskRepo;
     GetTasksByProject getTasksByProject;
 
-    @GetMapping()
-    public List<TaskDto> getTasks() {
-        log.info("Requested all task");
-        return taskMapper.listOfTasksToListOfTasksDto(taskRepo.findAll()).stream()
-                .sorted(Comparator.comparing(TaskDto::key))
-                .toList();
-    }
-
     @GetMapping(params = "projectId")
     public List<TaskDto> getTasksByProject(@RequestParam String projectId) {
         log.info("Requested all task to search by project");
         return taskMapper.listOfTasksToListOfTasksDto(getTasksByProject.execute(projectId))
                 .stream()
-                .sorted(Comparator.comparing(TaskDto::key))
+                .sorted(Comparator.comparingInt((TaskDto dto) ->
+                        Integer.parseInt(dto.key().substring(dto.key().lastIndexOf('-') + 1))).reversed())
                 .toList();
     }
 

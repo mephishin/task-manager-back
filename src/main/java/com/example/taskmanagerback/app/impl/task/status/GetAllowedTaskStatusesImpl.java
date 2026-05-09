@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +32,14 @@ public class GetAllowedTaskStatusesImpl implements GetAllowedTaskStatuses {
         var task = taskRepo.findById(key).orElseThrow(() -> new RuntimeException("No such task: " + key));
 
         try {
-            var statusFlow = objectMapper.readValue(task.getProject().getStatusFlow(), new TypeReference<Map<TaskStatus, List<TaskStatus>>>() {});
-            return statusFlow.get(task.getStatus());
+            var statusFlow = objectMapper.readValue(task.getProject().getStatusFlow(), new TypeReference<Map<TaskStatus, List<TaskStatus>>>() {
+            });
+            return Optional.ofNullable(statusFlow.get(task.getStatus()))
+                    .map(taskStatuses -> {
+                        taskStatuses.add(TaskStatus.CLOSED);
+                        return taskStatuses;
+                    })
+                    .orElse(List.of());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

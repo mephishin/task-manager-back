@@ -4,6 +4,8 @@ import com.example.taskmanagerback.adapter.in.tasksChart.dto.TasksChartDto;
 import com.example.taskmanagerback.app.api.in.security.GetAuthUser;
 import com.example.taskmanagerback.app.api.in.security.GetJwtAuthenticationToken;
 import com.example.taskmanagerback.app.api.in.task.GetTasksByProject;
+import com.example.taskmanagerback.model.task.Task;
+import com.example.taskmanagerback.model.task.constants.TaskStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +34,7 @@ public class TasksChartController {
     ) {
         log.info("Requested tasks by projectName: {}", projectId);
         return tasksChartMapper.listOfTasksToTasksChartDto(
-                getTasksByProject.execute(projectId)
+                filterTasksExceptClosed(getTasksByProject.execute(projectId))
         );
     }
 
@@ -40,7 +44,13 @@ public class TasksChartController {
                 getAuthUser.execute(getJwtAuthenticationToken.execute()).getProject();
         log.info("Requested tasks by auth user's project: {}", authUsersProject.getName());
         return tasksChartMapper.listOfTasksToTasksChartDto(
-                getTasksByProject.execute(authUsersProject.getKey())
+                filterTasksExceptClosed(getTasksByProject.execute(authUsersProject.getKey()))
         );
+    }
+
+    private List<Task> filterTasksExceptClosed(List<Task> tasks) {
+        return tasks.stream()
+                .filter(task -> !task.getStatus().equals(TaskStatus.CLOSED))
+                .toList();
     }
 }
