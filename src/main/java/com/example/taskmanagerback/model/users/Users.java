@@ -33,7 +33,7 @@ public class Users {
     @Transient
     String group;
     @Transient
-    List<String> roles;
+    List<UserRole> roles;
 
     @OneToMany(mappedBy = "assignee")
     @ToString.Exclude

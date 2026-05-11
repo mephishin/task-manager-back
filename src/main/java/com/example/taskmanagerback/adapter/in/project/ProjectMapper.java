@@ -23,11 +23,11 @@ public abstract class ProjectMapper {
     public abstract ProjectDto projectToProjectDto(Project project);
     public abstract ProjectDto.ParticipantDto projectToProjectDto(Users users);
 
-    @Mapping(target = "participants", qualifiedByName = "idsToParticipants", source = "participants")
+    @Mapping(target = "participants", qualifiedByName = "addLeaderToParticipants", source = "leader")
     public abstract Project projectDtoToProject(CreateProjectDto createProjectDto);
 
-    @Named("idsToParticipants")
-    protected List<Users> idsToParticipants(List<String> ids) {
-        return usersRepo.findAllById(ids);
+    @Named("addLeaderToParticipants")
+    protected List<Users> addLeaderToParticipants(String leader) {
+        return usersRepo.findAllById(List.of(leader));
     }
 }

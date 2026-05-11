@@ -13,7 +13,8 @@ public record ProjectDto(
             String firstName,
             String middleName,
             String lastName,
-            String group
+            String group,
+            List<String> roles
     ) {}
 }
 

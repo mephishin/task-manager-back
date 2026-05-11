@@ -3,6 +3,7 @@ package com.example.taskmanagerback.adapter.in.users;
 import com.example.taskmanagerback.adapter.in.users.dto.UsersDto;
 import com.example.taskmanagerback.app.api.in.users.RemoveUserFromProject;
 import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
+import com.example.taskmanagerback.model.users.UserRole;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @RestController
@@ -29,6 +31,17 @@ public class UsersController {
     public List<UsersDto> getUsersByProject(@RequestParam String projectId) {
         return usersRepo.findAll().stream()
                 .filter(user -> nonNull(user.getProject()) && user.getProject().getKey().equals(projectId))
+                .map(usersMapper::usersToUsersDto)
+                .toList();
+    }
+
+    @GetMapping(params = "role")
+    public List<UsersDto> getUserByRole(
+            @RequestParam String role,
+            @RequestParam boolean withoutProject
+    ) {
+        return usersRepo.findAll().stream()
+                .filter(user -> (isNull(user.getProject()) == withoutProject) && (user.getRoles().contains(UserRole.findRoleByValue(role))))
                 .map(usersMapper::usersToUsersDto)
                 .toList();
     }

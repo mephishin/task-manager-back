@@ -2,6 +2,7 @@ package com.example.taskmanagerback.adapter.out.repository.postgres.users;
 
 import com.example.taskmanagerback.app.api.out.postgres.UsersRepo;
 import com.example.taskmanagerback.config.keycloak.KeycloakProperties;
+import com.example.taskmanagerback.model.users.UserRole;
 import com.example.taskmanagerback.model.users.Users;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -87,15 +88,28 @@ public class UsersRepoImpl implements UsersRepo {
         }
     }
 
-    private static Users enrichUser(Users user, UserRepresentation userRepresentation) {
+    private Users enrichUser(Users user, UserRepresentation userRepresentation) {
         user.setUsername(userRepresentation.getUsername());
         user.setFirstName(userRepresentation.getFirstName());
         user.setMiddleName(getOrElse(userRepresentation, "middleName"));
         user.setLastName(userRepresentation.getLastName());
         user.setGroup(getOrElse(userRepresentation, "group"));
-        user.setRoles(userRepresentation.getRealmRoles());
+        user.setRoles(getUserRoles(userRepresentation));
 
         return user;
+    }
+
+    private List<UserRole> getUserRoles(UserRepresentation userRepresentation) {
+        return keycloakAdminClient.realm(keycloakProperties.realm())
+                .users()
+                .get(userRepresentation.getId())
+                .roles()
+                .realmLevel()
+                .listAll()
+                .stream()
+                .filter(roleRepresentation -> UserRole.getValues().contains(roleRepresentation.getName()))
+                .map(roleRepresentation -> UserRole.findRoleByValue(roleRepresentation.getName()))
+                .toList();
     }
 
     private static String getOrElse(UserRepresentation userRepresentation, String key) {
